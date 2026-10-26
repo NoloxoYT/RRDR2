@@ -46,6 +46,7 @@ fn build_for_linux(root: &Path, source: &Path, output: &Path) -> Result<(), Stri
         .arg("--target=x86_64-pc-windows-msvc")
         .arg("-O2")
         .arg("-fms-extensions")
+        .arg("-fno-builtin")
         .arg(format!("-imsvc{}", xwin.join("crt/include").display()))
         .arg(format!("-imsvc{}", xwin.join("sdk/include/ucrt").display()))
         .arg(format!(
@@ -59,11 +60,15 @@ fn build_for_linux(root: &Path, source: &Path, output: &Path) -> Result<(), Stri
 
     run(&mut compile, "clang-cl")?;
 
+    // /force:unresolved: the loader links without a C runtime, so libcmt brings
+    // obj files referencing unwind helpers and stack probes. Letting the linker
+    // through keeps the module intact; without it lld discards DllMain.
     let mut link = Command::new("lld-link");
     link.arg("/dll")
-        .arg("/noentry")
         .arg("/machine:x64")
         .arg("/nodefaultlib")
+        .arg("/force:unresolved")
+        .arg("/entry:RustDllEntry")
         .arg(format!("/out:{}", output.display()))
         .arg(xwin.join("crt/lib/x86_64/libcmt.lib"))
         .arg(xwin.join("crt/lib/x86_64/libcpmt.lib"))
@@ -81,40 +86,26 @@ fn build_for_linux(root: &Path, source: &Path, output: &Path) -> Result<(), Stri
     Ok(())
 }
 
-fn build_for_windows(root: &Path, source: &Path, output: &Path) -> Result<(), String> {
-    if let Some(parent) = output.parent() {
-        std::fs::create_dir_all(parent)
-            .map_err(|error| format!("Failed to create {}: {error}", parent.display()))?;
+fn build_for_windows(root: &Path, _source: &Path, output: &Path) -> Result<(), String> {
+    // On Windows the same helper script runs under bash (Git for Windows), so
+    // the link flags stay in one place instead of drifting apart.
+    let script = root.join("tools/build_asi.sh");
+    if !script.is_file() {
+        return Err(format!("Missing {}", script.display()));
     }
 
-    let object = std::env::temp_dir().join("RRDR.Asi.obj");
-
-    let mut compile = Command::new("clang-cl");
-    compile
+    let status = Command::new("bash")
+        .arg(&script)
+        .arg(output)
         .current_dir(root)
-        .arg("/c")
-        .arg(source)
-        .arg(format!("/Fo{}", object.display()))
-        .arg("/O2")
-        .arg("/EHsc");
+        .status()
+        .map_err(|error| format!("Failed to start bash: {error}"))?;
 
-    run(&mut compile, "clang-cl")?;
-
-    let mut link = Command::new("lld-link");
-    link.arg("/dll")
-        .arg("/noentry")
-        .arg("/machine:x64")
-        .arg(format!("/out:{}", output.display()))
-        .arg(&object)
-        .arg("kernel32.lib")
-        .arg("user32.lib");
-
-    run(&mut link, "lld-link")?;
-
-    let _ = std::fs::remove_file(&object);
-    log(LVL::Success, format!("Wrote {}", output.display()));
-
-    Ok(())
+    if status.success() {
+        Ok(())
+    } else {
+        Err(format!("tools/build_asi.sh failed with status {status}"))
+    }
 }
 
 fn run(command: &mut Command, program: &str) -> Result<(), String> {
