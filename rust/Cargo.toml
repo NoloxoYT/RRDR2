@@ -1,11 +1,11 @@
 [workspace]
 resolver = "2"
 members = [
-    "crates/rrdr-bridge",
-    "crates/rrdr-natives",
-    "crates/rrdr-game",
-    "crates/realistic-damages",
     "crates/better_economy",
+    "crates/realistic-damages",
+    "crates/rrdr-bridge",
+    "crates/rrdr-game",
+    "crates/rrdr-natives",
 ]
 
 [workspace.package]

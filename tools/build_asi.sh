@@ -9,7 +9,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 SRC="native/RRDR.Asi/RRDR.Asi.cpp"
-OUT="${1:-dist/RealisticDamages/RRDR.asi}"
+OUT="${1:-dist/RRDR/RRDR.asi}"
 XWIN="${XWIN_DIR:-$HOME/.cache/cargo-xwin/xwin}"
 
 if [ ! -f "$SRC" ]; then
@@ -33,7 +33,13 @@ fi
 OBJ="$(mktemp -d)/RRDR.Asi.obj"
 trap 'rm -rf "$(dirname "$OBJ")"' EXIT
 
-clang-cl --target=x86_64-pc-windows-msvc -O2 -fms-extensions \
+# Note: the CRT-less link below discards COMDATs it considers unused. That once
+# produced a 12 KB DLL with no code, no strings and no entry work at all.
+#
+# -fno-builtin: without it clang rewrites the hand-written copy/compare helpers
+# into memcpy/strlen/strrchr calls, which pulls api-ms-win-crt-*.dll imports.
+# On Wine a failed import makes the ASI load fail without a single log line.
+clang-cl --target=x86_64-pc-windows-msvc -O2 -fms-extensions -fno-builtin \
     -imsvc "$XWIN/crt/include" \
     -imsvc "$XWIN/sdk/include/ucrt" \
     -imsvc "$XWIN/sdk/include/shared" \
@@ -42,7 +48,13 @@ clang-cl --target=x86_64-pc-windows-msvc -O2 -fms-extensions \
 
 mkdir -p "$(dirname "$OUT")"
 
-lld-link /dll /noentry /machine:x64 /nodefaultlib /out:"$OUT" \
+# /force:unresolved: the loader is linked without a C runtime, so libcmt brings
+# obj files that reference unwind helpers and stack probes the nodefaultlib link
+# cannot satisfy. They sit behind disabled paths; letting the linker through is
+# what keeps the module intact.
+lld-link /dll /machine:x64 /nodefaultlib /force:unresolved \
+    /entry:RustDllEntry /include:RustDllEntry \
+    /out:"$OUT" \
     "$XWIN/crt/lib/x86_64/libcmt.lib" \
     "$XWIN/crt/lib/x86_64/libcpmt.lib" \
     "$XWIN/crt/lib/x86_64/libvcruntime.lib" \

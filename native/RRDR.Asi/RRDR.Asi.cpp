@@ -9,9 +9,17 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <stdarg.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <string.h>
+// <string.h> is deliberately not included. With /GF and the CRT-less link used
+// here, clang would replace memcpy/strrchr with intrinsics it then has no
+// symbol for; the compiler still emits the calls on its own.
+
+// The linker is driven without a default entry point and without the CRT. On
+// its own it treats every COMDAT as unused and drops DllMain, which produced a
+// 12 KB DLL with no code and no strings: the loader never ran. These
+// directives pin the parts the ASI actually needs.
+#pragma comment(linker, "/include:?Main@@YAXXZ")
 
 // ScriptHookRDR2 exports (C++ mangled names).
 //
@@ -149,26 +157,172 @@ static int g_core_count = 0;
 static HMODULE g_self = nullptr;
 static char g_mods_dir[MAX_PATH];
 
+// ---- Minimal string helpers ------------------------------------------------
+
+// Everything here is hand-written on purpose: calling the CRT versions
+// (strlen, strncpy_s, _stricmp) pulls api-ms-win-crt-*.dll imports, and on Wine
+// a single failed import makes the ASI load fail without any message.
+
+static size_t OwnTextLength(const char* text) {
+    size_t length = 0;
+    while (text && text[length] != '\0') {
+        ++length;
+    }
+    return length;
+}
+
+static void OwnCopyText(char* destination, size_t capacity, const char* source) {
+    if (capacity == 0) {
+        return;
+    }
+
+    size_t index = 0;
+    for (; source && source[index] != '\0' && index + 1 < capacity; ++index) {
+        destination[index] = source[index];
+    }
+    destination[index] = '\0';
+}
+
+static void OwnCopyBytes(void* destination, const void* source, size_t count) {
+    unsigned char* out = static_cast<unsigned char*>(destination);
+    const unsigned char* in = static_cast<const unsigned char*>(source);
+    for (size_t index = 0; index < count; ++index) {
+        out[index] = in[index];
+    }
+}
+
+// Last occurrence of `needle`, or nullptr.
+static char* OwnLastOf(char* text, char needle) {
+    char* found = nullptr;
+    for (size_t index = 0; text && text[index] != '\0'; ++index) {
+        if (text[index] == needle) {
+            found = text + index;
+        }
+    }
+    return found;
+}
+
+static char OwnLowerChar(char value) {
+    return (value >= 'A' && value <= 'Z') ? static_cast<char>(value - 'A' + 'a') : value;
+}
+
+static bool OwnEqualsIgnoreCase(const char* left, const char* right) {
+    size_t index = 0;
+    for (;;) {
+        const char a = OwnLowerChar(left ? left[index] : '\0');
+        const char b = OwnLowerChar(right ? right[index] : '\0');
+        if (a != b) {
+            return false;
+        }
+        if (a == '\0') {
+            return true;
+        }
+        ++index;
+    }
+}
+
+// Minimal formatter: only the specifiers this file uses (%s, %u, %02u, %lu).
+// Returns the number of characters written, excluding the terminator.
+static size_t OwnFormat(char* destination, size_t capacity, const char* format, ...) {
+    if (capacity == 0) {
+        return 0;
+    }
+
+    va_list args;
+    va_start(args, format);
+
+    size_t written = 0;
+    for (size_t index = 0; format[index] != '\0' && written + 1 < capacity; ++index) {
+        if (format[index] != '%') {
+            destination[written++] = format[index];
+            continue;
+        }
+
+        ++index;
+        bool pad_zero = false;
+        if (format[index] == '0') {
+            pad_zero = true;
+            ++index;
+        }
+
+        int width = 0;
+        while (format[index] >= '0' && format[index] <= '9') {
+            width = width * 10 + (format[index] - '0');
+            ++index;
+        }
+
+        if (format[index] == 'l') {
+            ++index;
+        }
+
+        if (format[index] == 's') {
+            const char* text = va_arg(args, const char*);
+            for (size_t position = 0; text && text[position] != '\0' && written + 1 < capacity;
+                 ++position) {
+                destination[written++] = text[position];
+            }
+        } else if (format[index] == 'u') {
+            const unsigned long value = va_arg(args, unsigned long);
+            char digits[24];
+            int count = 0;
+            unsigned long remaining = value;
+            do {
+                digits[count++] = static_cast<char>('0' + (remaining % 10));
+                remaining /= 10;
+            } while (remaining != 0 && count < 23);
+
+            for (int pad = count; pad < width && written + 1 < capacity; ++pad) {
+                destination[written++] = pad_zero ? '0' : ' ';
+            }
+            while (count > 0 && written + 1 < capacity) {
+                destination[written++] = digits[--count];
+            }
+        } else if (format[index] == '%') {
+            destination[written++] = '%';
+        }
+    }
+
+    va_end(args);
+    destination[written] = '\0';
+    return written;
+}
+
 // ---- Logging ---------------------------------------------------------------
 
+// Opens a log file next to the cores. Win32 only: the CRT (fopen) pulls
+// api-ms-win-crt-*.dll imports, and on Wine a failed import makes the whole ASI
+// fail to load silently: no log, no script, nothing to debug with.
+static void AppendToFile(const char* path, const char* text) {
+    HANDLE file = CreateFileA(path, FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE,
+                              nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+    if (file == INVALID_HANDLE_VALUE) {
+        return;
+    }
+
+    SetFilePointer(file, 0, nullptr, FILE_END);
+
+    DWORD written = 0;
+    const DWORD length = static_cast<DWORD>(OwnTextLength(text));
+    WriteFile(file, text, length, &written, nullptr);
+    CloseHandle(file);
+}
+
 static void LogToFile(const char* message) {
-    if (g_mods_dir[0] == '\0') {
+    if (g_mods_dir[0] == '\0' || message == nullptr) {
         return;
     }
 
     char path[MAX_PATH];
-    _snprintf_s(path, sizeof(path), _TRUNCATE, "%s\\RRDR.asi.log", g_mods_dir);
-
-    FILE* file = nullptr;
-    if (fopen_s(&file, path, "a") != 0 || file == nullptr) {
-        return;
-    }
+    OwnFormat(path, sizeof(path), "%s\\RRDR.asi.log", g_mods_dir);
 
     SYSTEMTIME now;
     GetLocalTime(&now);
-    fprintf(file, "[%02u:%02u:%02u.%03u] %s\n",
-            now.wHour, now.wMinute, now.wSecond, now.wMilliseconds, message);
-    fclose(file);
+
+    char line[2300];
+    OwnFormat(line, sizeof(line), "[%02u:%02u:%02u.%03u] %s\r\n",
+                now.wHour, now.wMinute, now.wSecond, now.wMilliseconds, message);
+
+    AppendToFile(path, line);
 }
 
 static void LogLevel(void* user, uint32_t level, const char* message) {
@@ -179,7 +333,7 @@ static void LogLevel(void* user, uint32_t level, const char* message) {
 
 static void LogMessage(const char* prefix, const char* detail) {
     char buffer[2048];
-    _snprintf_s(buffer, sizeof(buffer), _TRUNCATE, "%s%s", prefix, detail ? detail : "");
+    OwnFormat(buffer, sizeof(buffer), "%s%s", prefix, detail ? detail : "");
     LogToFile(buffer);
 }
 
@@ -220,7 +374,7 @@ static uint64_t CallNative(void* user, uint64_t hash, const RdArg* args,
             while (length + 1 < return_capacity && text[length] != '\0') {
                 ++length;
             }
-            memcpy(return_buffer, text, length);
+            OwnCopyBytes(return_buffer, text, length);
             static_cast<char*>(return_buffer)[length] = '\0';
             return length;
         }
@@ -262,7 +416,7 @@ static bool g_reload_configs = true;
 // Reads RRDR.asi.ini next to the game exe, so keys stay optional.
 static void LoadAsiConfig() {
     char ini[MAX_PATH];
-    _snprintf_s(ini, sizeof(ini), _TRUNCATE, "%sRRDR.asi.ini", g_game_dir);
+    OwnFormat(ini, sizeof(ini), "%sRRDR.asi.ini", g_game_dir);
 
     char value[MAX_PATH];
 
@@ -270,30 +424,29 @@ static void LoadAsiConfig() {
         "RRDR", "mods_dir", "", value, sizeof(value), ini);
     if (length > 0) {
         if (value[0] == '\\' || (value[1] == ':' && value[2] == '\\')) {
-            strncpy_s(g_mods_dir, sizeof(g_mods_dir), value, _TRUNCATE);
+            OwnCopyText(g_mods_dir, sizeof(g_mods_dir), value);
         } else {
-            _snprintf_s(g_mods_dir, sizeof(g_mods_dir), _TRUNCATE, "%s%s", g_game_dir, value);
+            OwnFormat(g_mods_dir, sizeof(g_mods_dir), "%s%s", g_game_dir, value);
         }
     } else {
-        _snprintf_s(g_mods_dir, sizeof(g_mods_dir), _TRUNCATE, "%sscripts\\Rscripts", g_game_dir);
+        OwnFormat(g_mods_dir, sizeof(g_mods_dir), "%sscripts\\Rscripts", g_game_dir);
     }
 
     length = GetPrivateProfileStringA(
         "RRDR", "reload_config", "true", value, sizeof(value), ini);
-    g_reload_configs = _stricmp(value, "false") != 0 &&
-                       _stricmp(value, "0") != 0;
+    g_reload_configs = !OwnEqualsIgnoreCase(value, "false") && !OwnEqualsIgnoreCase(value, "0");
 }
 
 static void BuildModsDir() {
     GetModuleFileNameA(nullptr, g_game_dir, MAX_PATH);
 
-    char* slash = strrchr(g_game_dir, '\\');
+    char* slash = OwnLastOf(g_game_dir, '\\');
     if (slash) {
         *(slash + 1) = '\0';
     }
 
     // Default location, then let the ini override it.
-    _snprintf_s(g_mods_dir, sizeof(g_mods_dir), _TRUNCATE, "%sscripts\\Rscripts", g_game_dir);
+    OwnFormat(g_mods_dir, sizeof(g_mods_dir), "%sscripts\\Rscripts", g_game_dir);
     LoadAsiConfig();
     CreateDirectoryA(g_mods_dir, nullptr);
 }
@@ -359,15 +512,15 @@ static void LoadCore(const char* path) {
     core.shutdown = shutdown;
 
     // <core>.ini next to the DLL; empty string disables the config path.
-    const char* file_name = strrchr(path, '\\');
-    file_name = file_name ? file_name + 1 : path;
+    char* separator = OwnLastOf(const_cast<char*>(path), '\\');
+    const char* file_name = separator ? separator + 1 : path;
     char stem[MAX_PATH];
-    _snprintf_s(stem, sizeof(stem), _TRUNCATE, "%s", file_name);
-    char* dot = strrchr(stem, '.');
+    OwnFormat(stem, sizeof(stem), "%s", file_name);
+    char* dot = OwnLastOf(stem, '.');
     if (dot) {
         *dot = '\0';
     }
-    _snprintf_s(core.config_path, sizeof(core.config_path), _TRUNCATE, "%s\\%s.ini", g_mods_dir, stem);
+    OwnFormat(core.config_path, sizeof(core.config_path), "%s\\%s.ini", g_mods_dir, stem);
 
     const char* config = GetFileAttributesA(core.config_path) != INVALID_FILE_ATTRIBUTES
                              ? core.config_path
@@ -406,7 +559,7 @@ static void LoadCore(const char* path) {
     }
 
     RememberConfigTime(core);
-    strncpy_s(core.name, sizeof(core.name), file_name, _TRUNCATE);
+    OwnCopyText(core.name, sizeof(core.name), file_name);
     ++g_core_count;
 
     LogMessage("loaded core: ", file_name);
@@ -414,7 +567,7 @@ static void LoadCore(const char* path) {
 
 static void ScanMods() {
     char pattern[MAX_PATH];
-    _snprintf_s(pattern, sizeof(pattern), _TRUNCATE, "%s\\*.dll", g_mods_dir);
+    OwnFormat(pattern, sizeof(pattern), "%s\\*.dll", g_mods_dir);
 
     WIN32_FIND_DATAA data;
     HANDLE find = FindFirstFileA(pattern, &data);
@@ -428,7 +581,7 @@ static void ScanMods() {
         }
 
         char path[MAX_PATH];
-        _snprintf_s(path, sizeof(path), _TRUNCATE, "%s\\%s", g_mods_dir, data.cFileName);
+        OwnFormat(path, sizeof(path), "%s\\%s", g_mods_dir, data.cFileName);
         LoadCore(path);
     } while (FindNextFileA(find, &data));
 
@@ -463,6 +616,40 @@ static void ReloadConfigs() {
 
 // ---- Script entry ----------------------------------------------------------
 
+// Seconds since the previous call, measured with the high-resolution counter.
+//
+// A core that receives 0 for ever never advances its timers: the same natives
+// end up called every frame and the game ends up hitching. The delta is
+// clamped so a long stall (loading screen, alt-tab) does not hand the cores a
+// multi-second step either.
+static double SecondsSinceLastTick() {
+    static LARGE_INTEGER frequency = {};
+    if (frequency.QuadPart == 0) {
+        QueryPerformanceFrequency(&frequency);
+    }
+
+    static LONGLONG last = 0;
+
+    LARGE_INTEGER now;
+    QueryPerformanceCounter(&now);
+
+    if (last == 0) {
+        last = now.QuadPart;
+        return 0.0;
+    }
+
+    const double seconds = frequency.QuadPart > 0
+                               ? static_cast<double>(now.QuadPart - last) /
+                                     static_cast<double>(frequency.QuadPart)
+                               : 0.0;
+    last = now.QuadPart;
+
+    if (seconds < 0.0) {
+        return 0.0;
+    }
+    return seconds > 0.25 ? 0.25 : seconds;
+}
+
 static void Main() {
     LogToFile("RRDR.asi main() entered");
 
@@ -471,10 +658,18 @@ static void Main() {
     BuildModsDir();
     ScanMods();
 
+    {
+        char summary[128];
+        OwnFormat(summary, sizeof(summary), "cores loaded: %d", g_core_count);
+        LogToFile(summary);
+    }
+
     for (;;) {
+        const float dt = static_cast<float>(SecondsSinceLastTick());
+
         for (int index = 0; index < g_core_count; ++index) {
             if (g_cores[index].tick) {
-                g_cores[index].tick(0.0f);
+                g_cores[index].tick(dt);
             }
         }
 
@@ -487,7 +682,16 @@ static void Main() {
 
 // ---- ASI entry -------------------------------------------------------------
 
-BOOL APIENTRY DllMain(HMODULE module, DWORD reason, LPVOID reserved) {
+static BOOL WINAPI DllAttach(HMODULE module, DWORD reason, LPVOID reserved);
+
+// Real entry point. With /noentry the linker sets the address of entry 0 and
+// Windows never calls DllMain: the ASI "loads" and does nothing. This stub is
+// what the linker is told to start at, and it forwards to DllMain.
+extern "C" BOOL WINAPI RustDllEntry(HMODULE module, DWORD reason, LPVOID reserved) {
+    return DllAttach(module, reason, reserved);
+}
+
+static BOOL WINAPI DllAttach(HMODULE module, DWORD reason, LPVOID reserved) {
     (void)reserved;
 
     switch (reason) {
@@ -518,4 +722,9 @@ BOOL APIENTRY DllMain(HMODULE module, DWORD reason, LPVOID reserved) {
     }
 
     return TRUE;
+}
+
+// Conventional name, in case something calls it by name.
+BOOL APIENTRY DllMain(HMODULE module, DWORD reason, LPVOID reserved) {
+    return DllAttach(module, reason, reserved);
 }

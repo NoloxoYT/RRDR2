@@ -25,6 +25,7 @@ fn is_right_arm_bone(bone: i32) -> bool {
 }
 
 struct RealisticDmg {
+    stalled_ticks: u32,
     current_ped_id: Option<i32>,
     last_health: i32,
     bleeding_speed: u8,
@@ -41,6 +42,7 @@ impl Mod for RealisticDmg {
         api.log(LogLevel::Info, "Realistic Damages: Entry point loaded");
 
         Ok(Self {
+            stalled_ticks: 0,
             current_ped_id: None,
             last_health: 0,
             bleeding_speed: 0,
@@ -56,6 +58,28 @@ impl Mod for RealisticDmg {
     }
 
     fn tick(&mut self, api: &mut dyn GameApi, dt: f32) {
+        // A loader that cannot measure time used to send 0.0f, which froze
+        // every timer here: the bleed never advanced and the inventory poll
+        // never backed off, so the same natives ran every frame.
+        if !dt.is_finite() || dt <= 0.0 {
+            if self.stalled_ticks < 60 {
+                self.stalled_ticks += 1;
+                if self.stalled_ticks == 60 {
+                    api.log(
+                        LogLevel::Warn,
+                        "Realistic Damages: tick delta is 0; update RRDR.asi or the timers stay frozen",
+                    );
+                }
+            }
+            return;
+        }
+        self.stalled_ticks = 0;
+
+        // Do not touch the game before a ped exists (menus, loading screens).
+        if Player::local(api).is_none() {
+            return;
+        }
+
         if self.med.poll(api, dt) {
             self.bleeding_speed = 0;
             self.bleeding_stop_timer = 0.0;
