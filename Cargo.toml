@@ -1,0 +1,21 @@
+[package]
+name = "rrdr"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "Build and install RRDR, the Rust mod framework for Red Dead Redemption 2"
+license = "MIT"
+repository = "https://github.com/NoloxoYT/RRDR2"
+homepage = "https://noloxoyt.github.io/RRDR2/"
+readme = "README.md"
+keywords = ["rdr2", "modding", "rust", "scripthook", "gamedev"]
+categories = ["command-line-utilities", "game-development"]
+exclude = ["/.github"]
+
+[[bin]]
+name = "rrdr"
+path = "src/main.rs"
+
+[dependencies]
+chrono = { version = "0.4.45", features = ["now"] }
+clap = { version = "4.5.41", features = ["derive"] }
