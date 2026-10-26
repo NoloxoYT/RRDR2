@@ -1,0 +1,164 @@
+/* RRDR documentation site. Same palette as the natives reference. */
+:root {
+  --topbar-h: 3.4em;
+  --accent: #c2341c;
+  --link: #0a3069;
+  --link-hover: #2f4570;
+  --text: #111;
+  --muted: #6b6b6b;
+  --code-bg: #f0f1f2;
+  --border: #e3e4e6;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+  color: var(--text);
+  background: #fff;
+  font-size: 17px;
+  line-height: 1.65;
+}
+code, pre, kbd {
+  font-family: "Fira Mono", Consolas, monospace;
+}
+code {
+  background: var(--code-bg);
+  border-radius: .2em;
+  padding: .1em .3em;
+  font-size: .88em;
+}
+pre {
+  background: #16181b;
+  color: #e8e8e8;
+  border-radius: .45em;
+  padding: 1em 1.2em;
+  overflow-x: auto;
+  font-size: .86rem;
+  line-height: 1.5;
+}
+pre code { background: none; padding: 0; color: inherit; font-size: 1em; }
+a { color: var(--link); text-decoration: none; }
+a:hover { color: var(--link-hover); text-decoration: underline; }
+
+/* top bar, matching the natives pages */
+.topbar {
+  position: sticky;
+  top: 0;
+  height: var(--topbar-h);
+  background: #101010;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 1.2em;
+  padding: 0 1.2em;
+  z-index: 30;
+}
+.brand { display: flex; align-items: center; gap: .55em; color: #fff; }
+.brand:hover { color: #fff; text-decoration: none; }
+img.brand-mark { display: block; width: 1.55em; height: 1.55em; }
+.brand-text { font-size: 1.05rem; letter-spacing: .02em; }
+.topnav { display: flex; gap: 1.1em; margin-left: auto; font-family: "Fira Sans", Verdana, sans-serif; font-size: .9rem; }
+.topnav a { color: #cfcfcf; }
+.topnav a:hover { color: #fff; text-decoration: none; }
+
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2.2em 1.4em 4em;
+}
+
+.hero { padding: 2.2em 0 1.2em; text-align: center; }
+.eyebrow {
+  font-family: "Fira Sans", Verdana, sans-serif;
+  font-size: .75rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 .6em;
+}
+.hero h1 { font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.1; margin: 0 0 .5em; }
+.lede { font-size: 1.12rem; color: #333; max-width: 44em; margin: 0 auto 1.6em; }
+.actions { display: flex; gap: .8em; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-block;
+  font-family: "Fira Sans", Verdana, sans-serif;
+  font-size: .92rem;
+  padding: .6em 1.3em;
+  border-radius: .35em;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+}
+.btn:hover { border-color: #b9bcc0; text-decoration: none; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { background: #a52b16; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2em;
+  margin: 2.6em 0;
+}
+.card {
+  border: 1px solid var(--border);
+  border-radius: .5em;
+  padding: 1.2em 1.3em;
+  background: #fcfcfd;
+}
+.card h2 { font-size: 1.08rem; margin: 0 0 .5em; }
+.card p { margin: 0 0 .8em; font-size: .95rem; color: #333; }
+.card pre { font-size: .76rem; padding: .8em .9em; }
+
+.install {
+  border-top: 1px solid var(--border);
+  padding-top: 1.6em;
+  margin-top: 1.6em;
+}
+.install h2 { font-size: 1.35rem; margin: 0 0 .5em; }
+.muted { color: var(--muted); font-size: .92rem; }
+
+/* quick start and reference pages */
+.prose h1 { font-size: 2.1rem; line-height: 1.15; margin: 0 0 .4em; }
+.prose h2 {
+  font-size: 1.3rem;
+  margin: 2.2em 0 .6em;
+  padding-bottom: .25em;
+  border-bottom: 1px solid var(--border);
+}
+.prose h3 { font-size: 1.05rem; margin: 1.6em 0 .4em; }
+.prose ul, .prose ol { padding-left: 1.4em; }
+.prose li { margin: .25em 0; }
+.prose table { border-collapse: collapse; width: 100%; margin: .8em 0 1.2em; font-size: .93rem; }
+.prose th, .prose td { border: 1px solid var(--border); padding: .45em .6em; text-align: left; vertical-align: top; }
+.prose th { background: #f7f7f8; font-family: "Fira Sans", Verdana, sans-serif; font-size: .85rem; }
+.prose .note {
+  border-left: 3px solid var(--accent);
+  background: #fdf6f4;
+  padding: .7em 1em;
+  margin: 1em 0;
+  font-size: .95rem;
+}
+.prose .next {
+  display: flex;
+  gap: 1em;
+  flex-wrap: wrap;
+  margin-top: 3em;
+  padding-top: 1.2em;
+  border-top: 1px solid var(--border);
+  font-family: "Fira Sans", Verdana, sans-serif;
+  font-size: .9rem;
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: .85rem;
+  text-align: center;
+  padding: 1.6em 1.4em 2.4em;
+}
+footer p { margin: .3em 0; }
+
+@media (max-width: 640px) {
+  .topnav { gap: .7em; font-size: .82rem; }
+  main { padding-top: 1.2em; }
+}

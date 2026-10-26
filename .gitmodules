@@ -1,0 +1,4 @@
+[submodule "build_tools"]
+	path = build_tools
+	url = https://github.com/NoloxoYT/RRDR2
+	branch = build_tools

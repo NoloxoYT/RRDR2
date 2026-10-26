@@ -1,0 +1,46 @@
+name: Documentation site
+
+# The site is written on the `docs` branch (`site/`) but GitHub Pages can only
+# serve one branch, so `docs` pushes its files into `main/site` with
+# `git subtree -P site push origin docs`. This workflow then:
+#   1. takes the site from `main/site`,
+#   2. regenerates the natives pages from `lib/NativeDecl.cs`,
+#   3. publishes the result to GitHub Pages.
+#
+# One-time setup: Settings -> Pages -> Source "GitHub Actions".
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Regenerate the natives pages
+        run: python3 tools/generate_natives_site.py
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,13 @@
+[package]
+name = "rrdr-natives"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Generated typed Rust bindings for the RDR2 native API"
+
+[lib]
+name = "rrdr_natives"
+path = "src/lib.rs"
+
+[dependencies]
+rrdr-bridge = { path = "../rrdr-bridge" }

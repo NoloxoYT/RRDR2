@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quick start - RRDR</title>
+<meta name="description" content="Install RRDR, build a Rust mod and run it in Red Dead Redemption 2.">
+<link rel="icon" href="natives/static/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <img class="brand-mark" src="natives/static/logo.svg" alt="" width="24" height="24">
+    <span class="brand-text">rrdr</span>
+  </a>
+  <nav class="topnav">
+    <a href="start.html">Quick start</a>
+    <a href="reference.html">Reference</a>
+    <a href="natives/index.html">Natives</a>
+    <a href="https://github.com/NoloxoYT/RRDR2" rel="noreferrer">GitHub</a>
+  </nav>
+</header>
+
+<main class="prose">
+
+<h1>Quick start</h1>
+<p>From nothing to a working Rust mod in the game.</p>
+
+<h2>1. Requirements</h2>
+<ul>
+  <li>64-bit Red Dead Redemption 2, single-player.</li>
+  <li><a href="https://www.dev-c.com/rdr2/scripthookrdr2/">ScriptHookRDR2</a> and its ASI loader <code>dinput8.dll</code> in the game folder.</li>
+  <li>Rust stable, .NET SDK, and LLVM (<code>clang-cl</code>, <code>lld-link</code>).</li>
+  <li>On Linux, cross-compiling needs <code>rustup target add x86_64-pc-windows-msvc</code> and <code>cargo install cargo-xwin --locked</code>.</li>
+</ul>
+
+<h2>2. Get the source and the tool</h2>
+<pre><code>git clone https://github.com/NoloxoYT/RRDR2.git
+cd RRDR2
+cargo install --path build_tools --locked</code></pre>
+<p>The tool installs as <code>rrdr</code> in <code>~/.cargo/bin</code>.</p>
+
+<h2>3. Build and install</h2>
+<pre><code>rrdr</code></pre>
+<p>It runs the tests, builds every mod crate, compiles the loader, packages everything in <code>dist/RRDR/</code> and asks where your game is.</p>
+<p>Anything the prompt would ask can be passed up front:</p>
+<pre><code>rrdr --loader asi --game-dir "C:/Games/Red Dead Redemption 2" --yes
+rrdr --no-install          # build only
+rrdr --root ~/RRDR2       # from another directory</code></pre>
+
+<h2>4. Write a mod</h2>
+<p>Create a crate under <code>rust/crates/</code>, add it to the workspace, and make it a <code>cdylib</code>:</p>
+<pre><code>[package]
+name = "my-rdr2-mod"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "MyModCore"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+rrdr-bridge = { path = "../rrdr-bridge" }
+rrdr-game = { path = "../rrdr-game" }
+rrdr-natives = { path = "../rrdr-natives" }</code></pre>
+
+<p>Implement <code>Mod</code> and call <code>export_mod!</code>:</p>
+<pre><code>use rrdr_bridge::{export_mod, GameApi, LogLevel, Mod};
+use std::path::Path;
+
+struct MyMod;
+
+impl Mod for MyMod {
+    fn init(api: &amp;mut dyn GameApi, _config: Option&lt;&amp;Path&gt;) -&gt; Result&lt;Self, String&gt; {
+        api.log(LogLevel::Info, "MyMod loaded");
+        Ok(Self)
+    }
+
+    fn tick(&amp;mut self, api: &amp;mut dyn GameApi, _dt: f32) {
+        let Some(player) = rrdr_game::Player::local(api) else { return };
+        if let Some(ped) = player.ped_checked(api) {
+            if ped.health(api) &lt; 50 {
+                ped.set_health(api, 50);
+            }
+        }
+    }
+}
+
+export_mod!(MyMod);</code></pre>
+
+<p>Run <code>rrdr --no-install</code>, then copy <code>dist/RRDR/scripts/Rscripts/MyModCore.dll</code> into <code>&lt;RDR2&gt;/scripts/Rscripts/</code>. The loader picks it up on the next launch.</p>
+
+<div class="note">
+Every crate under <code>rust/crates/</code> whose <code>Cargo.toml</code> contains <code>cdylib</code> is built and packaged automatically. Add your crate to the workspace members and it shows up in the next <code>rrdr</code> run.
+</div>
+
+<h2>5. Check the log</h2>
+<p>The native loader writes <code>&lt;RDR2&gt;/scripts/Rscripts/RRDR.asi.log</code>. A healthy start looks like:</p>
+<pre><code>Loading MyModCore.dll
+  init ok
+Started 3 cores</code></pre>
+<p>No file at all means ScriptHookRDR2 or the loader is missing. Details in the <a href="reference.html">reference</a>.</p>
+
+<div class="next">
+  <a href="reference.html">Reference: loaders, ABI, troubleshooting &rarr;</a>
+  <a href="natives/index.html">Browse the natives &rarr;</a>
+  <a href="https://github.com/NoloxoYT/RRDR2">Source on GitHub &rarr;</a>
+</div>
+
+</main>
+
+<footer>
+  <p>RRDR is MIT licensed. ScriptHookRDR2 is by Alexander Blade. Red Dead Redemption 2 is a trademark of Rockstar Games.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rrdr_natives::flock - RRDR natives</title>
+<link rel="stylesheet" href="static/normalize.css">
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/favicon.svg">
+</head><body>
+
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <img class="brand-mark" src="static/logo.svg" alt="RRDR" width="24" height="24" />
+    <span class="brand-text">rrdr<span class="brand-dim">.natives</span></span>
+  </a>
+
+<div class="live-search">
+  <label for="search-input" class="sr-only">Search natives</label>
+  <span class="hs-icon">&#8902;</span>
+  <input id="search-input" type="text" autocomplete="off" spellcheck="false"
+         placeholder="Search natives - name or description" tabindex="-1" />
+  <span class="hs-hint" title="Press / to focus">/</span>
+  <div class="live-results" id="live-results" hidden></div>
+</div>
+
+</header>
+
+<nav class="sidebar">
+<div class="side-crate"><a href="index.html">rrdr_natives</a></div>
+<h3 class="side-bucket">Ped related</h3>
+<a class="side-mod" href="ped.html">ped<span class="count">1051</span></a>
+<a class="side-mod" href="perschar.html">perschar<span class="count">51</span></a>
+<a class="side-mod" href="companion.html">companion<span class="count">25</span></a>
+<a class="side-mod" href="population.html">population<span class="count">32</span></a>
+<a class="side-mod" href="brain.html">brain<span class="count">11</span></a>
+<a class="side-mod" href="ik.html">ik<span class="count">5</span></a>
+<a class="side-mod" href="attribute.html">attribute<span class="count">27</span></a>
+<a class="side-mod" href="task.html">task<span class="count">706</span></a>
+<a class="side-mod" href="animscene.html">animscene<span class="count">100</span></a>
+<a class="side-mod active" href="flock.html">flock<span class="count">47</span></a>
+<a class="side-mod" href="interaction.html">interaction<span class="count">6</span></a>
+<h3 class="side-bucket dim">Player related</h3>
+<a class="side-mod" href="player.html">player<span class="count">397</span></a>
+<a class="side-mod" href="stats.html">stats<span class="count">89</span></a>
+<a class="side-mod" href="law.html">law<span class="count">131</span></a>
+<a class="side-mod" href="money.html">money<span class="count">8</span></a>
+<a class="side-mod" href="bounty.html">bounty<span class="count">33</span></a>
+<a class="side-mod" href="posse.html">posse<span class="count">31</span></a>
+<a class="side-mod" href="crew.html">crew<span class="count">18</span></a>
+<h3 class="side-bucket dim">World related</h3>
+<a class="side-mod" href="entity.html">entity<span class="count">295</span></a>
+<a class="side-mod" href="object.html">object<span class="count">166</span></a>
+<a class="side-mod" href="misc.html">misc<span class="count">303</span></a>
+<a class="side-mod" href="fire.html">fire<span class="count">43</span></a>
+<a class="side-mod" href="water.html">water<span class="count">21</span></a>
+<a class="side-mod" href="zone.html">zone<span class="count">4</span></a>
+<a class="side-mod" href="map.html">map<span class="count">94</span></a>
+<a class="side-mod" href="pathfind.html">pathfind<span class="count">92</span></a>
+<a class="side-mod" href="interior.html">interior<span class="count">35</span></a>
+<a class="side-mod" href="volume.html">volume<span class="count">99</span></a>
+<a class="side-mod" href="physics.html">physics<span class="count">78</span></a>
+<a class="side-mod" href="graphics.html">graphics<span class="count">297</span></a>
+<a class="side-mod" href="clock.html">clock<span class="count">19</span></a>
+<a class="side-mod" href="streaming.html">streaming<span class="count">124</span></a>
+<a class="side-mod" href="shapetest.html">shapetest<span class="count">13</span></a>
+<a class="side-mod" href="event.html">event<span class="count">42</span></a>
+<a class="side-mod" href="collection.html">collection<span class="count">31</span></a>
+<h3 class="side-bucket dim">Vehicles</h3>
+<a class="side-mod" href="vehicle.html">vehicle<span class="count">408</span></a>
+<a class="side-mod" href="aitransport.html">aitransport<span class="count">24</span></a>
+<a class="side-mod" href="aicoverpoint.html">aicoverpoint<span class="count">17</span></a>
+<h3 class="side-bucket dim">Camera</h3>
+<a class="side-mod" href="cam.html">cam<span class="count">248</span></a>
+<a class="side-mod" href="txd.html">txd<span class="count">8</span></a>
+<h3 class="side-bucket dim">Audio</h3>
+<a class="side-mod" href="audio.html">audio<span class="count">229</span></a>
+<a class="side-mod" href="voice.html">voice<span class="count">24</span></a>
+<h3 class="side-bucket dim">UI &amp; Input</h3>
+<a class="side-mod" href="hud.html">hud<span class="count">190</span></a>
+<a class="side-mod" href="pad.html">pad<span class="count">40</span></a>
+<a class="side-mod" href="minigame.html">minigame<span class="count">48</span></a>
+<a class="side-mod" href="localization.html">localization<span class="count">4</span></a>
+<a class="side-mod" href="uiapps.html">uiapps<span class="count">19</span></a>
+<a class="side-mod" href="uidebug.html">uidebug<span class="count">3</span></a>
+<a class="side-mod" href="uievents.html">uievents<span class="count">4</span></a>
+<a class="side-mod" href="uifeed.html">uifeed<span class="count">27</span></a>
+<a class="side-mod" href="uilog.html">uilog<span class="count">31</span></a>
+<a class="side-mod" href="uipinning.html">uipinning<span class="count">1</span></a>
+<a class="side-mod" href="uitutorial.html">uitutorial<span class="count">3</span></a>
+<a class="side-mod" href="uistatemachine.html">uistatemachine<span class="count">12</span></a>
+<a class="side-mod" href="uistickyfeed.html">uistickyfeed<span class="count">8</span></a>
+<a class="side-mod" href="compapp.html">compapp<span class="count">5</span></a>
+<h3 class="side-bucket dim">AI &amp; Scripts</h3>
+<a class="side-mod" href="missiondata.html">missiondata<span class="count">18</span></a>
+<a class="side-mod" href="scripts.html">scripts<span class="count">94</span></a>
+<a class="side-mod" href="spactionproxy.html">spactionproxy<span class="count">6</span></a>
+<a class="side-mod" href="recording.html">recording<span class="count">1</span></a>
+<a class="side-mod" href="replay.html">replay<span class="count">5</span></a>
+<h3 class="side-bucket dim">Data &amp; Storage</h3>
+<a class="side-mod" href="datafile.html">datafile<span class="count">59</span></a>
+<a class="side-mod" href="decorator.html">decorator<span class="count">15</span></a>
+<a class="side-mod" href="databinding.html">databinding<span class="count">82</span></a>
+<a class="side-mod" href="inventory.html">inventory<span class="count">83</span></a>
+<a class="side-mod" href="itemdatabase.html">itemdatabase<span class="count">84</span></a>
+<a class="side-mod" href="itemset.html">itemset<span class="count">11</span></a>
+<a class="side-mod" href="dlc.html">dlc<span class="count">4</span></a>
+<a class="side-mod" href="save.html">save<span class="count">24</span></a>
+<a class="side-mod" href="persistence.html">persistence<span class="count">26</span></a>
+<a class="side-mod" href="netshopping.html">netshopping<span class="count">24</span></a>
+<a class="side-mod" href="unlock.html">unlock<span class="count">9</span></a>
+<h3 class="side-bucket dim">Online &amp; Telemetry</h3>
+<a class="side-mod" href="network.html">network<span class="count">571</span></a>
+<a class="side-mod" href="socialclub.html">socialclub<span class="count">33</span></a>
+<a class="side-mod" href="socialclubfeed.html">socialclubfeed<span class="count">2</span></a>
+<a class="side-mod" href="telemetry.html">telemetry<span class="count">78</span></a>
+<a class="side-mod" href="google_analytics.html">google_analytics<span class="count">4</span></a>
+<h3 class="side-bucket dim">System &amp; Utility</h3>
+<a class="side-mod" href="builtin.html">builtin<span class="count">26</span></a>
+<a class="side-mod" href="debug.html">debug<span class="count">3</span></a>
+<a class="side-mod" href="crashlog.html">crashlog<span class="count">14</span></a>
+<a class="side-mod" href="queue.html">queue<span class="count">2</span></a>
+<a class="side-mod" href="_namespace4.html">_namespace4<span class="count">1</span></a>
+<a class="side-mod" href="compendium.html">compendium<span class="count">36</span></a>
+<h3 class="side-bucket">Functions</h3>
+<a class="side-fn" href="n/flock/GET_ANIMAL_TUNING_BOOL_PARAM.html">GET_ANIMAL_TUNING_BOOL_PARAM</a>
+<a class="side-fn" href="n/flock/GET_ANIMAL_TUNING_FLOAT_PARAM.html">GET_ANIMAL_TUNING_FLOAT_PARAM</a>
+<a class="side-fn" href="n/flock/GET_SPECIES_TUNING_FLOAT_PARAM.html">GET_SPECIES_TUNING_FLOAT_PARAM</a>
+<a class="side-fn" href="n/flock/RESET_ANIMAL_TUNING_BOOL_PARAM.html">RESET_ANIMAL_TUNING_BOOL_PARAM</a>
+<a class="side-fn" href="n/flock/RESET_ANIMAL_TUNING_FLOAT_PARAM.html">RESET_ANIMAL_TUNING_FLOAT_PARAM</a>
+<a class="side-fn" href="n/flock/SET_ANIMAL_TUNING_BOOL_PARAM.html">SET_ANIMAL_TUNING_BOOL_PARAM</a>
+<a class="side-fn" href="n/flock/SET_ANIMAL_TUNING_FLOAT_PARAM.html">SET_ANIMAL_TUNING_FLOAT_PARAM</a>
+<a class="side-fn" href="n/flock/SET_SPECIES_TUNING_BOOL_PARAM.html">SET_SPECIES_TUNING_BOOL_PARAM</a>
+<a class="side-fn" href="n/flock/SET_SPECIES_TUNING_FLOAT_PARAM.html">SET_SPECIES_TUNING_FLOAT_PARAM</a>
+<a class="side-fn" href="n/flock/_0x0816C31480764AB0.html">_0x0816C31480764AB0</a>
+<a class="side-fn" href="n/flock/_0x09EE00B8F858E0BE.html">_0x09EE00B8F858E0BE</a>
+<a class="side-fn" href="n/flock/_0x1520626FFAFFFA8F.html">_0x1520626FFAFFFA8F</a>
+<a class="side-fn" href="n/flock/_0x17E3E5C46ECCD308.html">_0x17E3E5C46ECCD308</a>
+<a class="side-fn" href="n/flock/_0x19870C40C7EE15BE.html">_0x19870C40C7EE15BE</a>
+<a class="side-fn" href="n/flock/_0x1DA6CB02071055D5.html">_0x1DA6CB02071055D5</a>
+<a class="side-fn" href="n/flock/_0x2DF3D457D86F8E57.html">_0x2DF3D457D86F8E57</a>
+<a class="side-fn" href="n/flock/_0x34B9C4D86DF2C2F3.html">_0x34B9C4D86DF2C2F3</a>
+<a class="side-fn" href="n/flock/_0x36486AF7DA93A464.html">_0x36486AF7DA93A464</a>
+<a class="side-fn" href="n/flock/_0x408D1149C5E39C1E.html">_0x408D1149C5E39C1E</a>
+<a class="side-fn" href="n/flock/_0x53187E563F938E76.html">_0x53187E563F938E76</a>
+<a class="side-fn" href="n/flock/_0x67A43EA3F6FE0076.html">_0x67A43EA3F6FE0076</a>
+<a class="side-fn" href="n/flock/_0x6C57BEA886A20C6B.html">_0x6C57BEA886A20C6B</a>
+<a class="side-fn" href="n/flock/_0x706B434FEFAD6A24.html">_0x706B434FEFAD6A24</a>
+<a class="side-fn" href="n/flock/_0x8049B17BEC937662.html">_0x8049B17BEC937662</a>
+<a class="side-fn" href="n/flock/_0x9E13ACC38BA8F9C3.html">_0x9E13ACC38BA8F9C3</a>
+<a class="side-fn" href="n/flock/_0xA881F5C77A560906.html">_0xA881F5C77A560906</a>
+<a class="side-fn" href="n/flock/_0xC3D581A34BC0A1F0.html">_0xC3D581A34BC0A1F0</a>
+<a class="side-fn" href="n/flock/_0xC72CE37081DAE625.html">_0xC72CE37081DAE625</a>
+<a class="side-fn" href="n/flock/_0xC95611869E14F8AF.html">_0xC95611869E14F8AF</a>
+<a class="side-fn" href="n/flock/_0xCC6B5AAFC87BFC7B.html">_0xCC6B5AAFC87BFC7B</a>
+<a class="side-fn" href="n/flock/_0xD95F04A4E73BE85E.html">_0xD95F04A4E73BE85E</a>
+<a class="side-fn" href="n/flock/_0xE0961AED72642B80.html">_0xE0961AED72642B80</a>
+<a class="side-fn" href="n/flock/_0xE36D2CB540597EF7.html">_0xE36D2CB540597EF7</a>
+<a class="side-fn" href="n/flock/_0xE93415B3307208E5.html">_0xE93415B3307208E5</a>
+<a class="side-fn" href="n/flock/_0xF2CCA7B68CFAB2B9.html">_0xF2CCA7B68CFAB2B9</a>
+<a class="side-fn" href="n/flock/_0xF2CCA7B68CFAB2B9_VEC3.html">_0xF2CCA7B68CFAB2B9</a>
+<a class="side-fn" href="n/flock/_0xFA821997794F48E7.html">_0xFA821997794F48E7</a>
+<a class="side-fn" href="n/flock/_0xFB16F08F47B83B4C.html">_0xFB16F08F47B83B4C</a>
+<a class="side-fn" href="n/flock/_0xFDB008B3BCF5992F.html">_0xFDB008B3BCF5992F</a>
+<a class="side-fn" href="n/flock/_0xFF1E339CE40EAAAF.html">_0xFF1E339CE40EAAAF</a>
+<a class="side-fn" href="n/flock/_ADD_PED_TO_FLOCK.html">_ADD_PED_TO_FLOCK</a>
+<a class="side-fn" href="n/flock/_CREATE_HERD.html">_CREATE_HERD</a>
+<a class="side-fn" href="n/flock/_GET_ANIMAL_IS_WILD.html">_GET_ANIMAL_IS_WILD</a>
+<a class="side-fn" href="n/flock/_GET_ANIMAL_RARITY.html">_GET_ANIMAL_RARITY</a>
+<a class="side-fn" href="n/flock/_IS_HERD_VALID.html">_IS_HERD_VALID</a>
+<a class="side-fn" href="n/flock/_SET_ANIMAL_IS_WILD.html">_SET_ANIMAL_IS_WILD</a>
+<a class="side-fn" href="n/flock/_SET_ANIMAL_RARITY.html">_SET_ANIMAL_RARITY</a>
+</nav>
+<main class="content">
+<div class="doc-page-head">
+<h1 class="module-title"><span class="ns">rrdr_natives::</span>flock</h1>
+<div class="crumb"><a href="index.html">Ped related</a> <span class="sep">&#8250;</span> <a href="flock.html">flock</a></div>
+<div class="mod-stats">47 functions &middot; 46 unique native hashes</div>
+</div>
+<section class="item-list">
+<section class="fn-block" id="GET_ANIMAL_TUNING_BOOL_PARAM">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/GET_ANIMAL_TUNING_BOOL_PARAM.html">GET_ANIMAL_TUNING_BOOL_PARAM</a> <span class="paren">(</span><span class="p-name">animal</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">index: https://github.com/Halen84/RDR3-Native-Flags-And-Enums/tree/main/eAnimalTuningBools
+https://github.com/femga/rdr3_discoveries/tree/master/AI/ANIMAL_TUNING_BOOL_PARAMS</div>
+<div class="fn-meta"><code>0x1C1993824A396603</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::GET_ANIMAL_TUNING_BOOL_PARAM</code></div>
+</section>
+<section class="fn-block" id="GET_ANIMAL_TUNING_FLOAT_PARAM">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/GET_ANIMAL_TUNING_FLOAT_PARAM.html">GET_ANIMAL_TUNING_FLOAT_PARAM</a> <span class="paren">(</span><span class="p-name">animal</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">float</span></h3>
+<div class="docblock">index: https://github.com/Halen84/RDR3-Native-Flags-And-Enums/tree/main/eAnimalTuningFloats
+https://github.com/femga/rdr3_discoveries/tree/master/AI/ANIMAL_TUNING_FLOAT_PARAMS</div>
+<div class="fn-meta"><code>0x4BC3ECFDA0297E27</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::GET_ANIMAL_TUNING_FLOAT_PARAM</code></div>
+</section>
+<section class="fn-block" id="GET_SPECIES_TUNING_FLOAT_PARAM">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/GET_SPECIES_TUNING_FLOAT_PARAM.html">GET_SPECIES_TUNING_FLOAT_PARAM</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">float</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE108489621422F91</code> &middot; 3 args &middot; rust: <code>rrdr_natives::flock::GET_SPECIES_TUNING_FLOAT_PARAM</code></div>
+</section>
+<section class="fn-block" id="RESET_ANIMAL_TUNING_BOOL_PARAM">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/RESET_ANIMAL_TUNING_BOOL_PARAM.html">RESET_ANIMAL_TUNING_BOOL_PARAM</a> <span class="paren">(</span><span class="p-name">animal</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x96AA1304D30E6BC3</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::RESET_ANIMAL_TUNING_BOOL_PARAM</code></div>
+</section>
+<section class="fn-block" id="RESET_ANIMAL_TUNING_FLOAT_PARAM">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/RESET_ANIMAL_TUNING_FLOAT_PARAM.html">RESET_ANIMAL_TUNING_FLOAT_PARAM</a> <span class="paren">(</span><span class="p-name">animal</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE776A195488FC520</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::RESET_ANIMAL_TUNING_FLOAT_PARAM</code></div>
+</section>
+<section class="fn-block" id="SET_ANIMAL_TUNING_BOOL_PARAM">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/SET_ANIMAL_TUNING_BOOL_PARAM.html">SET_ANIMAL_TUNING_BOOL_PARAM</a> <span class="paren">(</span><span class="p-name">animal</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9FF1E042FA597187</code> &middot; 3 args &middot; rust: <code>rrdr_natives::flock::SET_ANIMAL_TUNING_BOOL_PARAM</code></div>
+</section>
+<section class="fn-block" id="SET_ANIMAL_TUNING_FLOAT_PARAM">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/SET_ANIMAL_TUNING_FLOAT_PARAM.html">SET_ANIMAL_TUNING_FLOAT_PARAM</a> <span class="paren">(</span><span class="p-name">animal</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCBDA22C87977244F</code> &middot; 3 args &middot; rust: <code>rrdr_natives::flock::SET_ANIMAL_TUNING_FLOAT_PARAM</code></div>
+</section>
+<section class="fn-block" id="SET_SPECIES_TUNING_BOOL_PARAM">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/SET_SPECIES_TUNING_BOOL_PARAM.html">SET_SPECIES_TUNING_BOOL_PARAM</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x6D1D94C2459B42EE</code> &middot; 4 args &middot; rust: <code>rrdr_natives::flock::SET_SPECIES_TUNING_BOOL_PARAM</code></div>
+</section>
+<section class="fn-block" id="SET_SPECIES_TUNING_FLOAT_PARAM">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/SET_SPECIES_TUNING_FLOAT_PARAM.html">SET_SPECIES_TUNING_FLOAT_PARAM</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x963240B6C252BA49</code> &middot; 4 args &middot; rust: <code>rrdr_natives::flock::SET_SPECIES_TUNING_FLOAT_PARAM</code></div>
+</section>
+<section class="fn-block" id="_0x0816C31480764AB0">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x0816C31480764AB0.html">_0x0816C31480764AB0</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0816C31480764AB0</code> &middot; 4 args &middot; rust: <code>rrdr_natives::flock::_0x0816C31480764AB0</code></div>
+</section>
+<section class="fn-block" id="_0x09EE00B8F858E0BE">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x09EE00B8F858E0BE.html">_0x09EE00B8F858E0BE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x09EE00B8F858E0BE</code> &middot; 7 args &middot; rust: <code>rrdr_natives::flock::_0x09EE00B8F858E0BE</code></div>
+</section>
+<section class="fn-block" id="_0x1520626FFAFFFA8F">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x1520626FFAFFFA8F.html">_0x1520626FFAFFFA8F</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1520626FFAFFFA8F</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::_0x1520626FFAFFFA8F</code></div>
+</section>
+<section class="fn-block" id="_0x17E3E5C46ECCD308">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x17E3E5C46ECCD308.html">_0x17E3E5C46ECCD308</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x17E3E5C46ECCD308</code> &middot; 3 args &middot; rust: <code>rrdr_natives::flock::_0x17E3E5C46ECCD308</code></div>
+</section>
+<section class="fn-block" id="_0x19870C40C7EE15BE">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x19870C40C7EE15BE.html">_0x19870C40C7EE15BE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x19870C40C7EE15BE</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::_0x19870C40C7EE15BE</code></div>
+</section>
+<section class="fn-block" id="_0x1DA6CB02071055D5">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x1DA6CB02071055D5.html">_0x1DA6CB02071055D5</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">Vector3</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1DA6CB02071055D5</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::flock::_0x1DA6CB02071055D5</code></div>
+</section>
+<section class="fn-block" id="_0x2DF3D457D86F8E57">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x2DF3D457D86F8E57.html">_0x2DF3D457D86F8E57</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2DF3D457D86F8E57</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::_0x2DF3D457D86F8E57</code></div>
+</section>
+<section class="fn-block" id="_0x34B9C4D86DF2C2F3">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x34B9C4D86DF2C2F3.html">_0x34B9C4D86DF2C2F3</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x34B9C4D86DF2C2F3</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::flock::_0x34B9C4D86DF2C2F3</code></div>
+</section>
+<section class="fn-block" id="_0x36486AF7DA93A464">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x36486AF7DA93A464.html">_0x36486AF7DA93A464</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x36486AF7DA93A464</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::flock::_0x36486AF7DA93A464</code></div>
+</section>
+<section class="fn-block" id="_0x408D1149C5E39C1E">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x408D1149C5E39C1E.html">_0x408D1149C5E39C1E</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x408D1149C5E39C1E</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::_0x408D1149C5E39C1E</code></div>
+</section>
+<section class="fn-block" id="_0x53187E563F938E76">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x53187E563F938E76.html">_0x53187E563F938E76</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x53187E563F938E76</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::flock::_0x53187E563F938E76</code></div>
+</section>
+<section class="fn-block" id="_0x67A43EA3F6FE0076">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x67A43EA3F6FE0076.html">_0x67A43EA3F6FE0076</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x67A43EA3F6FE0076</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::flock::_0x67A43EA3F6FE0076</code></div>
+</section>
+<section class="fn-block" id="_0x6C57BEA886A20C6B">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x6C57BEA886A20C6B.html">_0x6C57BEA886A20C6B</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x6C57BEA886A20C6B</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::_0x6C57BEA886A20C6B</code></div>
+</section>
+<section class="fn-block" id="_0x706B434FEFAD6A24">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x706B434FEFAD6A24.html">_0x706B434FEFAD6A24</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x706B434FEFAD6A24</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::flock::_0x706B434FEFAD6A24</code></div>
+</section>
+<section class="fn-block" id="_0x8049B17BEC937662">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x8049B17BEC937662.html">_0x8049B17BEC937662</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8049B17BEC937662</code> &middot; 7 args &middot; rust: <code>rrdr_natives::flock::_0x8049B17BEC937662</code></div>
+</section>
+<section class="fn-block" id="_0x9E13ACC38BA8F9C3">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0x9E13ACC38BA8F9C3.html">_0x9E13ACC38BA8F9C3</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9E13ACC38BA8F9C3</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::_0x9E13ACC38BA8F9C3</code></div>
+</section>
+<section class="fn-block" id="_0xA881F5C77A560906">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xA881F5C77A560906.html">_0xA881F5C77A560906</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA881F5C77A560906</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::flock::_0xA881F5C77A560906</code></div>
+</section>
+<section class="fn-block" id="_0xC3D581A34BC0A1F0">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xC3D581A34BC0A1F0.html">_0xC3D581A34BC0A1F0</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC3D581A34BC0A1F0</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::_0xC3D581A34BC0A1F0</code></div>
+</section>
+<section class="fn-block" id="_0xC72CE37081DAE625">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xC72CE37081DAE625.html">_0xC72CE37081DAE625</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC72CE37081DAE625</code> &middot; 4 args &middot; rust: <code>rrdr_natives::flock::_0xC72CE37081DAE625</code></div>
+</section>
+<section class="fn-block" id="_0xC95611869E14F8AF">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xC95611869E14F8AF.html">_0xC95611869E14F8AF</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC95611869E14F8AF</code> &middot; 4 args &middot; rust: <code>rrdr_natives::flock::_0xC95611869E14F8AF</code></div>
+</section>
+<section class="fn-block" id="_0xCC6B5AAFC87BFC7B">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xCC6B5AAFC87BFC7B.html">_0xCC6B5AAFC87BFC7B</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCC6B5AAFC87BFC7B</code> &middot; 3 args &middot; rust: <code>rrdr_natives::flock::_0xCC6B5AAFC87BFC7B</code></div>
+</section>
+<section class="fn-block" id="_0xD95F04A4E73BE85E">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xD95F04A4E73BE85E.html">_0xD95F04A4E73BE85E</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD95F04A4E73BE85E</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::_0xD95F04A4E73BE85E</code></div>
+</section>
+<section class="fn-block" id="_0xE0961AED72642B80">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xE0961AED72642B80.html">_0xE0961AED72642B80</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE0961AED72642B80</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::flock::_0xE0961AED72642B80</code></div>
+</section>
+<section class="fn-block" id="_0xE36D2CB540597EF7">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xE36D2CB540597EF7.html">_0xE36D2CB540597EF7</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE36D2CB540597EF7</code> &middot; 8 args &middot; rust: <code>rrdr_natives::flock::_0xE36D2CB540597EF7</code></div>
+</section>
+<section class="fn-block" id="_0xE93415B3307208E5">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xE93415B3307208E5.html">_0xE93415B3307208E5</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE93415B3307208E5</code> &middot; 9 args &middot; rust: <code>rrdr_natives::flock::_0xE93415B3307208E5</code></div>
+</section>
+<section class="fn-block" id="_0xF2CCA7B68CFAB2B9">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xF2CCA7B68CFAB2B9.html">_0xF2CCA7B68CFAB2B9</a> <span class="paren">(</span><span class="p-name">species</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">x2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">x3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p11</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p12</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p13</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock">species: SPECIES_BIRD_CROW</div>
+<div class="fn-meta"><code>0xF2CCA7B68CFAB2B9</code> &middot; 14 args &middot; rust: <code>rrdr_natives::flock::_0xF2CCA7B68CFAB2B9</code></div>
+</section>
+<section class="fn-block" id="_0xF2CCA7B68CFAB2B9_VEC3">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xF2CCA7B68CFAB2B9_VEC3.html">_0xF2CCA7B68CFAB2B9</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">species</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec1</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">vec2</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">vec3</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p11</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p12</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p13</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF2CCA7B68CFAB2B9</code> &middot; 8 args &middot; rust: <code>rrdr_natives::flock::_0xF2CCA7B68CFAB2B9_VEC3</code></div>
+</section>
+<section class="fn-block" id="_0xFA821997794F48E7">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xFA821997794F48E7.html">_0xFA821997794F48E7</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFA821997794F48E7</code> &middot; 3 args &middot; rust: <code>rrdr_natives::flock::_0xFA821997794F48E7</code></div>
+</section>
+<section class="fn-block" id="_0xFB16F08F47B83B4C">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xFB16F08F47B83B4C.html">_0xFB16F08F47B83B4C</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFB16F08F47B83B4C</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::flock::_0xFB16F08F47B83B4C</code></div>
+</section>
+<section class="fn-block" id="_0xFDB008B3BCF5992F">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xFDB008B3BCF5992F.html">_0xFDB008B3BCF5992F</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFDB008B3BCF5992F</code> &middot; 3 args &middot; rust: <code>rrdr_natives::flock::_0xFDB008B3BCF5992F</code></div>
+</section>
+<section class="fn-block" id="_0xFF1E339CE40EAAAF">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_0xFF1E339CE40EAAAF.html">_0xFF1E339CE40EAAAF</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFF1E339CE40EAAAF</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::_0xFF1E339CE40EAAAF</code></div>
+</section>
+<section class="fn-block" id="_ADD_PED_TO_FLOCK">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_ADD_PED_TO_FLOCK.html">_ADD_PED_TO_FLOCK</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">ped</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x933E5D31A7D13069</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::_ADD_PED_TO_FLOCK</code></div>
+</section>
+<section class="fn-block" id="_CREATE_HERD">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_CREATE_HERD.html">_CREATE_HERD</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCB4EF7EDAE2E16F1</code> &middot; 0 args &middot; rust: <code>rrdr_natives::flock::_CREATE_HERD</code></div>
+</section>
+<section class="fn-block" id="_GET_ANIMAL_IS_WILD">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_GET_ANIMAL_IS_WILD.html">_GET_ANIMAL_IS_WILD</a> <span class="paren">(</span><span class="p-name">ped</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Ped (horse) will run away from players and mounting will trigger them to buck until disabled.
+Used for: REL_DOMESTICATED_ANIMAL</div>
+<div class="fn-meta"><code>0x3B005FF0538ED2A9</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::flock::_GET_ANIMAL_IS_WILD</code></div>
+</section>
+<section class="fn-block" id="_GET_ANIMAL_RARITY">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_GET_ANIMAL_RARITY.html">_GET_ANIMAL_RARITY</a> <span class="paren">(</span><span class="p-name">ped</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">enum eAnimalRarityLevel
+{
+ARL_COMMON,
+ARL_RARE,
+ARL_LEGENDARY,
+ARL_NUMRARITYLEVELS
+};</div>
+<div class="fn-meta"><code>0xF8B48A361DC388AE</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::flock::_GET_ANIMAL_RARITY</code></div>
+</section>
+<section class="fn-block" id="_IS_HERD_VALID">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_IS_HERD_VALID.html">_IS_HERD_VALID</a> <span class="paren">(</span><span class="p-name">herdHandle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8D913E493BAFE0A3</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::flock::_IS_HERD_VALID</code></div>
+</section>
+<section class="fn-block" id="_SET_ANIMAL_IS_WILD">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_SET_ANIMAL_IS_WILD.html">_SET_ANIMAL_IS_WILD</a> <span class="paren">(</span><span class="p-name">ped</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xAEB97D84CDF3C00B</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::_SET_ANIMAL_IS_WILD</code></div>
+</section>
+<section class="fn-block" id="_SET_ANIMAL_RARITY">
+<h3 class="code-header"><span class="fn-mod">FLOCK::</span><a class="fn-name" href="n/flock/_SET_ANIMAL_RARITY.html">_SET_ANIMAL_RARITY</a> <span class="paren">(</span><span class="p-name">ped</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">rarityLevel</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock">rarityLevel: see _GET_ANIMAL_RARITY</div>
+<div class="fn-meta"><code>0x8B6F0F59B1B99801</code> &middot; 2 args &middot; rust: <code>rrdr_natives::flock::_SET_ANIMAL_RARITY</code></div>
+</section>
+</section>
+</main>
+<script src="search-index.js?v=7501"></script>
+<script src="static/search.js?v=7501" data-root=""></script>
+</body></html>

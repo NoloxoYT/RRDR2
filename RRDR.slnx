@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/managed/">
+    <Project Path="lib/managed/RRDR.Sim/RRDR.Sim.csproj" />
+    <Project Path="lib/managed/RRDR.Host/RRDR.Host.csproj" />
+    <Project Path="lib/managed/ScriptHookRDRNetAPI.Mock/ScriptHookRDRNetAPI.Mock.csproj" />
+  </Folder>
+</Solution>

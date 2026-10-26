@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TASK::_0x0F4F6C4CE471259D - rrdr_natives</title>
+<link rel="stylesheet" href="../../static/normalize.css">
+<link rel="stylesheet" href="../../static/style.css">
+<link rel="icon" href="../../static/favicon.svg">
+</head><body>
+
+
+<header class="topbar">
+  <a class="brand" href="../../index.html">
+    <img class="brand-mark" src="../../static/logo.svg" alt="RRDR" width="24" height="24" />
+    <span class="brand-text">rrdr<span class="brand-dim">.natives</span></span>
+  </a>
+
+<div class="live-search">
+  <label for="search-input" class="sr-only">Search natives</label>
+  <span class="hs-icon">&#8902;</span>
+  <input id="search-input" type="text" autocomplete="off" spellcheck="false"
+         placeholder="Search natives - name or description" tabindex="-1" />
+  <span class="hs-hint" title="Press / to focus">/</span>
+  <div class="live-results" id="live-results" hidden></div>
+</div>
+
+</header>
+
+<nav class="sidebar">
+<div class="side-crate"><a href="../../index.html">rrdr_natives</a></div>
+<h3 class="side-bucket">Ped related</h3>
+<a class="side-mod" href="../../ped.html">ped<span class="count">1051</span></a>
+<a class="side-mod" href="../../perschar.html">perschar<span class="count">51</span></a>
+<a class="side-mod" href="../../companion.html">companion<span class="count">25</span></a>
+<a class="side-mod" href="../../population.html">population<span class="count">32</span></a>
+<a class="side-mod" href="../../brain.html">brain<span class="count">11</span></a>
+<a class="side-mod" href="../../ik.html">ik<span class="count">5</span></a>
+<a class="side-mod" href="../../attribute.html">attribute<span class="count">27</span></a>
+<a class="side-mod active" href="../../task.html">task<span class="count">706</span></a>
+<a class="side-mod" href="../../animscene.html">animscene<span class="count">100</span></a>
+<a class="side-mod" href="../../flock.html">flock<span class="count">47</span></a>
+<a class="side-mod" href="../../interaction.html">interaction<span class="count">6</span></a>
+<h3 class="side-bucket dim">Player related</h3>
+<a class="side-mod" href="../../player.html">player<span class="count">397</span></a>
+<a class="side-mod" href="../../stats.html">stats<span class="count">89</span></a>
+<a class="side-mod" href="../../law.html">law<span class="count">131</span></a>
+<a class="side-mod" href="../../money.html">money<span class="count">8</span></a>
+<a class="side-mod" href="../../bounty.html">bounty<span class="count">33</span></a>
+<a class="side-mod" href="../../posse.html">posse<span class="count">31</span></a>
+<a class="side-mod" href="../../crew.html">crew<span class="count">18</span></a>
+<h3 class="side-bucket dim">World related</h3>
+<a class="side-mod" href="../../entity.html">entity<span class="count">295</span></a>
+<a class="side-mod" href="../../object.html">object<span class="count">166</span></a>
+<a class="side-mod" href="../../misc.html">misc<span class="count">303</span></a>
+<a class="side-mod" href="../../fire.html">fire<span class="count">43</span></a>
+<a class="side-mod" href="../../water.html">water<span class="count">21</span></a>
+<a class="side-mod" href="../../zone.html">zone<span class="count">4</span></a>
+<a class="side-mod" href="../../map.html">map<span class="count">94</span></a>
+<a class="side-mod" href="../../pathfind.html">pathfind<span class="count">92</span></a>
+<a class="side-mod" href="../../interior.html">interior<span class="count">35</span></a>
+<a class="side-mod" href="../../volume.html">volume<span class="count">99</span></a>
+<a class="side-mod" href="../../physics.html">physics<span class="count">78</span></a>
+<a class="side-mod" href="../../graphics.html">graphics<span class="count">297</span></a>
+<a class="side-mod" href="../../clock.html">clock<span class="count">19</span></a>
+<a class="side-mod" href="../../streaming.html">streaming<span class="count">124</span></a>
+<a class="side-mod" href="../../shapetest.html">shapetest<span class="count">13</span></a>
+<a class="side-mod" href="../../event.html">event<span class="count">42</span></a>
+<a class="side-mod" href="../../collection.html">collection<span class="count">31</span></a>
+<h3 class="side-bucket dim">Vehicles</h3>
+<a class="side-mod" href="../../vehicle.html">vehicle<span class="count">408</span></a>
+<a class="side-mod" href="../../aitransport.html">aitransport<span class="count">24</span></a>
+<a class="side-mod" href="../../aicoverpoint.html">aicoverpoint<span class="count">17</span></a>
+<h3 class="side-bucket dim">Camera</h3>
+<a class="side-mod" href="../../cam.html">cam<span class="count">248</span></a>
+<a class="side-mod" href="../../txd.html">txd<span class="count">8</span></a>
+<h3 class="side-bucket dim">Audio</h3>
+<a class="side-mod" href="../../audio.html">audio<span class="count">229</span></a>
+<a class="side-mod" href="../../voice.html">voice<span class="count">24</span></a>
+<h3 class="side-bucket dim">UI &amp; Input</h3>
+<a class="side-mod" href="../../hud.html">hud<span class="count">190</span></a>
+<a class="side-mod" href="../../pad.html">pad<span class="count">40</span></a>
+<a class="side-mod" href="../../minigame.html">minigame<span class="count">48</span></a>
+<a class="side-mod" href="../../localization.html">localization<span class="count">4</span></a>
+<a class="side-mod" href="../../uiapps.html">uiapps<span class="count">19</span></a>
+<a class="side-mod" href="../../uidebug.html">uidebug<span class="count">3</span></a>
+<a class="side-mod" href="../../uievents.html">uievents<span class="count">4</span></a>
+<a class="side-mod" href="../../uifeed.html">uifeed<span class="count">27</span></a>
+<a class="side-mod" href="../../uilog.html">uilog<span class="count">31</span></a>
+<a class="side-mod" href="../../uipinning.html">uipinning<span class="count">1</span></a>
+<a class="side-mod" href="../../uitutorial.html">uitutorial<span class="count">3</span></a>
+<a class="side-mod" href="../../uistatemachine.html">uistatemachine<span class="count">12</span></a>
+<a class="side-mod" href="../../uistickyfeed.html">uistickyfeed<span class="count">8</span></a>
+<a class="side-mod" href="../../compapp.html">compapp<span class="count">5</span></a>
+<h3 class="side-bucket dim">AI &amp; Scripts</h3>
+<a class="side-mod" href="../../missiondata.html">missiondata<span class="count">18</span></a>
+<a class="side-mod" href="../../scripts.html">scripts<span class="count">94</span></a>
+<a class="side-mod" href="../../spactionproxy.html">spactionproxy<span class="count">6</span></a>
+<a class="side-mod" href="../../recording.html">recording<span class="count">1</span></a>
+<a class="side-mod" href="../../replay.html">replay<span class="count">5</span></a>
+<h3 class="side-bucket dim">Data &amp; Storage</h3>
+<a class="side-mod" href="../../datafile.html">datafile<span class="count">59</span></a>
+<a class="side-mod" href="../../decorator.html">decorator<span class="count">15</span></a>
+<a class="side-mod" href="../../databinding.html">databinding<span class="count">82</span></a>
+<a class="side-mod" href="../../inventory.html">inventory<span class="count">83</span></a>
+<a class="side-mod" href="../../itemdatabase.html">itemdatabase<span class="count">84</span></a>
+<a class="side-mod" href="../../itemset.html">itemset<span class="count">11</span></a>
+<a class="side-mod" href="../../dlc.html">dlc<span class="count">4</span></a>
+<a class="side-mod" href="../../save.html">save<span class="count">24</span></a>
+<a class="side-mod" href="../../persistence.html">persistence<span class="count">26</span></a>
+<a class="side-mod" href="../../netshopping.html">netshopping<span class="count">24</span></a>
+<a class="side-mod" href="../../unlock.html">unlock<span class="count">9</span></a>
+<h3 class="side-bucket dim">Online &amp; Telemetry</h3>
+<a class="side-mod" href="../../network.html">network<span class="count">571</span></a>
+<a class="side-mod" href="../../socialclub.html">socialclub<span class="count">33</span></a>
+<a class="side-mod" href="../../socialclubfeed.html">socialclubfeed<span class="count">2</span></a>
+<a class="side-mod" href="../../telemetry.html">telemetry<span class="count">78</span></a>
+<a class="side-mod" href="../../google_analytics.html">google_analytics<span class="count">4</span></a>
+<h3 class="side-bucket dim">System &amp; Utility</h3>
+<a class="side-mod" href="../../builtin.html">builtin<span class="count">26</span></a>
+<a class="side-mod" href="../../debug.html">debug<span class="count">3</span></a>
+<a class="side-mod" href="../../crashlog.html">crashlog<span class="count">14</span></a>
+<a class="side-mod" href="../../queue.html">queue<span class="count">2</span></a>
+<a class="side-mod" href="../../_namespace4.html">_namespace4<span class="count">1</span></a>
+<a class="side-mod" href="../../compendium.html">compendium<span class="count">36</span></a>
+</nav>
+<main class="content">
+<div class="doc-page-head">
+<div class="crumb"><a href="../../index.html">rrdr_natives</a> <span class="sep">&#8250;</span> Ped related <span class="sep">&#8250;</span> <a href="../../task.html">task</a> <span class="sep">&#8250;</span> TASK::_0x0F4F6C4CE471259D</div>
+<h1 class="module-title"><span class="ns">TASK::</span>_0x0F4F6C4CE471259D</h1>
+</div>
+<div class="code-header"><span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></div>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0F4F6C4CE471259D</code> &middot; 2 args &middot; rust: <code>rrdr_natives::task::_0x0F4F6C4CE471259D</code> &middot; module page: <a href="../../task.html#_0x0F4F6C4CE471259D">task.html#_0x0F4F6C4CE471259D</a></div>
+<div class="usage-block">
+<div class="ub-label">From Rust</div>
+<pre class="rust-usage">rrdr_natives::task::_0x0F4F6C4CE471259D(api, p0, p1);
+
+pub const HASH__0x0F4F6C4CE471259D: u64 = 0x0F4F6C4CE471259D;</pre>
+</div>
+<div class="fn-nav"><span class="fn-nav-side"><a class="fn-nav-link" href="../../n/task/_0x0E184495B27BB57D.html">&#8249; _0x0E184495B27BB57D</a></span><span class="fn-nav-side"><a class="fn-nav-link" href="../../n/task/_0x0FE797DD9F70DFA6.html">_0x0FE797DD9F70DFA6 &#8250;</a></span></div>
+</main>
+<script src="../../search-index.js?v=7501"></script>
+<script src="../../static/search.js?v=7501" data-root="../.."></script>
+</body></html>

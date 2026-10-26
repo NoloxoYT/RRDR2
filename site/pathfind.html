@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rrdr_natives::pathfind - RRDR natives</title>
+<link rel="stylesheet" href="static/normalize.css">
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/favicon.svg">
+</head><body>
+
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <img class="brand-mark" src="static/logo.svg" alt="RRDR" width="24" height="24" />
+    <span class="brand-text">rrdr<span class="brand-dim">.natives</span></span>
+  </a>
+
+<div class="live-search">
+  <label for="search-input" class="sr-only">Search natives</label>
+  <span class="hs-icon">&#8902;</span>
+  <input id="search-input" type="text" autocomplete="off" spellcheck="false"
+         placeholder="Search natives - name or description" tabindex="-1" />
+  <span class="hs-hint" title="Press / to focus">/</span>
+  <div class="live-results" id="live-results" hidden></div>
+</div>
+
+</header>
+
+<nav class="sidebar">
+<div class="side-crate"><a href="index.html">rrdr_natives</a></div>
+<h3 class="side-bucket dim">Ped related</h3>
+<a class="side-mod" href="ped.html">ped<span class="count">1051</span></a>
+<a class="side-mod" href="perschar.html">perschar<span class="count">51</span></a>
+<a class="side-mod" href="companion.html">companion<span class="count">25</span></a>
+<a class="side-mod" href="population.html">population<span class="count">32</span></a>
+<a class="side-mod" href="brain.html">brain<span class="count">11</span></a>
+<a class="side-mod" href="ik.html">ik<span class="count">5</span></a>
+<a class="side-mod" href="attribute.html">attribute<span class="count">27</span></a>
+<a class="side-mod" href="task.html">task<span class="count">706</span></a>
+<a class="side-mod" href="animscene.html">animscene<span class="count">100</span></a>
+<a class="side-mod" href="flock.html">flock<span class="count">47</span></a>
+<a class="side-mod" href="interaction.html">interaction<span class="count">6</span></a>
+<h3 class="side-bucket dim">Player related</h3>
+<a class="side-mod" href="player.html">player<span class="count">397</span></a>
+<a class="side-mod" href="stats.html">stats<span class="count">89</span></a>
+<a class="side-mod" href="law.html">law<span class="count">131</span></a>
+<a class="side-mod" href="money.html">money<span class="count">8</span></a>
+<a class="side-mod" href="bounty.html">bounty<span class="count">33</span></a>
+<a class="side-mod" href="posse.html">posse<span class="count">31</span></a>
+<a class="side-mod" href="crew.html">crew<span class="count">18</span></a>
+<h3 class="side-bucket">World related</h3>
+<a class="side-mod" href="entity.html">entity<span class="count">295</span></a>
+<a class="side-mod" href="object.html">object<span class="count">166</span></a>
+<a class="side-mod" href="misc.html">misc<span class="count">303</span></a>
+<a class="side-mod" href="fire.html">fire<span class="count">43</span></a>
+<a class="side-mod" href="water.html">water<span class="count">21</span></a>
+<a class="side-mod" href="zone.html">zone<span class="count">4</span></a>
+<a class="side-mod" href="map.html">map<span class="count">94</span></a>
+<a class="side-mod active" href="pathfind.html">pathfind<span class="count">92</span></a>
+<a class="side-mod" href="interior.html">interior<span class="count">35</span></a>
+<a class="side-mod" href="volume.html">volume<span class="count">99</span></a>
+<a class="side-mod" href="physics.html">physics<span class="count">78</span></a>
+<a class="side-mod" href="graphics.html">graphics<span class="count">297</span></a>
+<a class="side-mod" href="clock.html">clock<span class="count">19</span></a>
+<a class="side-mod" href="streaming.html">streaming<span class="count">124</span></a>
+<a class="side-mod" href="shapetest.html">shapetest<span class="count">13</span></a>
+<a class="side-mod" href="event.html">event<span class="count">42</span></a>
+<a class="side-mod" href="collection.html">collection<span class="count">31</span></a>
+<h3 class="side-bucket dim">Vehicles</h3>
+<a class="side-mod" href="vehicle.html">vehicle<span class="count">408</span></a>
+<a class="side-mod" href="aitransport.html">aitransport<span class="count">24</span></a>
+<a class="side-mod" href="aicoverpoint.html">aicoverpoint<span class="count">17</span></a>
+<h3 class="side-bucket dim">Camera</h3>
+<a class="side-mod" href="cam.html">cam<span class="count">248</span></a>
+<a class="side-mod" href="txd.html">txd<span class="count">8</span></a>
+<h3 class="side-bucket dim">Audio</h3>
+<a class="side-mod" href="audio.html">audio<span class="count">229</span></a>
+<a class="side-mod" href="voice.html">voice<span class="count">24</span></a>
+<h3 class="side-bucket dim">UI &amp; Input</h3>
+<a class="side-mod" href="hud.html">hud<span class="count">190</span></a>
+<a class="side-mod" href="pad.html">pad<span class="count">40</span></a>
+<a class="side-mod" href="minigame.html">minigame<span class="count">48</span></a>
+<a class="side-mod" href="localization.html">localization<span class="count">4</span></a>
+<a class="side-mod" href="uiapps.html">uiapps<span class="count">19</span></a>
+<a class="side-mod" href="uidebug.html">uidebug<span class="count">3</span></a>
+<a class="side-mod" href="uievents.html">uievents<span class="count">4</span></a>
+<a class="side-mod" href="uifeed.html">uifeed<span class="count">27</span></a>
+<a class="side-mod" href="uilog.html">uilog<span class="count">31</span></a>
+<a class="side-mod" href="uipinning.html">uipinning<span class="count">1</span></a>
+<a class="side-mod" href="uitutorial.html">uitutorial<span class="count">3</span></a>
+<a class="side-mod" href="uistatemachine.html">uistatemachine<span class="count">12</span></a>
+<a class="side-mod" href="uistickyfeed.html">uistickyfeed<span class="count">8</span></a>
+<a class="side-mod" href="compapp.html">compapp<span class="count">5</span></a>
+<h3 class="side-bucket dim">AI &amp; Scripts</h3>
+<a class="side-mod" href="missiondata.html">missiondata<span class="count">18</span></a>
+<a class="side-mod" href="scripts.html">scripts<span class="count">94</span></a>
+<a class="side-mod" href="spactionproxy.html">spactionproxy<span class="count">6</span></a>
+<a class="side-mod" href="recording.html">recording<span class="count">1</span></a>
+<a class="side-mod" href="replay.html">replay<span class="count">5</span></a>
+<h3 class="side-bucket dim">Data &amp; Storage</h3>
+<a class="side-mod" href="datafile.html">datafile<span class="count">59</span></a>
+<a class="side-mod" href="decorator.html">decorator<span class="count">15</span></a>
+<a class="side-mod" href="databinding.html">databinding<span class="count">82</span></a>
+<a class="side-mod" href="inventory.html">inventory<span class="count">83</span></a>
+<a class="side-mod" href="itemdatabase.html">itemdatabase<span class="count">84</span></a>
+<a class="side-mod" href="itemset.html">itemset<span class="count">11</span></a>
+<a class="side-mod" href="dlc.html">dlc<span class="count">4</span></a>
+<a class="side-mod" href="save.html">save<span class="count">24</span></a>
+<a class="side-mod" href="persistence.html">persistence<span class="count">26</span></a>
+<a class="side-mod" href="netshopping.html">netshopping<span class="count">24</span></a>
+<a class="side-mod" href="unlock.html">unlock<span class="count">9</span></a>
+<h3 class="side-bucket dim">Online &amp; Telemetry</h3>
+<a class="side-mod" href="network.html">network<span class="count">571</span></a>
+<a class="side-mod" href="socialclub.html">socialclub<span class="count">33</span></a>
+<a class="side-mod" href="socialclubfeed.html">socialclubfeed<span class="count">2</span></a>
+<a class="side-mod" href="telemetry.html">telemetry<span class="count">78</span></a>
+<a class="side-mod" href="google_analytics.html">google_analytics<span class="count">4</span></a>
+<h3 class="side-bucket dim">System &amp; Utility</h3>
+<a class="side-mod" href="builtin.html">builtin<span class="count">26</span></a>
+<a class="side-mod" href="debug.html">debug<span class="count">3</span></a>
+<a class="side-mod" href="crashlog.html">crashlog<span class="count">14</span></a>
+<a class="side-mod" href="queue.html">queue<span class="count">2</span></a>
+<a class="side-mod" href="_namespace4.html">_namespace4<span class="count">1</span></a>
+<a class="side-mod" href="compendium.html">compendium<span class="count">36</span></a>
+<h3 class="side-bucket">Functions</h3>
+<a class="side-fn" href="n/pathfind/ADD_NAVMESH_BLOCKING_OBJECT.html">ADD_NAVMESH_BLOCKING_OBJECT</a>
+<a class="side-fn" href="n/pathfind/ADD_NAVMESH_REQUIRED_REGION.html">ADD_NAVMESH_REQUIRED_REGION</a>
+<a class="side-fn" href="n/pathfind/ARE_NODES_LOADED_FOR_AREA.html">ARE_NODES_LOADED_FOR_AREA</a>
+<a class="side-fn" href="n/pathfind/DOES_NAVMESH_BLOCKING_OBJECT_EXIST.html">DOES_NAVMESH_BLOCKING_OBJECT_EXIST</a>
+<a class="side-fn" href="n/pathfind/GET_APPROX_FLOOR_FOR_POINT.html">GET_APPROX_FLOOR_FOR_POINT</a>
+<a class="side-fn" href="n/pathfind/GET_CLOSEST_ROAD.html">GET_CLOSEST_ROAD</a>
+<a class="side-fn" href="n/pathfind/GET_CLOSEST_ROAD_VEC3.html">GET_CLOSEST_ROAD</a>
+<a class="side-fn" href="n/pathfind/GET_CLOSEST_VEHICLE_NODE.html">GET_CLOSEST_VEHICLE_NODE</a>
+<a class="side-fn" href="n/pathfind/GET_CLOSEST_VEHICLE_NODE_VEC3.html">GET_CLOSEST_VEHICLE_NODE</a>
+<a class="side-fn" href="n/pathfind/GET_CLOSEST_VEHICLE_NODE_WITH_HEADING.html">GET_CLOSEST_VEHICLE_NODE_WITH_HEADING</a>
+<a class="side-fn" href="n/pathfind/GET_CLOSEST_VEHICLE_NODE_WITH_HEADING_VEC3.html">GET_CLOSEST_VEHICLE_NODE_WITH_HEADING</a>
+<a class="side-fn" href="n/pathfind/GET_GPS_BLIP_ROUTE_FOUND.html">GET_GPS_BLIP_ROUTE_FOUND</a>
+<a class="side-fn" href="n/pathfind/GET_GPS_BLIP_ROUTE_LENGTH.html">GET_GPS_BLIP_ROUTE_LENGTH</a>
+<a class="side-fn" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE.html">GET_NTH_CLOSEST_VEHICLE_NODE</a>
+<a class="side-fn" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION.html">GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION</a>
+<a class="side-fn" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION_VEC3.html">GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION</a>
+<a class="side-fn" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_ID.html">GET_NTH_CLOSEST_VEHICLE_NODE_ID</a>
+<a class="side-fn" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_ID_VEC3.html">GET_NTH_CLOSEST_VEHICLE_NODE_ID</a>
+<a class="side-fn" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING.html">GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING</a>
+<a class="side-fn" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING_VEC3.html">GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING</a>
+<a class="side-fn" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_VEC3.html">GET_NTH_CLOSEST_VEHICLE_NODE</a>
+<a class="side-fn" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING.html">GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING</a>
+<a class="side-fn" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING_VEC3.html">GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING</a>
+<a class="side-fn" href="n/pathfind/GET_NUM_NAVMESHES_EXISTING_IN_AREA.html">GET_NUM_NAVMESHES_EXISTING_IN_AREA</a>
+<a class="side-fn" href="n/pathfind/GET_RANDOM_VEHICLE_NODE.html">GET_RANDOM_VEHICLE_NODE</a>
+<a class="side-fn" href="n/pathfind/GET_RANDOM_VEHICLE_NODE_VEC3.html">GET_RANDOM_VEHICLE_NODE</a>
+<a class="side-fn" href="n/pathfind/GET_SAFE_COORD_FOR_PED.html">GET_SAFE_COORD_FOR_PED</a>
+<a class="side-fn" href="n/pathfind/GET_SAFE_COORD_FOR_PED_VEC3.html">GET_SAFE_COORD_FOR_PED</a>
+<a class="side-fn" href="n/pathfind/GET_VEHICLE_NODE_IS_SWITCHED_OFF.html">GET_VEHICLE_NODE_IS_SWITCHED_OFF</a>
+<a class="side-fn" href="n/pathfind/GET_VEHICLE_NODE_POSITION.html">GET_VEHICLE_NODE_POSITION</a>
+<a class="side-fn" href="n/pathfind/IS_NAVMESH_LOADED_IN_AREA.html">IS_NAVMESH_LOADED_IN_AREA</a>
+<a class="side-fn" href="n/pathfind/IS_NAVMESH_LOADED_IN_AREA_VEC3.html">IS_NAVMESH_LOADED_IN_AREA</a>
+<a class="side-fn" href="n/pathfind/IS_POINT_ON_ROAD.html">IS_POINT_ON_ROAD</a>
+<a class="side-fn" href="n/pathfind/IS_POINT_ON_ROAD_VEC3.html">IS_POINT_ON_ROAD</a>
+<a class="side-fn" href="n/pathfind/IS_VEHICLE_NODE_ID_VALID.html">IS_VEHICLE_NODE_ID_VALID</a>
+<a class="side-fn" href="n/pathfind/NAVMESH_REQUEST_PATH.html">NAVMESH_REQUEST_PATH</a>
+<a class="side-fn" href="n/pathfind/NAVMESH_REQUEST_PATH_VEC3.html">NAVMESH_REQUEST_PATH</a>
+<a class="side-fn" href="n/pathfind/REMOVE_NAVMESH_BLOCKING_OBJECT.html">REMOVE_NAVMESH_BLOCKING_OBJECT</a>
+<a class="side-fn" href="n/pathfind/REQUEST_PATH_NODES_IN_AREA_THIS_FRAME.html">REQUEST_PATH_NODES_IN_AREA_THIS_FRAME</a>
+<a class="side-fn" href="n/pathfind/RESET_ROADS_IN_VOLUME.html">RESET_ROADS_IN_VOLUME</a>
+<a class="side-fn" href="n/pathfind/SET_AMBIENT_PED_RANGE_MULTIPLIER_THIS_FRAME.html">SET_AMBIENT_PED_RANGE_MULTIPLIER_THIS_FRAME</a>
+<a class="side-fn" href="n/pathfind/SET_IGNORE_NO_GPS_FLAG.html">SET_IGNORE_NO_GPS_FLAG</a>
+<a class="side-fn" href="n/pathfind/SET_PED_PATHS_BACK_TO_ORIGINAL.html">SET_PED_PATHS_BACK_TO_ORIGINAL</a>
+<a class="side-fn" href="n/pathfind/SET_PED_PATHS_IN_AREA.html">SET_PED_PATHS_IN_AREA</a>
+<a class="side-fn" href="n/pathfind/SET_PED_PATHS_IN_AREA_VEC3.html">SET_PED_PATHS_IN_AREA</a>
+<a class="side-fn" href="n/pathfind/SET_ROADS_BACK_TO_ORIGINAL.html">SET_ROADS_BACK_TO_ORIGINAL</a>
+<a class="side-fn" href="n/pathfind/SET_ROADS_BACK_TO_ORIGINAL_IN_ANGLED_AREA.html">SET_ROADS_BACK_TO_ORIGINAL_IN_ANGLED_AREA</a>
+<a class="side-fn" href="n/pathfind/SET_ROADS_IN_ANGLED_AREA.html">SET_ROADS_IN_ANGLED_AREA</a>
+<a class="side-fn" href="n/pathfind/SET_ROADS_IN_AREA.html">SET_ROADS_IN_AREA</a>
+<a class="side-fn" href="n/pathfind/SET_ROADS_IN_VOLUME.html">SET_ROADS_IN_VOLUME</a>
+<a class="side-fn" href="n/pathfind/SIMULATED_ROUTE_GET_ETA.html">SIMULATED_ROUTE_GET_ETA</a>
+<a class="side-fn" href="n/pathfind/SIMULATED_ROUTE_IS_LOADED.html">SIMULATED_ROUTE_IS_LOADED</a>
+<a class="side-fn" href="n/pathfind/SIMULATED_ROUTE_TRAVEL_TO_POINT.html">SIMULATED_ROUTE_TRAVEL_TO_POINT</a>
+<a class="side-fn" href="n/pathfind/_0x264E9A5CD78C338F.html">_0x264E9A5CD78C338F</a>
+<a class="side-fn" href="n/pathfind/_0x34C9AF25649172D0.html">_0x34C9AF25649172D0</a>
+<a class="side-fn" href="n/pathfind/_0x4358BCF14C91761C.html">_0x4358BCF14C91761C</a>
+<a class="side-fn" href="n/pathfind/_0x4BDEBEA5702B97A9.html">_0x4BDEBEA5702B97A9</a>
+<a class="side-fn" href="n/pathfind/_0x54F4D7B6670FBB5A.html">_0x54F4D7B6670FBB5A</a>
+<a class="side-fn" href="n/pathfind/_0x5A3B54ADDF5472A3.html">_0x5A3B54ADDF5472A3</a>
+<a class="side-fn" href="n/pathfind/_0x5A4E1A41E3A02AD0.html">_0x5A4E1A41E3A02AD0</a>
+<a class="side-fn" href="n/pathfind/_0x665B21666351CB37.html">_0x665B21666351CB37</a>
+<a class="side-fn" href="n/pathfind/_0x6C3F12ECEB6D2E2A.html">_0x6C3F12ECEB6D2E2A</a>
+<a class="side-fn" href="n/pathfind/_0x6DAD6630AE4A74CB.html">_0x6DAD6630AE4A74CB</a>
+<a class="side-fn" href="n/pathfind/_0x869A7015BD4606E9.html">_0x869A7015BD4606E9</a>
+<a class="side-fn" href="n/pathfind/_0xA33914B00CA55756.html">_0xA33914B00CA55756</a>
+<a class="side-fn" href="n/pathfind/_0xAFE2AE66F6251C66.html">_0xAFE2AE66F6251C66</a>
+<a class="side-fn" href="n/pathfind/_0xB03944057FD735BA.html">_0xB03944057FD735BA</a>
+<a class="side-fn" href="n/pathfind/_0xCA27A86CAA4E98ED.html">_0xCA27A86CAA4E98ED</a>
+<a class="side-fn" href="n/pathfind/_0xCF213A5FC3ABFC08.html">_0xCF213A5FC3ABFC08</a>
+<a class="side-fn" href="n/pathfind/_0xE5EF9DE716FF737E.html">_0xE5EF9DE716FF737E</a>
+<a class="side-fn" href="n/pathfind/_0xEFC535C9FAF563B3.html">_0xEFC535C9FAF563B3</a>
+<a class="side-fn" href="n/pathfind/_0xF2A2177AC848B3A8.html">_0xF2A2177AC848B3A8</a>
+<a class="side-fn" href="n/pathfind/_ADD_NAVMESH_BLOCKING_VOLUME.html">_ADD_NAVMESH_BLOCKING_VOLUME</a>
+<a class="side-fn" href="n/pathfind/_DOES_NAVMESH_BLOCKING_VOLUME_EXIST.html">_DOES_NAVMESH_BLOCKING_VOLUME_EXIST</a>
+<a class="side-fn" href="n/pathfind/_GET_SPAWN_DATA_FOR_ROAD_NODE.html">_GET_SPAWN_DATA_FOR_ROAD_NODE</a>
+<a class="side-fn" href="n/pathfind/_GET_SPAWN_DATA_FOR_ROAD_NODE_VEC3.html">_GET_SPAWN_DATA_FOR_ROAD_NODE</a>
+<a class="side-fn" href="n/pathfind/_NAVMESH_ACTIVATE_SWAP.html">_NAVMESH_ACTIVATE_SWAP</a>
+<a class="side-fn" href="n/pathfind/_NAVMESH_ASSIGN_NAVMESH_TO_VEHICLE.html">_NAVMESH_ASSIGN_NAVMESH_TO_VEHICLE</a>
+<a class="side-fn" href="n/pathfind/_NAVMESH_CLEAR_REQUESTED_PATH.html">_NAVMESH_CLEAR_REQUESTED_PATH</a>
+<a class="side-fn" href="n/pathfind/_NAVMESH_DEACTIVATE_SWAP.html">_NAVMESH_DEACTIVATE_SWAP</a>
+<a class="side-fn" href="n/pathfind/_NAVMESH_DOES_SWAP_EXIST.html">_NAVMESH_DOES_SWAP_EXIST</a>
+<a class="side-fn" href="n/pathfind/_NAVMESH_IS_SWAP_ACTIVE.html">_NAVMESH_IS_SWAP_ACTIVE</a>
+<a class="side-fn" href="n/pathfind/_NAVMESH_REQUESTED_PATH_NUM_WAYPOINTS.html">_NAVMESH_REQUESTED_PATH_NUM_WAYPOINTS</a>
+<a class="side-fn" href="n/pathfind/_NAVMESH_REQUESTED_PATH_WAYPOINTS_FOUND.html">_NAVMESH_REQUESTED_PATH_WAYPOINTS_FOUND</a>
+<a class="side-fn" href="n/pathfind/_NAVMESH_REQUESTED_PATH_WAYPOINTS_TERRAIN.html">_NAVMESH_REQUESTED_PATH_WAYPOINTS_TERRAIN</a>
+<a class="side-fn" href="n/pathfind/_NAVMESH_REQUESTED_PATH_WAYPOINT_BY_INDEX.html">_NAVMESH_REQUESTED_PATH_WAYPOINT_BY_INDEX</a>
+<a class="side-fn" href="n/pathfind/_NAVMESH_REQUESTED_QUERY_STATUS.html">_NAVMESH_REQUESTED_QUERY_STATUS</a>
+<a class="side-fn" href="n/pathfind/_REMOVE_NAVMESH_BLOCKING_VOLUME.html">_REMOVE_NAVMESH_BLOCKING_VOLUME</a>
+<a class="side-fn" href="n/pathfind/_SIMULATED_ROUTE_CREATE.html">_SIMULATED_ROUTE_CREATE</a>
+<a class="side-fn" href="n/pathfind/_SIMULATED_ROUTE_CREATE_VEC3.html">_SIMULATED_ROUTE_CREATE</a>
+<a class="side-fn" href="n/pathfind/_SIMULATED_ROUTE_DELETE.html">_SIMULATED_ROUTE_DELETE</a>
+<a class="side-fn" href="n/pathfind/_SIMULATED_ROUTE_EXISTS.html">_SIMULATED_ROUTE_EXISTS</a>
+</nav>
+<main class="content">
+<div class="doc-page-head">
+<h1 class="module-title"><span class="ns">rrdr_natives::</span>pathfind</h1>
+<div class="crumb"><a href="index.html">World related</a> <span class="sep">&#8250;</span> <a href="pathfind.html">pathfind</a></div>
+<div class="mod-stats">92 functions &middot; 76 unique native hashes</div>
+</div>
+<section class="item-list">
+<section class="fn-block" id="ADD_NAVMESH_BLOCKING_OBJECT">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/ADD_NAVMESH_BLOCKING_OBJECT.html">ADD_NAVMESH_BLOCKING_OBJECT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFCD5C8E06E502F5A</code> &middot; 9 args &middot; rust: <code>rrdr_natives::pathfind::ADD_NAVMESH_BLOCKING_OBJECT</code></div>
+</section>
+<section class="fn-block" id="ADD_NAVMESH_REQUIRED_REGION">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/ADD_NAVMESH_REQUIRED_REGION.html">ADD_NAVMESH_REQUIRED_REGION</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x387EAD7EE42F6685</code> &middot; 3 args &middot; rust: <code>rrdr_natives::pathfind::ADD_NAVMESH_REQUIRED_REGION</code></div>
+</section>
+<section class="fn-block" id="ARE_NODES_LOADED_FOR_AREA">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/ARE_NODES_LOADED_FOR_AREA.html">ARE_NODES_LOADED_FOR_AREA</a> <span class="paren">(</span><span class="p-name">x1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">x2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y2</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF7B79A50B905A30D</code> &middot; 4 args &middot; rust: <code>rrdr_natives::pathfind::ARE_NODES_LOADED_FOR_AREA</code></div>
+</section>
+<section class="fn-block" id="DOES_NAVMESH_BLOCKING_OBJECT_EXIST">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/DOES_NAVMESH_BLOCKING_OBJECT_EXIST.html">DOES_NAVMESH_BLOCKING_OBJECT_EXIST</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0EAEB0DB4B132399</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::DOES_NAVMESH_BLOCKING_OBJECT_EXIST</code></div>
+</section>
+<section class="fn-block" id="GET_APPROX_FLOOR_FOR_POINT">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_APPROX_FLOOR_FOR_POINT.html">GET_APPROX_FLOOR_FOR_POINT</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">float</span></h3>
+<div class="docblock">Returns CGameWorldHeightMap&#x27;s minimum Z value at specified point (grid node).</div>
+<div class="fn-meta"><code>0x336511A34F2E5185</code> &middot; 2 args &middot; rust: <code>rrdr_natives::pathfind::GET_APPROX_FLOOR_FOR_POINT</code></div>
+</section>
+<section class="fn-block" id="GET_CLOSEST_ROAD">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_CLOSEST_ROAD.html">GET_CLOSEST_ROAD</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">float*</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x132F52BBA570FE92</code> &middot; 11 args &middot; rust: <code>rrdr_natives::pathfind::GET_CLOSEST_ROAD</code></div>
+</section>
+<section class="fn-block" id="GET_CLOSEST_ROAD_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_CLOSEST_ROAD_VEC3.html">GET_CLOSEST_ROAD</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">float*</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x132F52BBA570FE92</code> &middot; 9 args &middot; rust: <code>rrdr_natives::pathfind::GET_CLOSEST_ROAD_VEC3</code></div>
+</section>
+<section class="fn-block" id="GET_CLOSEST_VEHICLE_NODE">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_CLOSEST_VEHICLE_NODE.html">GET_CLOSEST_VEHICLE_NODE</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">nodeType</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x240A18690AE96513</code> &middot; 7 args &middot; rust: <code>rrdr_natives::pathfind::GET_CLOSEST_VEHICLE_NODE</code></div>
+</section>
+<section class="fn-block" id="GET_CLOSEST_VEHICLE_NODE_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_CLOSEST_VEHICLE_NODE_VEC3.html">GET_CLOSEST_VEHICLE_NODE</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">nodeType</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x240A18690AE96513</code> &middot; 5 args &middot; rust: <code>rrdr_natives::pathfind::GET_CLOSEST_VEHICLE_NODE_VEC3</code></div>
+</section>
+<section class="fn-block" id="GET_CLOSEST_VEHICLE_NODE_WITH_HEADING">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_CLOSEST_VEHICLE_NODE_WITH_HEADING.html">GET_CLOSEST_VEHICLE_NODE_WITH_HEADING</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">outHeading</span><span class="p-sep">:</span> <span class="p-type">float*</span>, <span class="p-name">nodeType</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x23CFFD4CCB243354</code> &middot; 8 args &middot; rust: <code>rrdr_natives::pathfind::GET_CLOSEST_VEHICLE_NODE_WITH_HEADING</code></div>
+</section>
+<section class="fn-block" id="GET_CLOSEST_VEHICLE_NODE_WITH_HEADING_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_CLOSEST_VEHICLE_NODE_WITH_HEADING_VEC3.html">GET_CLOSEST_VEHICLE_NODE_WITH_HEADING</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">outHeading</span><span class="p-sep">:</span> <span class="p-type">float*</span>, <span class="p-name">nodeType</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x23CFFD4CCB243354</code> &middot; 6 args &middot; rust: <code>rrdr_natives::pathfind::GET_CLOSEST_VEHICLE_NODE_WITH_HEADING_VEC3</code></div>
+</section>
+<section class="fn-block" id="GET_GPS_BLIP_ROUTE_FOUND">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_GPS_BLIP_ROUTE_FOUND.html">GET_GPS_BLIP_ROUTE_FOUND</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x869DAACBBE9FA006</code> &middot; 0 args &middot; rust: <code>rrdr_natives::pathfind::GET_GPS_BLIP_ROUTE_FOUND</code></div>
+</section>
+<section class="fn-block" id="GET_GPS_BLIP_ROUTE_LENGTH">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_GPS_BLIP_ROUTE_LENGTH.html">GET_GPS_BLIP_ROUTE_LENGTH</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xBBB45C3CF5C8AA85</code> &middot; 0 args &middot; rust: <code>rrdr_natives::pathfind::GET_GPS_BLIP_ROUTE_LENGTH</code></div>
+</section>
+<section class="fn-block" id="GET_NTH_CLOSEST_VEHICLE_NODE">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE.html">GET_NTH_CLOSEST_VEHICLE_NODE</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">nthClosest</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">unknown1</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">unknown2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">unknown3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5A6D8DF6FBC5D0C4</code> &middot; 8 args &middot; rust: <code>rrdr_natives::pathfind::GET_NTH_CLOSEST_VEHICLE_NODE</code></div>
+</section>
+<section class="fn-block" id="GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION.html">GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">desiredX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">desiredY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">desiredZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">nthClosest</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">outHeading</span><span class="p-sep">:</span> <span class="p-type">float*</span>, <span class="p-name">nodetype</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p11</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2FAC235A6062F14A</code> &middot; 12 args &middot; rust: <code>rrdr_natives::pathfind::GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION</code></div>
+</section>
+<section class="fn-block" id="GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION_VEC3.html">GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">desired</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">nthClosest</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">outHeading</span><span class="p-sep">:</span> <span class="p-type">float*</span>, <span class="p-name">nodetype</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p11</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2FAC235A6062F14A</code> &middot; 8 args &middot; rust: <code>rrdr_natives::pathfind::GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION_VEC3</code></div>
+</section>
+<section class="fn-block" id="GET_NTH_CLOSEST_VEHICLE_NODE_ID">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_ID.html">GET_NTH_CLOSEST_VEHICLE_NODE_ID</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">nth</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">nodetype</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x116443008E5CEFC3</code> &middot; 7 args &middot; rust: <code>rrdr_natives::pathfind::GET_NTH_CLOSEST_VEHICLE_NODE_ID</code></div>
+</section>
+<section class="fn-block" id="GET_NTH_CLOSEST_VEHICLE_NODE_ID_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_ID_VEC3.html">GET_NTH_CLOSEST_VEHICLE_NODE_ID</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">nth</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">nodetype</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x116443008E5CEFC3</code> &middot; 5 args &middot; rust: <code>rrdr_natives::pathfind::GET_NTH_CLOSEST_VEHICLE_NODE_ID_VEC3</code></div>
+</section>
+<section class="fn-block" id="GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING.html">GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">nthClosest</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">outHeading</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4114EAA8A7F7766D</code> &middot; 9 args &middot; rust: <code>rrdr_natives::pathfind::GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING</code></div>
+</section>
+<section class="fn-block" id="GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING_VEC3.html">GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">nthClosest</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">outHeading</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4114EAA8A7F7766D</code> &middot; 7 args &middot; rust: <code>rrdr_natives::pathfind::GET_NTH_CLOSEST_VEHICLE_NODE_ID_WITH_HEADING_VEC3</code></div>
+</section>
+<section class="fn-block" id="GET_NTH_CLOSEST_VEHICLE_NODE_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_VEC3.html">GET_NTH_CLOSEST_VEHICLE_NODE</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">nthClosest</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">unknown1</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">unknown2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">unknown3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5A6D8DF6FBC5D0C4</code> &middot; 6 args &middot; rust: <code>rrdr_natives::pathfind::GET_NTH_CLOSEST_VEHICLE_NODE_VEC3</code></div>
+</section>
+<section class="fn-block" id="GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING.html">GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">nthClosest</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">heading</span><span class="p-sep">:</span> <span class="p-type">float*</span>, <span class="p-name">unknown1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">unknown2</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">unknown3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">unknown4</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x591B40D4390DB54A</code> &middot; 10 args &middot; rust: <code>rrdr_natives::pathfind::GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING</code></div>
+</section>
+<section class="fn-block" id="GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING_VEC3.html">GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">nthClosest</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">heading</span><span class="p-sep">:</span> <span class="p-type">float*</span>, <span class="p-name">unknown1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">unknown2</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">unknown3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">unknown4</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x591B40D4390DB54A</code> &middot; 8 args &middot; rust: <code>rrdr_natives::pathfind::GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING_VEC3</code></div>
+</section>
+<section class="fn-block" id="GET_NUM_NAVMESHES_EXISTING_IN_AREA">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_NUM_NAVMESHES_EXISTING_IN_AREA.html">GET_NUM_NAVMESHES_EXISTING_IN_AREA</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x01708E8DD3FF8C65</code> &middot; 6 args &middot; rust: <code>rrdr_natives::pathfind::GET_NUM_NAVMESHES_EXISTING_IN_AREA</code></div>
+</section>
+<section class="fn-block" id="GET_RANDOM_VEHICLE_NODE">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_RANDOM_VEHICLE_NODE.html">GET_RANDOM_VEHICLE_NODE</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">nodeId</span><span class="p-sep">:</span> <span class="p-type">int*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x93E0DB8440B73A7D</code> &middot; 9 args &middot; rust: <code>rrdr_natives::pathfind::GET_RANDOM_VEHICLE_NODE</code></div>
+</section>
+<section class="fn-block" id="GET_RANDOM_VEHICLE_NODE_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_RANDOM_VEHICLE_NODE_VEC3.html">GET_RANDOM_VEHICLE_NODE</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">nodeId</span><span class="p-sep">:</span> <span class="p-type">int*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x93E0DB8440B73A7D</code> &middot; 7 args &middot; rust: <code>rrdr_natives::pathfind::GET_RANDOM_VEHICLE_NODE_VEC3</code></div>
+</section>
+<section class="fn-block" id="GET_SAFE_COORD_FOR_PED">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_SAFE_COORD_FOR_PED.html">GET_SAFE_COORD_FOR_PED</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">onGround</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">flags</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB61C8E878A4199CA</code> &middot; 6 args &middot; rust: <code>rrdr_natives::pathfind::GET_SAFE_COORD_FOR_PED</code></div>
+</section>
+<section class="fn-block" id="GET_SAFE_COORD_FOR_PED_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_SAFE_COORD_FOR_PED_VEC3.html">GET_SAFE_COORD_FOR_PED</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">onGround</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">flags</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB61C8E878A4199CA</code> &middot; 4 args &middot; rust: <code>rrdr_natives::pathfind::GET_SAFE_COORD_FOR_PED_VEC3</code></div>
+</section>
+<section class="fn-block" id="GET_VEHICLE_NODE_IS_SWITCHED_OFF">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_VEHICLE_NODE_IS_SWITCHED_OFF.html">GET_VEHICLE_NODE_IS_SWITCHED_OFF</a> <span class="paren">(</span><span class="p-name">nodeID</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x28533DBDDF7C2C97</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::GET_VEHICLE_NODE_IS_SWITCHED_OFF</code></div>
+</section>
+<section class="fn-block" id="GET_VEHICLE_NODE_POSITION">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/GET_VEHICLE_NODE_POSITION.html">GET_VEHICLE_NODE_POSITION</a> <span class="paren">(</span><span class="p-name">nodeId</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">outPosition</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8E8D72FF24DEE1FB</code> &middot; 2 args &middot; rust: <code>rrdr_natives::pathfind::GET_VEHICLE_NODE_POSITION</code></div>
+</section>
+<section class="fn-block" id="IS_NAVMESH_LOADED_IN_AREA">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/IS_NAVMESH_LOADED_IN_AREA.html">IS_NAVMESH_LOADED_IN_AREA</a> <span class="paren">(</span><span class="p-name">x1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">x2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z2</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Returns whether navmesh for the region is loaded.</div>
+<div class="fn-meta"><code>0xF813C7E63F9062A5</code> &middot; 6 args &middot; rust: <code>rrdr_natives::pathfind::IS_NAVMESH_LOADED_IN_AREA</code></div>
+</section>
+<section class="fn-block" id="IS_NAVMESH_LOADED_IN_AREA_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/IS_NAVMESH_LOADED_IN_AREA_VEC3.html">IS_NAVMESH_LOADED_IN_AREA</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec1</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">vec2</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF813C7E63F9062A5</code> &middot; 2 args &middot; rust: <code>rrdr_natives::pathfind::IS_NAVMESH_LOADED_IN_AREA_VEC3</code></div>
+</section>
+<section class="fn-block" id="IS_POINT_ON_ROAD">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/IS_POINT_ON_ROAD.html">IS_POINT_ON_ROAD</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Gets a value indicating whether the specified position is on a road.</div>
+<div class="fn-meta"><code>0x125BF4ABFC536B09</code> &middot; 4 args &middot; rust: <code>rrdr_natives::pathfind::IS_POINT_ON_ROAD</code></div>
+</section>
+<section class="fn-block" id="IS_POINT_ON_ROAD_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/IS_POINT_ON_ROAD_VEC3.html">IS_POINT_ON_ROAD</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x125BF4ABFC536B09</code> &middot; 2 args &middot; rust: <code>rrdr_natives::pathfind::IS_POINT_ON_ROAD_VEC3</code></div>
+</section>
+<section class="fn-block" id="IS_VEHICLE_NODE_ID_VALID">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/IS_VEHICLE_NODE_ID_VALID.html">IS_VEHICLE_NODE_ID_VALID</a> <span class="paren">(</span><span class="p-name">vehicleNodeId</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Returns true if the id is non zero.</div>
+<div class="fn-meta"><code>0x5829A02AF4F0B3CB</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::IS_VEHICLE_NODE_ID_VALID</code></div>
+</section>
+<section class="fn-block" id="NAVMESH_REQUEST_PATH">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/NAVMESH_REQUEST_PATH.html">NAVMESH_REQUEST_PATH</a> <span class="paren">(</span><span class="p-name">ped</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">x1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">x2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">bitFlag</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">Starts a nav mesh query for a path between coordinates with a given ped and returns a handle to be validated by _NAVMESH_REQUESTED_QUERY_STATUS and then _NAVMESH_REQUESTED_PATH_WAYPOINTS_FOUND
+
+Only bit flag values used in scripts are 0, 23, and 29. 23 is used with dogs and horses. 29 with legendary animals.</div>
+<div class="fn-meta"><code>0x348F211CA2404039</code> &middot; 8 args &middot; rust: <code>rrdr_natives::pathfind::NAVMESH_REQUEST_PATH</code></div>
+</section>
+<section class="fn-block" id="NAVMESH_REQUEST_PATH_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/NAVMESH_REQUEST_PATH_VEC3.html">NAVMESH_REQUEST_PATH</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">ped</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">vec1</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">vec2</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">bitFlag</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x348F211CA2404039</code> &middot; 4 args &middot; rust: <code>rrdr_natives::pathfind::NAVMESH_REQUEST_PATH_VEC3</code></div>
+</section>
+<section class="fn-block" id="REMOVE_NAVMESH_BLOCKING_OBJECT">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/REMOVE_NAVMESH_BLOCKING_OBJECT.html">REMOVE_NAVMESH_BLOCKING_OBJECT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x46399A7895957C0E</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::REMOVE_NAVMESH_BLOCKING_OBJECT</code></div>
+</section>
+<section class="fn-block" id="REQUEST_PATH_NODES_IN_AREA_THIS_FRAME">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/REQUEST_PATH_NODES_IN_AREA_THIS_FRAME.html">REQUEST_PATH_NODES_IN_AREA_THIS_FRAME</a> <span class="paren">(</span><span class="p-name">x1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">x2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y2</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Old name: REQUEST_PATHS_PREFER_ACCURATE_BOUNDINGSTRUCT</div>
+<div class="fn-meta"><code>0x07FB139B592FA687</code> &middot; old name <code>REQUEST_PATHS_PREFER_ACCURATE_BOUNDINGSTRUCT</code> &middot; 4 args &middot; rust: <code>rrdr_natives::pathfind::REQUEST_PATH_NODES_IN_AREA_THIS_FRAME</code></div>
+</section>
+<section class="fn-block" id="RESET_ROADS_IN_VOLUME">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/RESET_ROADS_IN_VOLUME.html">RESET_ROADS_IN_VOLUME</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD17672447692478E</code> &middot; 2 args &middot; rust: <code>rrdr_natives::pathfind::RESET_ROADS_IN_VOLUME</code></div>
+</section>
+<section class="fn-block" id="SET_AMBIENT_PED_RANGE_MULTIPLIER_THIS_FRAME">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/SET_AMBIENT_PED_RANGE_MULTIPLIER_THIS_FRAME.html">SET_AMBIENT_PED_RANGE_MULTIPLIER_THIS_FRAME</a> <span class="paren">(</span><span class="p-name">multiplier</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0B919E1FB47CC4E0</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::SET_AMBIENT_PED_RANGE_MULTIPLIER_THIS_FRAME</code></div>
+</section>
+<section class="fn-block" id="SET_IGNORE_NO_GPS_FLAG">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/SET_IGNORE_NO_GPS_FLAG.html">SET_IGNORE_NO_GPS_FLAG</a> <span class="paren">(</span><span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock">nullsub, doesn&#x27;t do anything</div>
+<div class="fn-meta"><code>0x72751156E7678833</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::SET_IGNORE_NO_GPS_FLAG</code></div>
+</section>
+<section class="fn-block" id="SET_PED_PATHS_BACK_TO_ORIGINAL">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/SET_PED_PATHS_BACK_TO_ORIGINAL.html">SET_PED_PATHS_BACK_TO_ORIGINAL</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE04B48F2CC926253</code> &middot; 7 args &middot; rust: <code>rrdr_natives::pathfind::SET_PED_PATHS_BACK_TO_ORIGINAL</code></div>
+</section>
+<section class="fn-block" id="SET_PED_PATHS_IN_AREA">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/SET_PED_PATHS_IN_AREA.html">SET_PED_PATHS_IN_AREA</a> <span class="paren">(</span><span class="p-name">x1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">x2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">unknown</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x34F060F4BF92E018</code> &middot; 8 args &middot; rust: <code>rrdr_natives::pathfind::SET_PED_PATHS_IN_AREA</code></div>
+</section>
+<section class="fn-block" id="SET_PED_PATHS_IN_AREA_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/SET_PED_PATHS_IN_AREA_VEC3.html">SET_PED_PATHS_IN_AREA</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec1</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">vec2</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">unknown</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x34F060F4BF92E018</code> &middot; 4 args &middot; rust: <code>rrdr_natives::pathfind::SET_PED_PATHS_IN_AREA_VEC3</code></div>
+</section>
+<section class="fn-block" id="SET_ROADS_BACK_TO_ORIGINAL">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/SET_ROADS_BACK_TO_ORIGINAL.html">SET_ROADS_BACK_TO_ORIGINAL</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1EE7063B80FFC77C</code> &middot; 8 args &middot; rust: <code>rrdr_natives::pathfind::SET_ROADS_BACK_TO_ORIGINAL</code></div>
+</section>
+<section class="fn-block" id="SET_ROADS_BACK_TO_ORIGINAL_IN_ANGLED_AREA">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/SET_ROADS_BACK_TO_ORIGINAL_IN_ANGLED_AREA.html">SET_ROADS_BACK_TO_ORIGINAL_IN_ANGLED_AREA</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0027501B9F3B407E</code> &middot; 9 args &middot; rust: <code>rrdr_natives::pathfind::SET_ROADS_BACK_TO_ORIGINAL_IN_ANGLED_AREA</code></div>
+</section>
+<section class="fn-block" id="SET_ROADS_IN_ANGLED_AREA">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/SET_ROADS_IN_ANGLED_AREA.html">SET_ROADS_IN_ANGLED_AREA</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1A5AA1208AF5DB59</code> &middot; 11 args &middot; rust: <code>rrdr_natives::pathfind::SET_ROADS_IN_ANGLED_AREA</code></div>
+</section>
+<section class="fn-block" id="SET_ROADS_IN_AREA">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/SET_ROADS_IN_AREA.html">SET_ROADS_IN_AREA</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xBF1A602B5BA52FEE</code> &middot; 9 args &middot; rust: <code>rrdr_natives::pathfind::SET_ROADS_IN_AREA</code></div>
+</section>
+<section class="fn-block" id="SET_ROADS_IN_VOLUME">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/SET_ROADS_IN_VOLUME.html">SET_ROADS_IN_VOLUME</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC1799FAFD2FDF52B</code> &middot; 4 args &middot; rust: <code>rrdr_natives::pathfind::SET_ROADS_IN_VOLUME</code></div>
+</section>
+<section class="fn-block" id="SIMULATED_ROUTE_GET_ETA">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/SIMULATED_ROUTE_GET_ETA.html">SIMULATED_ROUTE_GET_ETA</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">float</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2DD5F78D73B24172</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::SIMULATED_ROUTE_GET_ETA</code></div>
+</section>
+<section class="fn-block" id="SIMULATED_ROUTE_IS_LOADED">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/SIMULATED_ROUTE_IS_LOADED.html">SIMULATED_ROUTE_IS_LOADED</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x240915043CB799D7</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::SIMULATED_ROUTE_IS_LOADED</code></div>
+</section>
+<section class="fn-block" id="SIMULATED_ROUTE_TRAVEL_TO_POINT">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/SIMULATED_ROUTE_TRAVEL_TO_POINT.html">SIMULATED_ROUTE_TRAVEL_TO_POINT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA1A3DE1C215C7394</code> &middot; 3 args &middot; rust: <code>rrdr_natives::pathfind::SIMULATED_ROUTE_TRAVEL_TO_POINT</code></div>
+</section>
+<section class="fn-block" id="_0x264E9A5CD78C338F">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0x264E9A5CD78C338F.html">_0x264E9A5CD78C338F</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x264E9A5CD78C338F</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_0x264E9A5CD78C338F</code></div>
+</section>
+<section class="fn-block" id="_0x34C9AF25649172D0">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0x34C9AF25649172D0.html">_0x34C9AF25649172D0</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x34C9AF25649172D0</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_0x34C9AF25649172D0</code></div>
+</section>
+<section class="fn-block" id="_0x4358BCF14C91761C">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0x4358BCF14C91761C.html">_0x4358BCF14C91761C</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4358BCF14C91761C</code> &middot; 10 args &middot; rust: <code>rrdr_natives::pathfind::_0x4358BCF14C91761C</code></div>
+</section>
+<section class="fn-block" id="_0x4BDEBEA5702B97A9">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0x4BDEBEA5702B97A9.html">_0x4BDEBEA5702B97A9</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4BDEBEA5702B97A9</code> &middot; 6 args &middot; rust: <code>rrdr_natives::pathfind::_0x4BDEBEA5702B97A9</code></div>
+</section>
+<section class="fn-block" id="_0x54F4D7B6670FBB5A">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0x54F4D7B6670FBB5A.html">_0x54F4D7B6670FBB5A</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x54F4D7B6670FBB5A</code> &middot; 5 args &middot; rust: <code>rrdr_natives::pathfind::_0x54F4D7B6670FBB5A</code></div>
+</section>
+<section class="fn-block" id="_0x5A3B54ADDF5472A3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0x5A3B54ADDF5472A3.html">_0x5A3B54ADDF5472A3</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5A3B54ADDF5472A3</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_0x5A3B54ADDF5472A3</code></div>
+</section>
+<section class="fn-block" id="_0x5A4E1A41E3A02AD0">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0x5A4E1A41E3A02AD0.html">_0x5A4E1A41E3A02AD0</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5A4E1A41E3A02AD0</code> &middot; 3 args &middot; rust: <code>rrdr_natives::pathfind::_0x5A4E1A41E3A02AD0</code></div>
+</section>
+<section class="fn-block" id="_0x665B21666351CB37">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0x665B21666351CB37.html">_0x665B21666351CB37</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x665B21666351CB37</code> &middot; 3 args &middot; rust: <code>rrdr_natives::pathfind::_0x665B21666351CB37</code></div>
+</section>
+<section class="fn-block" id="_0x6C3F12ECEB6D2E2A">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0x6C3F12ECEB6D2E2A.html">_0x6C3F12ECEB6D2E2A</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x6C3F12ECEB6D2E2A</code> &middot; 8 args &middot; rust: <code>rrdr_natives::pathfind::_0x6C3F12ECEB6D2E2A</code></div>
+</section>
+<section class="fn-block" id="_0x6DAD6630AE4A74CB">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0x6DAD6630AE4A74CB.html">_0x6DAD6630AE4A74CB</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x6DAD6630AE4A74CB</code> &middot; 2 args &middot; rust: <code>rrdr_natives::pathfind::_0x6DAD6630AE4A74CB</code></div>
+</section>
+<section class="fn-block" id="_0x869A7015BD4606E9">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0x869A7015BD4606E9.html">_0x869A7015BD4606E9</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x869A7015BD4606E9</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_0x869A7015BD4606E9</code></div>
+</section>
+<section class="fn-block" id="_0xA33914B00CA55756">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0xA33914B00CA55756.html">_0xA33914B00CA55756</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">IntPtr</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA33914B00CA55756</code> &middot; 2 args &middot; rust: <code>rrdr_natives::pathfind::_0xA33914B00CA55756</code></div>
+</section>
+<section class="fn-block" id="_0xAFE2AE66F6251C66">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0xAFE2AE66F6251C66.html">_0xAFE2AE66F6251C66</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xAFE2AE66F6251C66</code> &middot; 8 args &middot; rust: <code>rrdr_natives::pathfind::_0xAFE2AE66F6251C66</code></div>
+</section>
+<section class="fn-block" id="_0xB03944057FD735BA">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0xB03944057FD735BA.html">_0xB03944057FD735BA</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB03944057FD735BA</code> &middot; 3 args &middot; rust: <code>rrdr_natives::pathfind::_0xB03944057FD735BA</code></div>
+</section>
+<section class="fn-block" id="_0xCA27A86CAA4E98ED">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0xCA27A86CAA4E98ED.html">_0xCA27A86CAA4E98ED</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCA27A86CAA4E98ED</code> &middot; 7 args &middot; rust: <code>rrdr_natives::pathfind::_0xCA27A86CAA4E98ED</code></div>
+</section>
+<section class="fn-block" id="_0xCF213A5FC3ABFC08">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0xCF213A5FC3ABFC08.html">_0xCF213A5FC3ABFC08</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCF213A5FC3ABFC08</code> &middot; 3 args &middot; rust: <code>rrdr_natives::pathfind::_0xCF213A5FC3ABFC08</code></div>
+</section>
+<section class="fn-block" id="_0xE5EF9DE716FF737E">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0xE5EF9DE716FF737E.html">_0xE5EF9DE716FF737E</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE5EF9DE716FF737E</code> &middot; 3 args &middot; rust: <code>rrdr_natives::pathfind::_0xE5EF9DE716FF737E</code></div>
+</section>
+<section class="fn-block" id="_0xEFC535C9FAF563B3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0xEFC535C9FAF563B3.html">_0xEFC535C9FAF563B3</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xEFC535C9FAF563B3</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_0xEFC535C9FAF563B3</code></div>
+</section>
+<section class="fn-block" id="_0xF2A2177AC848B3A8">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_0xF2A2177AC848B3A8.html">_0xF2A2177AC848B3A8</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock">GPS disabled zone: p1 = 0
+Clearing GPS disabled zone: p1 = 1</div>
+<div class="fn-meta"><code>0xF2A2177AC848B3A8</code> &middot; 3 args &middot; rust: <code>rrdr_natives::pathfind::_0xF2A2177AC848B3A8</code></div>
+</section>
+<section class="fn-block" id="_ADD_NAVMESH_BLOCKING_VOLUME">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_ADD_NAVMESH_BLOCKING_VOLUME.html">_ADD_NAVMESH_BLOCKING_VOLUME</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">flags</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x19C7567D2F2287D6</code> &middot; 2 args &middot; rust: <code>rrdr_natives::pathfind::_ADD_NAVMESH_BLOCKING_VOLUME</code></div>
+</section>
+<section class="fn-block" id="_DOES_NAVMESH_BLOCKING_VOLUME_EXIST">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_DOES_NAVMESH_BLOCKING_VOLUME_EXIST.html">_DOES_NAVMESH_BLOCKING_VOLUME_EXIST</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xDE0EA444735C1368</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_DOES_NAVMESH_BLOCKING_VOLUME_EXIST</code></div>
+</section>
+<section class="fn-block" id="_GET_SPAWN_DATA_FOR_ROAD_NODE">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_GET_SPAWN_DATA_FOR_ROAD_NODE.html">_GET_SPAWN_DATA_FOR_ROAD_NODE</a> <span class="paren">(</span><span class="p-name">nodeId</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">outCoords</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">heading</span><span class="p-sep">:</span> <span class="p-type">float*</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA3791B915B8B84C6</code> &middot; 6 args &middot; rust: <code>rrdr_natives::pathfind::_GET_SPAWN_DATA_FOR_ROAD_NODE</code></div>
+</section>
+<section class="fn-block" id="_GET_SPAWN_DATA_FOR_ROAD_NODE_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_GET_SPAWN_DATA_FOR_ROAD_NODE_VEC3.html">_GET_SPAWN_DATA_FOR_ROAD_NODE</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">nodeId</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">outCoords</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">heading</span><span class="p-sep">:</span> <span class="p-type">float*</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA3791B915B8B84C6</code> &middot; 4 args &middot; rust: <code>rrdr_natives::pathfind::_GET_SPAWN_DATA_FOR_ROAD_NODE_VEC3</code></div>
+</section>
+<section class="fn-block" id="_NAVMESH_ACTIVATE_SWAP">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_NAVMESH_ACTIVATE_SWAP.html">_NAVMESH_ACTIVATE_SWAP</a> <span class="paren">(</span><span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7C334FF4D9215912</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_NAVMESH_ACTIVATE_SWAP</code></div>
+</section>
+<section class="fn-block" id="_NAVMESH_ASSIGN_NAVMESH_TO_VEHICLE">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_NAVMESH_ASSIGN_NAVMESH_TO_VEHICLE.html">_NAVMESH_ASSIGN_NAVMESH_TO_VEHICLE</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">navMeshName</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x44026E3DB3CED602</code> &middot; 2 args &middot; rust: <code>rrdr_natives::pathfind::_NAVMESH_ASSIGN_NAVMESH_TO_VEHICLE</code></div>
+</section>
+<section class="fn-block" id="_NAVMESH_CLEAR_REQUESTED_PATH">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_NAVMESH_CLEAR_REQUESTED_PATH.html">_NAVMESH_CLEAR_REQUESTED_PATH</a> <span class="paren">(</span><span class="p-name">path</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Called in scripts after finished with requested pathes. Immediately resets all values connected to the path handle except query status, which changes from 1 to 2 before eventually becoming fully invalidated to 0.</div>
+<div class="fn-meta"><code>0x661BB1E1FF77742D</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_NAVMESH_CLEAR_REQUESTED_PATH</code></div>
+</section>
+<section class="fn-block" id="_NAVMESH_DEACTIVATE_SWAP">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_NAVMESH_DEACTIVATE_SWAP.html">_NAVMESH_DEACTIVATE_SWAP</a> <span class="paren">(</span><span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x527B97C203BB8606</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_NAVMESH_DEACTIVATE_SWAP</code></div>
+</section>
+<section class="fn-block" id="_NAVMESH_DOES_SWAP_EXIST">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_NAVMESH_DOES_SWAP_EXIST.html">_NAVMESH_DOES_SWAP_EXIST</a> <span class="paren">(</span><span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x495CFAB2924237C7</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_NAVMESH_DOES_SWAP_EXIST</code></div>
+</section>
+<section class="fn-block" id="_NAVMESH_IS_SWAP_ACTIVE">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_NAVMESH_IS_SWAP_ACTIVE.html">_NAVMESH_IS_SWAP_ACTIVE</a> <span class="paren">(</span><span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5AC0944C156E5F44</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_NAVMESH_IS_SWAP_ACTIVE</code></div>
+</section>
+<section class="fn-block" id="_NAVMESH_REQUESTED_PATH_NUM_WAYPOINTS">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_NAVMESH_REQUESTED_PATH_NUM_WAYPOINTS.html">_NAVMESH_REQUESTED_PATH_NUM_WAYPOINTS</a> <span class="paren">(</span><span class="p-name">path</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">Returns the number of waypoints for a requested path (NAVMESH_REQUEST_PATH) if the query is completed (_NAVMESH_REQUESTED_QUERY_STATUS). For use with _NAVMESH_REQUESTED_PATH_WAYPOINT_BY_INDEX</div>
+<div class="fn-meta"><code>0xD470725E0703D22F</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_NAVMESH_REQUESTED_PATH_NUM_WAYPOINTS</code></div>
+</section>
+<section class="fn-block" id="_NAVMESH_REQUESTED_PATH_WAYPOINTS_FOUND">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_NAVMESH_REQUESTED_PATH_WAYPOINTS_FOUND.html">_NAVMESH_REQUESTED_PATH_WAYPOINTS_FOUND</a> <span class="paren">(</span><span class="p-name">path</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Returns true if a path of waypoints was found. Waypoints can be retrieved with _NAVMESH_REQUESTED_PATH_NUM_WAYPOINTS and _NAVMESH_REQUESTED_PATH_WAYPOINT_BY_INDEX</div>
+<div class="fn-meta"><code>0x8800776E410EB669</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_NAVMESH_REQUESTED_PATH_WAYPOINTS_FOUND</code></div>
+</section>
+<section class="fn-block" id="_NAVMESH_REQUESTED_PATH_WAYPOINTS_TERRAIN">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_NAVMESH_REQUESTED_PATH_WAYPOINTS_TERRAIN.html">_NAVMESH_REQUESTED_PATH_WAYPOINTS_TERRAIN</a> <span class="paren">(</span><span class="p-name">path</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">Returns a bit flag for seemingly terrain within the waypoints in the path. Checked against bit value 2 to match water in the path, seems to always contain at least 1 though regardless of location/ped.</div>
+<div class="fn-meta"><code>0xF61CFEDEAB627BFA</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_NAVMESH_REQUESTED_PATH_WAYPOINTS_TERRAIN</code></div>
+</section>
+<section class="fn-block" id="_NAVMESH_REQUESTED_PATH_WAYPOINT_BY_INDEX">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_NAVMESH_REQUESTED_PATH_WAYPOINT_BY_INDEX.html">_NAVMESH_REQUESTED_PATH_WAYPOINT_BY_INDEX</a> <span class="paren">(</span><span class="p-name">path</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">waypointIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">Vector3</span></h3>
+<div class="docblock">Returns a vector3 waypoint at the specified index for a path. Use _NAVMESH_REQUESTED_PATH_NUM_WAYPOINTS to get available indexes.</div>
+<div class="fn-meta"><code>0x430F8319AE56C8A9</code> &middot; 2 args &middot; rust: <code>rrdr_natives::pathfind::_NAVMESH_REQUESTED_PATH_WAYPOINT_BY_INDEX</code></div>
+</section>
+<section class="fn-block" id="_NAVMESH_REQUESTED_QUERY_STATUS">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_NAVMESH_REQUESTED_QUERY_STATUS.html">_NAVMESH_REQUESTED_QUERY_STATUS</a> <span class="paren">(</span><span class="p-name">path</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">Returns eNavMeshQueryStatus
+enum eNavMeshQueryStatus
+{
+QS_NOT_FOUND,
+QS_COMPLETE,
+QS_PENDING
+};
+
+It appears that the pending state of 2 is at least also used when cleaning up a request (_NAVMESH_CLEAR_REQUESTED_PATH) or if a request never completes. Eventually queries are invalidated and return 0.
+
+Old name: _NAVMESH_QUERY_STATUS</div>
+<div class="fn-meta"><code>0x3A0F82F6EE2291C8</code> &middot; old name <code>_NAVMESH_QUERY_STATUS</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_NAVMESH_REQUESTED_QUERY_STATUS</code></div>
+</section>
+<section class="fn-block" id="_REMOVE_NAVMESH_BLOCKING_VOLUME">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_REMOVE_NAVMESH_BLOCKING_VOLUME.html">_REMOVE_NAVMESH_BLOCKING_VOLUME</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2C87C3E1C7B96EE2</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_REMOVE_NAVMESH_BLOCKING_VOLUME</code></div>
+</section>
+<section class="fn-block" id="_SIMULATED_ROUTE_CREATE">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_SIMULATED_ROUTE_CREATE.html">_SIMULATED_ROUTE_CREATE</a> <span class="paren">(</span><span class="p-name">x1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">x2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFD5BB35AAB83FD48</code> &middot; 7 args &middot; rust: <code>rrdr_natives::pathfind::_SIMULATED_ROUTE_CREATE</code></div>
+</section>
+<section class="fn-block" id="_SIMULATED_ROUTE_CREATE_VEC3">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_SIMULATED_ROUTE_CREATE_VEC3.html">_SIMULATED_ROUTE_CREATE</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec1</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">vec2</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFD5BB35AAB83FD48</code> &middot; 3 args &middot; rust: <code>rrdr_natives::pathfind::_SIMULATED_ROUTE_CREATE_VEC3</code></div>
+</section>
+<section class="fn-block" id="_SIMULATED_ROUTE_DELETE">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_SIMULATED_ROUTE_DELETE.html">_SIMULATED_ROUTE_DELETE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4907D0E4FB26EE65</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_SIMULATED_ROUTE_DELETE</code></div>
+</section>
+<section class="fn-block" id="_SIMULATED_ROUTE_EXISTS">
+<h3 class="code-header"><span class="fn-mod">PATHFIND::</span><a class="fn-name" href="n/pathfind/_SIMULATED_ROUTE_EXISTS.html">_SIMULATED_ROUTE_EXISTS</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x65A8196B8D7F5E0B</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::pathfind::_SIMULATED_ROUTE_EXISTS</code></div>
+</section>
+</section>
+</main>
+<script src="search-index.js?v=7501"></script>
+<script src="static/search.js?v=7501" data-root=""></script>
+</body></html>

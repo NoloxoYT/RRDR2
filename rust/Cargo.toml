@@ -1,0 +1,22 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/rrdr-bridge",
+    "crates/rrdr-natives",
+    "crates/rrdr-game",
+    "crates/realistic-damages",
+    "crates/better_economy",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://example.invalid/RealisticDamages"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "unwind"
+strip = "symbols"

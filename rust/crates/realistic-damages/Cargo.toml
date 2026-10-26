@@ -1,0 +1,16 @@
+[package]
+name = "realistic-damages"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Example Rust core for the RDR2 Rust bridge"
+
+[lib]
+name = "RealisticDamagesCore"
+crate-type = ["cdylib", "rlib"]
+path = "src/lib.rs"
+
+[dependencies]
+rrdr-bridge = { path = "../rrdr-bridge" }
+rrdr-game = { path = "../rrdr-game" }
+rrdr-natives = { path = "../rrdr-natives" }

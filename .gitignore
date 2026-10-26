@@ -1,0 +1,13 @@
+rust/target/
+build_tools/target/
+**/bin/
+**/obj/
+dist/
+.vs/
+*.user
+*.log
+site/natives/
+docs/natives/
+build
+build.exe
+__pycache__/

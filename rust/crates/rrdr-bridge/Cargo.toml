@@ -1,0 +1,10 @@
+[package]
+name = "rrdr-bridge"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Rust <-> ScriptHookRDR2DotNet bridge: native call ABI, Mod trait and loader glue"
+
+[lib]
+name = "rrdr_bridge"
+path = "src/lib.rs"

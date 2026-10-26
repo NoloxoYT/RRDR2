@@ -1,0 +1,14 @@
+[package]
+name = "rrdr-game"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "High-level Rust object API for Red Dead Redemption 2"
+
+[lib]
+name = "rrdr_game"
+path = "src/lib.rs"
+
+[dependencies]
+rrdr-bridge = { path = "../rrdr-bridge" }
+rrdr-natives = { path = "../rrdr-natives" }

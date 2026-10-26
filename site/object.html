@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rrdr_natives::object - RRDR natives</title>
+<link rel="stylesheet" href="static/normalize.css">
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/favicon.svg">
+</head><body>
+
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <img class="brand-mark" src="static/logo.svg" alt="RRDR" width="24" height="24" />
+    <span class="brand-text">rrdr<span class="brand-dim">.natives</span></span>
+  </a>
+
+<div class="live-search">
+  <label for="search-input" class="sr-only">Search natives</label>
+  <span class="hs-icon">&#8902;</span>
+  <input id="search-input" type="text" autocomplete="off" spellcheck="false"
+         placeholder="Search natives - name or description" tabindex="-1" />
+  <span class="hs-hint" title="Press / to focus">/</span>
+  <div class="live-results" id="live-results" hidden></div>
+</div>
+
+</header>
+
+<nav class="sidebar">
+<div class="side-crate"><a href="index.html">rrdr_natives</a></div>
+<h3 class="side-bucket dim">Ped related</h3>
+<a class="side-mod" href="ped.html">ped<span class="count">1051</span></a>
+<a class="side-mod" href="perschar.html">perschar<span class="count">51</span></a>
+<a class="side-mod" href="companion.html">companion<span class="count">25</span></a>
+<a class="side-mod" href="population.html">population<span class="count">32</span></a>
+<a class="side-mod" href="brain.html">brain<span class="count">11</span></a>
+<a class="side-mod" href="ik.html">ik<span class="count">5</span></a>
+<a class="side-mod" href="attribute.html">attribute<span class="count">27</span></a>
+<a class="side-mod" href="task.html">task<span class="count">706</span></a>
+<a class="side-mod" href="animscene.html">animscene<span class="count">100</span></a>
+<a class="side-mod" href="flock.html">flock<span class="count">47</span></a>
+<a class="side-mod" href="interaction.html">interaction<span class="count">6</span></a>
+<h3 class="side-bucket dim">Player related</h3>
+<a class="side-mod" href="player.html">player<span class="count">397</span></a>
+<a class="side-mod" href="stats.html">stats<span class="count">89</span></a>
+<a class="side-mod" href="law.html">law<span class="count">131</span></a>
+<a class="side-mod" href="money.html">money<span class="count">8</span></a>
+<a class="side-mod" href="bounty.html">bounty<span class="count">33</span></a>
+<a class="side-mod" href="posse.html">posse<span class="count">31</span></a>
+<a class="side-mod" href="crew.html">crew<span class="count">18</span></a>
+<h3 class="side-bucket">World related</h3>
+<a class="side-mod" href="entity.html">entity<span class="count">295</span></a>
+<a class="side-mod active" href="object.html">object<span class="count">166</span></a>
+<a class="side-mod" href="misc.html">misc<span class="count">303</span></a>
+<a class="side-mod" href="fire.html">fire<span class="count">43</span></a>
+<a class="side-mod" href="water.html">water<span class="count">21</span></a>
+<a class="side-mod" href="zone.html">zone<span class="count">4</span></a>
+<a class="side-mod" href="map.html">map<span class="count">94</span></a>
+<a class="side-mod" href="pathfind.html">pathfind<span class="count">92</span></a>
+<a class="side-mod" href="interior.html">interior<span class="count">35</span></a>
+<a class="side-mod" href="volume.html">volume<span class="count">99</span></a>
+<a class="side-mod" href="physics.html">physics<span class="count">78</span></a>
+<a class="side-mod" href="graphics.html">graphics<span class="count">297</span></a>
+<a class="side-mod" href="clock.html">clock<span class="count">19</span></a>
+<a class="side-mod" href="streaming.html">streaming<span class="count">124</span></a>
+<a class="side-mod" href="shapetest.html">shapetest<span class="count">13</span></a>
+<a class="side-mod" href="event.html">event<span class="count">42</span></a>
+<a class="side-mod" href="collection.html">collection<span class="count">31</span></a>
+<h3 class="side-bucket dim">Vehicles</h3>
+<a class="side-mod" href="vehicle.html">vehicle<span class="count">408</span></a>
+<a class="side-mod" href="aitransport.html">aitransport<span class="count">24</span></a>
+<a class="side-mod" href="aicoverpoint.html">aicoverpoint<span class="count">17</span></a>
+<h3 class="side-bucket dim">Camera</h3>
+<a class="side-mod" href="cam.html">cam<span class="count">248</span></a>
+<a class="side-mod" href="txd.html">txd<span class="count">8</span></a>
+<h3 class="side-bucket dim">Audio</h3>
+<a class="side-mod" href="audio.html">audio<span class="count">229</span></a>
+<a class="side-mod" href="voice.html">voice<span class="count">24</span></a>
+<h3 class="side-bucket dim">UI &amp; Input</h3>
+<a class="side-mod" href="hud.html">hud<span class="count">190</span></a>
+<a class="side-mod" href="pad.html">pad<span class="count">40</span></a>
+<a class="side-mod" href="minigame.html">minigame<span class="count">48</span></a>
+<a class="side-mod" href="localization.html">localization<span class="count">4</span></a>
+<a class="side-mod" href="uiapps.html">uiapps<span class="count">19</span></a>
+<a class="side-mod" href="uidebug.html">uidebug<span class="count">3</span></a>
+<a class="side-mod" href="uievents.html">uievents<span class="count">4</span></a>
+<a class="side-mod" href="uifeed.html">uifeed<span class="count">27</span></a>
+<a class="side-mod" href="uilog.html">uilog<span class="count">31</span></a>
+<a class="side-mod" href="uipinning.html">uipinning<span class="count">1</span></a>
+<a class="side-mod" href="uitutorial.html">uitutorial<span class="count">3</span></a>
+<a class="side-mod" href="uistatemachine.html">uistatemachine<span class="count">12</span></a>
+<a class="side-mod" href="uistickyfeed.html">uistickyfeed<span class="count">8</span></a>
+<a class="side-mod" href="compapp.html">compapp<span class="count">5</span></a>
+<h3 class="side-bucket dim">AI &amp; Scripts</h3>
+<a class="side-mod" href="missiondata.html">missiondata<span class="count">18</span></a>
+<a class="side-mod" href="scripts.html">scripts<span class="count">94</span></a>
+<a class="side-mod" href="spactionproxy.html">spactionproxy<span class="count">6</span></a>
+<a class="side-mod" href="recording.html">recording<span class="count">1</span></a>
+<a class="side-mod" href="replay.html">replay<span class="count">5</span></a>
+<h3 class="side-bucket dim">Data &amp; Storage</h3>
+<a class="side-mod" href="datafile.html">datafile<span class="count">59</span></a>
+<a class="side-mod" href="decorator.html">decorator<span class="count">15</span></a>
+<a class="side-mod" href="databinding.html">databinding<span class="count">82</span></a>
+<a class="side-mod" href="inventory.html">inventory<span class="count">83</span></a>
+<a class="side-mod" href="itemdatabase.html">itemdatabase<span class="count">84</span></a>
+<a class="side-mod" href="itemset.html">itemset<span class="count">11</span></a>
+<a class="side-mod" href="dlc.html">dlc<span class="count">4</span></a>
+<a class="side-mod" href="save.html">save<span class="count">24</span></a>
+<a class="side-mod" href="persistence.html">persistence<span class="count">26</span></a>
+<a class="side-mod" href="netshopping.html">netshopping<span class="count">24</span></a>
+<a class="side-mod" href="unlock.html">unlock<span class="count">9</span></a>
+<h3 class="side-bucket dim">Online &amp; Telemetry</h3>
+<a class="side-mod" href="network.html">network<span class="count">571</span></a>
+<a class="side-mod" href="socialclub.html">socialclub<span class="count">33</span></a>
+<a class="side-mod" href="socialclubfeed.html">socialclubfeed<span class="count">2</span></a>
+<a class="side-mod" href="telemetry.html">telemetry<span class="count">78</span></a>
+<a class="side-mod" href="google_analytics.html">google_analytics<span class="count">4</span></a>
+<h3 class="side-bucket dim">System &amp; Utility</h3>
+<a class="side-mod" href="builtin.html">builtin<span class="count">26</span></a>
+<a class="side-mod" href="debug.html">debug<span class="count">3</span></a>
+<a class="side-mod" href="crashlog.html">crashlog<span class="count">14</span></a>
+<a class="side-mod" href="queue.html">queue<span class="count">2</span></a>
+<a class="side-mod" href="_namespace4.html">_namespace4<span class="count">1</span></a>
+<a class="side-mod" href="compendium.html">compendium<span class="count">36</span></a>
+<h3 class="side-bucket">Functions</h3>
+<a class="side-fn" href="n/object/ALLOW_DAMAGE_EVENTS_FOR_NON_NETWORKED_OBJECTS.html">ALLOW_DAMAGE_EVENTS_FOR_NON_NETWORKED_OBJECTS</a>
+<a class="side-fn" href="n/object/ATTACH_PORTABLE_PICKUP_TO_PED.html">ATTACH_PORTABLE_PICKUP_TO_PED</a>
+<a class="side-fn" href="n/object/BLOCK_PICKUP_FROM_PLAYER_COLLECTION.html">BLOCK_PICKUP_FROM_PLAYER_COLLECTION</a>
+<a class="side-fn" href="n/object/BREAK_ALL_OBJECT_FRAGMENT_BONES.html">BREAK_ALL_OBJECT_FRAGMENT_BONES</a>
+<a class="side-fn" href="n/object/BREAK_OBJECT_FRAGMENT_CHILD.html">BREAK_OBJECT_FRAGMENT_CHILD</a>
+<a class="side-fn" href="n/object/CONVERT_OLD_PICKUP_TYPE_TO_NEW.html">CONVERT_OLD_PICKUP_TYPE_TO_NEW</a>
+<a class="side-fn" href="n/object/CREATE_AMBIENT_PICKUP.html">CREATE_AMBIENT_PICKUP</a>
+<a class="side-fn" href="n/object/CREATE_AMBIENT_PICKUP_VEC3.html">CREATE_AMBIENT_PICKUP</a>
+<a class="side-fn" href="n/object/CREATE_OBJECT.html">CREATE_OBJECT</a>
+<a class="side-fn" href="n/object/CREATE_OBJECT_NO_OFFSET.html">CREATE_OBJECT_NO_OFFSET</a>
+<a class="side-fn" href="n/object/CREATE_OBJECT_NO_OFFSET_VEC3.html">CREATE_OBJECT_NO_OFFSET</a>
+<a class="side-fn" href="n/object/CREATE_OBJECT_SKELETON.html">CREATE_OBJECT_SKELETON</a>
+<a class="side-fn" href="n/object/CREATE_OBJECT_VEC3.html">CREATE_OBJECT</a>
+<a class="side-fn" href="n/object/CREATE_PICKUP.html">CREATE_PICKUP</a>
+<a class="side-fn" href="n/object/CREATE_PICKUP_ROTATE.html">CREATE_PICKUP_ROTATE</a>
+<a class="side-fn" href="n/object/CREATE_PICKUP_ROTATE_VEC3.html">CREATE_PICKUP_ROTATE</a>
+<a class="side-fn" href="n/object/CREATE_PICKUP_VEC3.html">CREATE_PICKUP</a>
+<a class="side-fn" href="n/object/CREATE_PORTABLE_PICKUP.html">CREATE_PORTABLE_PICKUP</a>
+<a class="side-fn" href="n/object/CREATE_PORTABLE_PICKUP_VEC3.html">CREATE_PORTABLE_PICKUP</a>
+<a class="side-fn" href="n/object/DELETE_OBJECT.html">DELETE_OBJECT</a>
+<a class="side-fn" href="n/object/DETACH_PORTABLE_PICKUP_FROM_PED.html">DETACH_PORTABLE_PICKUP_FROM_PED</a>
+<a class="side-fn" href="n/object/DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS.html">DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS</a>
+<a class="side-fn" href="n/object/DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS_VEC3.html">DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS</a>
+<a class="side-fn" href="n/object/DOES_PICKUP_EXIST.html">DOES_PICKUP_EXIST</a>
+<a class="side-fn" href="n/object/DOES_PICKUP_OBJECT_EXIST.html">DOES_PICKUP_OBJECT_EXIST</a>
+<a class="side-fn" href="n/object/DOES_PICKUP_OF_TYPE_EXIST_IN_AREA.html">DOES_PICKUP_OF_TYPE_EXIST_IN_AREA</a>
+<a class="side-fn" href="n/object/DOES_PICKUP_OF_TYPE_EXIST_IN_AREA_VEC3.html">DOES_PICKUP_OF_TYPE_EXIST_IN_AREA</a>
+<a class="side-fn" href="n/object/DOES_RAYFIRE_MAP_OBJECT_EXIST.html">DOES_RAYFIRE_MAP_OBJECT_EXIST</a>
+<a class="side-fn" href="n/object/DOOR_SYSTEM_GET_DOOR_STATE.html">DOOR_SYSTEM_GET_DOOR_STATE</a>
+<a class="side-fn" href="n/object/DOOR_SYSTEM_GET_OPEN_RATIO.html">DOOR_SYSTEM_GET_OPEN_RATIO</a>
+<a class="side-fn" href="n/object/DOOR_SYSTEM_SET_AUTOMATIC_DISTANCE.html">DOOR_SYSTEM_SET_AUTOMATIC_DISTANCE</a>
+<a class="side-fn" href="n/object/DOOR_SYSTEM_SET_AUTOMATIC_RATE.html">DOOR_SYSTEM_SET_AUTOMATIC_RATE</a>
+<a class="side-fn" href="n/object/DOOR_SYSTEM_SET_DOOR_STATE.html">DOOR_SYSTEM_SET_DOOR_STATE</a>
+<a class="side-fn" href="n/object/DOOR_SYSTEM_SET_OPEN_RATIO.html">DOOR_SYSTEM_SET_OPEN_RATIO</a>
+<a class="side-fn" href="n/object/FIX_OBJECT_FRAGMENT.html">FIX_OBJECT_FRAGMENT</a>
+<a class="side-fn" href="n/object/FORCE_PICKUP_REGENERATE.html">FORCE_PICKUP_REGENERATE</a>
+<a class="side-fn" href="n/object/GET_CLOSEST_OBJECT_OF_TYPE.html">GET_CLOSEST_OBJECT_OF_TYPE</a>
+<a class="side-fn" href="n/object/GET_CLOSEST_OBJECT_OF_TYPE_VEC3.html">GET_CLOSEST_OBJECT_OF_TYPE</a>
+<a class="side-fn" href="n/object/GET_OBJECT_FRAGMENT_DAMAGE_HEALTH.html">GET_OBJECT_FRAGMENT_DAMAGE_HEALTH</a>
+<a class="side-fn" href="n/object/GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS.html">GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS</a>
+<a class="side-fn" href="n/object/GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS_VEC3.html">GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS</a>
+<a class="side-fn" href="n/object/GET_PICKUP_COORDS.html">GET_PICKUP_COORDS</a>
+<a class="side-fn" href="n/object/GET_PICKUP_OBJECT.html">GET_PICKUP_OBJECT</a>
+<a class="side-fn" href="n/object/GET_RAYFIRE_MAP_OBJECT.html">GET_RAYFIRE_MAP_OBJECT</a>
+<a class="side-fn" href="n/object/GET_RAYFIRE_MAP_OBJECT_ANIM_PHASE.html">GET_RAYFIRE_MAP_OBJECT_ANIM_PHASE</a>
+<a class="side-fn" href="n/object/GET_RAYFIRE_MAP_OBJECT_VEC3.html">GET_RAYFIRE_MAP_OBJECT</a>
+<a class="side-fn" href="n/object/GET_SAFE_PICKUP_COORDS.html">GET_SAFE_PICKUP_COORDS</a>
+<a class="side-fn" href="n/object/GET_STATE_OF_RAYFIRE_MAP_OBJECT.html">GET_STATE_OF_RAYFIRE_MAP_OBJECT</a>
+<a class="side-fn" href="n/object/GET_WEAPON_TYPE_FROM_PICKUP_TYPE.html">GET_WEAPON_TYPE_FROM_PICKUP_TYPE</a>
+<a class="side-fn" href="n/object/HAS_CLOSEST_OBJECT_OF_TYPE_BEEN_BROKEN.html">HAS_CLOSEST_OBJECT_OF_TYPE_BEEN_BROKEN</a>
+<a class="side-fn" href="n/object/HAS_OBJECT_BEEN_BROKEN.html">HAS_OBJECT_BEEN_BROKEN</a>
+<a class="side-fn" href="n/object/HAS_PICKUP_BEEN_COLLECTED.html">HAS_PICKUP_BEEN_COLLECTED</a>
+<a class="side-fn" href="n/object/IS_DOOR_CLOSED.html">IS_DOOR_CLOSED</a>
+<a class="side-fn" href="n/object/IS_DOOR_REGISTERED_WITH_SYSTEM.html">IS_DOOR_REGISTERED_WITH_SYSTEM</a>
+<a class="side-fn" href="n/object/IS_OBJECT_A_PORTABLE_PICKUP.html">IS_OBJECT_A_PORTABLE_PICKUP</a>
+<a class="side-fn" href="n/object/IS_OBJECT_VISIBLE.html">IS_OBJECT_VISIBLE</a>
+<a class="side-fn" href="n/object/IS_POINT_IN_ANGLED_AREA.html">IS_POINT_IN_ANGLED_AREA</a>
+<a class="side-fn" href="n/object/ONLY_CLEAN_UP_OBJECT_WHEN_OUT_OF_RANGE.html">ONLY_CLEAN_UP_OBJECT_WHEN_OUT_OF_RANGE</a>
+<a class="side-fn" href="n/object/PLACE_OBJECT_ON_GROUND_PROPERLY.html">PLACE_OBJECT_ON_GROUND_PROPERLY</a>
+<a class="side-fn" href="n/object/PREVENT_COLLECTION_OF_PORTABLE_PICKUP.html">PREVENT_COLLECTION_OF_PORTABLE_PICKUP</a>
+<a class="side-fn" href="n/object/REMOVE_ALL_PICKUPS_OF_TYPE.html">REMOVE_ALL_PICKUPS_OF_TYPE</a>
+<a class="side-fn" href="n/object/REMOVE_DOOR_FROM_SYSTEM.html">REMOVE_DOOR_FROM_SYSTEM</a>
+<a class="side-fn" href="n/object/REMOVE_PICKUP.html">REMOVE_PICKUP</a>
+<a class="side-fn" href="n/object/SET_ACTIVATE_OBJECT_PHYSICS_AS_SOON_AS_IT_IS_UNFROZEN.html">SET_ACTIVATE_OBJECT_PHYSICS_AS_SOON_AS_IT_IS_UNFROZEN</a>
+<a class="side-fn" href="n/object/SET_CUSTOM_TEXTURES_ON_OBJECT.html">SET_CUSTOM_TEXTURES_ON_OBJECT</a>
+<a class="side-fn" href="n/object/SET_FORCE_OBJECT_THIS_FRAME.html">SET_FORCE_OBJECT_THIS_FRAME</a>
+<a class="side-fn" href="n/object/SET_FORCE_OBJECT_THIS_FRAME_VEC3.html">SET_FORCE_OBJECT_THIS_FRAME</a>
+<a class="side-fn" href="n/object/SET_LOCAL_PLAYER_CAN_COLLECT_PORTABLE_PICKUPS.html">SET_LOCAL_PLAYER_CAN_COLLECT_PORTABLE_PICKUPS</a>
+<a class="side-fn" href="n/object/SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL.html">SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL</a>
+<a class="side-fn" href="n/object/SET_MAX_NUM_PORTABLE_PICKUPS_CARRIED_BY_PLAYER.html">SET_MAX_NUM_PORTABLE_PICKUPS_CARRIED_BY_PLAYER</a>
+<a class="side-fn" href="n/object/SET_OBJECT_ALLOW_LOW_LOD_BUOYANCY.html">SET_OBJECT_ALLOW_LOW_LOD_BUOYANCY</a>
+<a class="side-fn" href="n/object/SET_OBJECT_PHYSICS_PARAMS.html">SET_OBJECT_PHYSICS_PARAMS</a>
+<a class="side-fn" href="n/object/SET_OBJECT_TAKES_DAMAGE_FROM_COLLIDING_WITH_BUILDINGS.html">SET_OBJECT_TAKES_DAMAGE_FROM_COLLIDING_WITH_BUILDINGS</a>
+<a class="side-fn" href="n/object/SET_OBJECT_TARGETTABLE.html">SET_OBJECT_TARGETTABLE</a>
+<a class="side-fn" href="n/object/SET_OBJECT_TINT_INDEX.html">SET_OBJECT_TINT_INDEX</a>
+<a class="side-fn" href="n/object/SET_PICKUP_DO_NOT_AUTO_PLACE_ON_GROUND.html">SET_PICKUP_DO_NOT_AUTO_PLACE_ON_GROUND</a>
+<a class="side-fn" href="n/object/SET_PICKUP_GENERATION_RANGE_MULTIPLIER.html">SET_PICKUP_GENERATION_RANGE_MULTIPLIER</a>
+<a class="side-fn" href="n/object/SET_PICKUP_HIDDEN_WHEN_UNCOLLECTABLE.html">SET_PICKUP_HIDDEN_WHEN_UNCOLLECTABLE</a>
+<a class="side-fn" href="n/object/SET_PICKUP_NOT_LOOTABLE.html">SET_PICKUP_NOT_LOOTABLE</a>
+<a class="side-fn" href="n/object/SET_PICKUP_PARTICLE_FX_HIGHLIGHT.html">SET_PICKUP_PARTICLE_FX_HIGHLIGHT</a>
+<a class="side-fn" href="n/object/SET_PICKUP_PARTICLE_FX_SPAWN.html">SET_PICKUP_PARTICLE_FX_SPAWN</a>
+<a class="side-fn" href="n/object/SET_PICKUP_REGENERATION_TIME.html">SET_PICKUP_REGENERATION_TIME</a>
+<a class="side-fn" href="n/object/SET_PICKUP_UNCOLLECTABLE.html">SET_PICKUP_UNCOLLECTABLE</a>
+<a class="side-fn" href="n/object/SET_STATE_OF_RAYFIRE_MAP_OBJECT.html">SET_STATE_OF_RAYFIRE_MAP_OBJECT</a>
+<a class="side-fn" href="n/object/SET_TEAM_PICKUP_OBJECT.html">SET_TEAM_PICKUP_OBJECT</a>
+<a class="side-fn" href="n/object/SLIDE_OBJECT.html">SLIDE_OBJECT</a>
+<a class="side-fn" href="n/object/SLIDE_OBJECT_VEC3.html">SLIDE_OBJECT</a>
+<a class="side-fn" href="n/object/SUPPRESS_PICKUP_REWARD_TYPE.html">SUPPRESS_PICKUP_REWARD_TYPE</a>
+<a class="side-fn" href="n/object/TRACK_OBJECT_VISIBILITY.html">TRACK_OBJECT_VISIBILITY</a>
+<a class="side-fn" href="n/object/_0x08C5825A2932EA7B.html">_0x08C5825A2932EA7B</a>
+<a class="side-fn" href="n/object/_0x0943113E02322164.html">_0x0943113E02322164</a>
+<a class="side-fn" href="n/object/_0x0C0A373D181BF900.html">_0x0C0A373D181BF900</a>
+<a class="side-fn" href="n/object/_0x1BC47A9DEDC8DF5D.html">_0x1BC47A9DEDC8DF5D</a>
+<a class="side-fn" href="n/object/_0x1F5E07E14A86FAFC.html">_0x1F5E07E14A86FAFC</a>
+<a class="side-fn" href="n/object/_0x20135AF9C10D2A3D.html">_0x20135AF9C10D2A3D</a>
+<a class="side-fn" href="n/object/_0x22031584496CFB70.html">_0x22031584496CFB70</a>
+<a class="side-fn" href="n/object/_0x235C863DA77BD88D.html">_0x235C863DA77BD88D</a>
+<a class="side-fn" href="n/object/_0x250EBB11E81A10BE.html">_0x250EBB11E81A10BE</a>
+<a class="side-fn" href="n/object/_0x2BF1953C0C21AC88.html">_0x2BF1953C0C21AC88</a>
+<a class="side-fn" href="n/object/_0x3A77DAE8B4FD7586.html">_0x3A77DAE8B4FD7586</a>
+<a class="side-fn" href="n/object/_0x3DF1A0A58498E209.html">_0x3DF1A0A58498E209</a>
+<a class="side-fn" href="n/object/_0x3E2616E7EA539480.html">_0x3E2616E7EA539480</a>
+<a class="side-fn" href="n/object/_0x46CBCF0E98A4E156.html">_0x46CBCF0E98A4E156</a>
+<a class="side-fn" href="n/object/_0x491439AEF410A2FC.html">_0x491439AEF410A2FC</a>
+<a class="side-fn" href="n/object/_0x4AE07EBA3462C5D5.html">_0x4AE07EBA3462C5D5</a>
+<a class="side-fn" href="n/object/_0x4D8611DFE1126478.html">_0x4D8611DFE1126478</a>
+<a class="side-fn" href="n/object/_0x5230BF34EB0EC645.html">_0x5230BF34EB0EC645</a>
+<a class="side-fn" href="n/object/_0x57C242543B7B8FB9.html">_0x57C242543B7B8FB9</a>
+<a class="side-fn" href="n/object/_0x58DE624FA7FB0E7F.html">_0x58DE624FA7FB0E7F</a>
+<a class="side-fn" href="n/object/_0x614D0B4533F842D3.html">_0x614D0B4533F842D3</a>
+<a class="side-fn" href="n/object/_0x6579860A5558524A.html">_0x6579860A5558524A</a>
+<a class="side-fn" href="n/object/_0x6E2AA80BB0C03728.html">_0x6E2AA80BB0C03728</a>
+<a class="side-fn" href="n/object/_0x7D4411D6736CD295.html">_0x7D4411D6736CD295</a>
+<a class="side-fn" href="n/object/_0x7F458B543006C8FE.html">_0x7F458B543006C8FE</a>
+<a class="side-fn" href="n/object/_0x7FCD49388BC9B775.html">_0x7FCD49388BC9B775</a>
+<a class="side-fn" href="n/object/_0x9A74A9CADFA8A598.html">_0x9A74A9CADFA8A598</a>
+<a class="side-fn" href="n/object/_0x9F52AD67D1A91BAD.html">_0x9F52AD67D1A91BAD</a>
+<a class="side-fn" href="n/object/_0xA93F925F1942E434.html">_0xA93F925F1942E434</a>
+<a class="side-fn" href="n/object/_0xAAACF33CBF9B990A.html">_0xAAACF33CBF9B990A</a>
+<a class="side-fn" href="n/object/_0xACD4F9831DFAD7F5.html">_0xACD4F9831DFAD7F5</a>
+<a class="side-fn" href="n/object/_0xAEE6C800E124CFE1.html">_0xAEE6C800E124CFE1</a>
+<a class="side-fn" href="n/object/_0xB3B1546D23DF8DE1.html">_0xB3B1546D23DF8DE1</a>
+<a class="side-fn" href="n/object/_0xC07B91B996C1DE89.html">_0xC07B91B996C1DE89</a>
+<a class="side-fn" href="n/object/_0xCAAF2BCCFEF37F77.html">_0xCAAF2BCCFEF37F77</a>
+<a class="side-fn" href="n/object/_0xCBFBD38F2E0A263B.html">_0xCBFBD38F2E0A263B</a>
+<a class="side-fn" href="n/object/_0xCEAB54F4632C6EF6.html">_0xCEAB54F4632C6EF6</a>
+<a class="side-fn" href="n/object/_0xD503D6F0986D58BC.html">_0xD503D6F0986D58BC</a>
+<a class="side-fn" href="n/object/_0xD91E55B6C005EB09.html">_0xD91E55B6C005EB09</a>
+<a class="side-fn" href="n/object/_0xDE116ECFFDD4B997.html">_0xDE116ECFFDD4B997</a>
+<a class="side-fn" href="n/object/_0xDFA1237F5228263F.html">_0xDFA1237F5228263F</a>
+<a class="side-fn" href="n/object/_0xE157A8A336C7F04A.html">_0xE157A8A336C7F04A</a>
+<a class="side-fn" href="n/object/_0xEBA314768FB35D58.html">_0xEBA314768FB35D58</a>
+<a class="side-fn" href="n/object/_0xF65EDE5D02A7A760.html">_0xF65EDE5D02A7A760</a>
+<a class="side-fn" href="n/object/_0xF6E88489B4E6EBE5.html">_0xF6E88489B4E6EBE5</a>
+<a class="side-fn" href="n/object/_0xFA99E8E575F2FEF8.html">_0xFA99E8E575F2FEF8</a>
+<a class="side-fn" href="n/object/_ADD_DOOR_TO_SYSTEM_NEW.html">_ADD_DOOR_TO_SYSTEM_NEW</a>
+<a class="side-fn" href="n/object/_DAMAGE_BONE_ON_PROP.html">_DAMAGE_BONE_ON_PROP</a>
+<a class="side-fn" href="n/object/_DOOR_SYSTEM_CHANGE_SCRIPT_OWNER.html">_DOOR_SYSTEM_CHANGE_SCRIPT_OWNER</a>
+<a class="side-fn" href="n/object/_DOOR_SYSTEM_FORCE_SHUT.html">_DOOR_SYSTEM_FORCE_SHUT</a>
+<a class="side-fn" href="n/object/_DOOR_SYSTEM_GET_AUTOMATIC_RATE.html">_DOOR_SYSTEM_GET_AUTOMATIC_RATE</a>
+<a class="side-fn" href="n/object/_DOOR_SYSTEM_SET_ABLE_TO_CHANGE_OPEN_RATIO_WHILE_LOCKED.html">_DOOR_SYSTEM_SET_ABLE_TO_CHANGE_OPEN_RATIO_WHILE_LOCKED</a>
+<a class="side-fn" href="n/object/_GET_AMMO_TYPE_FROM_PICKUP_TYPE.html">_GET_AMMO_TYPE_FROM_PICKUP_TYPE</a>
+<a class="side-fn" href="n/object/_GET_LIGHT_INTENSITY_FROM_OBJECT.html">_GET_LIGHT_INTENSITY_FROM_OBJECT</a>
+<a class="side-fn" href="n/object/_GET_OBJECT_LIGHT_INTENSITY.html">_GET_OBJECT_LIGHT_INTENSITY</a>
+<a class="side-fn" href="n/object/_HIDE_PICKUP_OBJECT.html">_HIDE_PICKUP_OBJECT</a>
+<a class="side-fn" href="n/object/_IS_DOOR_REGISTERED_WITH_NETWORK.html">_IS_DOOR_REGISTERED_WITH_NETWORK</a>
+<a class="side-fn" href="n/object/_IS_DOOR_REGISTERED_WITH_OWNER.html">_IS_DOOR_REGISTERED_WITH_OWNER</a>
+<a class="side-fn" href="n/object/_IS_PICKUP_TYPE_VALID.html">_IS_PICKUP_TYPE_VALID</a>
+<a class="side-fn" href="n/object/_MAKE_ITEM_CARRIABLE.html">_MAKE_ITEM_CARRIABLE</a>
+<a class="side-fn" href="n/object/_RESET_OBJECT_VELOCITY.html">_RESET_OBJECT_VELOCITY</a>
+<a class="side-fn" href="n/object/_SET_AMBIENT_PICKUP_LIFETIME.html">_SET_AMBIENT_PICKUP_LIFETIME</a>
+<a class="side-fn" href="n/object/_SET_AUTO_JUMPABLE_BY_HORSE.html">_SET_AUTO_JUMPABLE_BY_HORSE</a>
+<a class="side-fn" href="n/object/_SET_LIGHT_INTENSITY_FOR_OBJECT.html">_SET_LIGHT_INTENSITY_FOR_OBJECT</a>
+<a class="side-fn" href="n/object/_SET_LIGHT_SCATTERING_DISABLED_FOR_OBJECT.html">_SET_LIGHT_SCATTERING_DISABLED_FOR_OBJECT</a>
+<a class="side-fn" href="n/object/_SET_LIGHT_TRANSLUCENCY_FOR_OBJECT.html">_SET_LIGHT_TRANSLUCENCY_FOR_OBJECT</a>
+<a class="side-fn" href="n/object/_SET_NETWORK_PICKUP_USABLE_FOR_PLAYER.html">_SET_NETWORK_PICKUP_USABLE_FOR_PLAYER</a>
+<a class="side-fn" href="n/object/_SET_NOT_JUMPABLE_BY_HORSE.html">_SET_NOT_JUMPABLE_BY_HORSE</a>
+<a class="side-fn" href="n/object/_SET_OBJECT_BREAK_SCALE.html">_SET_OBJECT_BREAK_SCALE</a>
+<a class="side-fn" href="n/object/_SET_OBJECT_BURN_INTENSITY.html">_SET_OBJECT_BURN_INTENSITY</a>
+<a class="side-fn" href="n/object/_SET_OBJECT_BURN_LEVEL.html">_SET_OBJECT_BURN_LEVEL</a>
+<a class="side-fn" href="n/object/_SET_OBJECT_BURN_OPACITY.html">_SET_OBJECT_BURN_OPACITY</a>
+<a class="side-fn" href="n/object/_SET_OBJECT_BURN_SPEED.html">_SET_OBJECT_BURN_SPEED</a>
+<a class="side-fn" href="n/object/_SET_OBJECT_KICKABLE.html">_SET_OBJECT_KICKABLE</a>
+<a class="side-fn" href="n/object/_SET_OBJECT_TARGETTABLE_2.html">_SET_OBJECT_TARGETTABLE_2</a>
+<a class="side-fn" href="n/object/_SET_OBJECT_TARGETTABLE_FOCUS.html">_SET_OBJECT_TARGETTABLE_FOCUS</a>
+<a class="side-fn" href="n/object/_SET_PICKUP_COLLECTABLE_ON_MOUNT.html">_SET_PICKUP_COLLECTABLE_ON_MOUNT</a>
+</nav>
+<main class="content">
+<div class="doc-page-head">
+<h1 class="module-title"><span class="ns">rrdr_natives::</span>object</h1>
+<div class="crumb"><a href="index.html">World related</a> <span class="sep">&#8250;</span> <a href="object.html">object</a></div>
+<div class="mod-stats">166 functions &middot; 153 unique native hashes</div>
+</div>
+<section class="item-list">
+<section class="fn-block" id="ALLOW_DAMAGE_EVENTS_FOR_NON_NETWORKED_OBJECTS">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/ALLOW_DAMAGE_EVENTS_FOR_NON_NETWORKED_OBJECTS.html">ALLOW_DAMAGE_EVENTS_FOR_NON_NETWORKED_OBJECTS</a> <span class="paren">(</span><span class="p-name">enabled</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE2B3B852B537C398</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::ALLOW_DAMAGE_EVENTS_FOR_NON_NETWORKED_OBJECTS</code></div>
+</section>
+<section class="fn-block" id="ATTACH_PORTABLE_PICKUP_TO_PED">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/ATTACH_PORTABLE_PICKUP_TO_PED.html">ATTACH_PORTABLE_PICKUP_TO_PED</a> <span class="paren">(</span><span class="p-name">pickupObject</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">ped</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8DC39368BDD57755</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::ATTACH_PORTABLE_PICKUP_TO_PED</code></div>
+</section>
+<section class="fn-block" id="BLOCK_PICKUP_FROM_PLAYER_COLLECTION">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/BLOCK_PICKUP_FROM_PLAYER_COLLECTION.html">BLOCK_PICKUP_FROM_PLAYER_COLLECTION</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB8F5062070BB6DBD</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::BLOCK_PICKUP_FROM_PLAYER_COLLECTION</code></div>
+</section>
+<section class="fn-block" id="BREAK_ALL_OBJECT_FRAGMENT_BONES">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/BREAK_ALL_OBJECT_FRAGMENT_BONES.html">BREAK_ALL_OBJECT_FRAGMENT_BONES</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8462BE2341A55B6F</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::BREAK_ALL_OBJECT_FRAGMENT_BONES</code></div>
+</section>
+<section class="fn-block" id="BREAK_OBJECT_FRAGMENT_CHILD">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/BREAK_OBJECT_FRAGMENT_CHILD.html">BREAK_OBJECT_FRAGMENT_CHILD</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE7E4C198B0185900</code> &middot; 3 args &middot; rust: <code>rrdr_natives::object::BREAK_OBJECT_FRAGMENT_CHILD</code></div>
+</section>
+<section class="fn-block" id="CONVERT_OLD_PICKUP_TYPE_TO_NEW">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/CONVERT_OLD_PICKUP_TYPE_TO_NEW.html">CONVERT_OLD_PICKUP_TYPE_TO_NEW</a> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">uint</span></h3>
+<div class="docblock">Old name: _GET_PICKUP_HASH</div>
+<div class="fn-meta"><code>0x5EAAD83F8CFB4575</code> &middot; old name <code>_GET_PICKUP_HASH</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::CONVERT_OLD_PICKUP_TYPE_TO_NEW</code></div>
+</section>
+<section class="fn-block" id="CREATE_AMBIENT_PICKUP">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/CREATE_AMBIENT_PICKUP.html">CREATE_AMBIENT_PICKUP</a> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">flags</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">flags: see CREATE_PICKUP</div>
+<div class="fn-meta"><code>0x673966A0C0FD7171</code> &middot; 11 args &middot; rust: <code>rrdr_natives::object::CREATE_AMBIENT_PICKUP</code></div>
+</section>
+<section class="fn-block" id="CREATE_AMBIENT_PICKUP_VEC3">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/CREATE_AMBIENT_PICKUP_VEC3.html">CREATE_AMBIENT_PICKUP</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">flags</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x673966A0C0FD7171</code> &middot; 9 args &middot; rust: <code>rrdr_natives::object::CREATE_AMBIENT_PICKUP_VEC3</code></div>
+</section>
+<section class="fn-block" id="CREATE_OBJECT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/CREATE_OBJECT.html">CREATE_OBJECT</a> <span class="paren">(</span><span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">isNetwork</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">bScriptHostObj</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">dynamic</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x509D5878EB39E842</code> &middot; 9 args &middot; rust: <code>rrdr_natives::object::CREATE_OBJECT</code></div>
+</section>
+<section class="fn-block" id="CREATE_OBJECT_NO_OFFSET">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/CREATE_OBJECT_NO_OFFSET.html">CREATE_OBJECT_NO_OFFSET</a> <span class="paren">(</span><span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">isNetwork</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">bScriptHostObj</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">dynamic</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9A294B2138ABB884</code> &middot; 8 args &middot; rust: <code>rrdr_natives::object::CREATE_OBJECT_NO_OFFSET</code></div>
+</section>
+<section class="fn-block" id="CREATE_OBJECT_NO_OFFSET_VEC3">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/CREATE_OBJECT_NO_OFFSET_VEC3.html">CREATE_OBJECT_NO_OFFSET</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">isNetwork</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">bScriptHostObj</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">dynamic</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9A294B2138ABB884</code> &middot; 6 args &middot; rust: <code>rrdr_natives::object::CREATE_OBJECT_NO_OFFSET_VEC3</code></div>
+</section>
+<section class="fn-block" id="CREATE_OBJECT_SKELETON">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/CREATE_OBJECT_SKELETON.html">CREATE_OBJECT_SKELETON</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB6CBD40F8EA69E8A</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::CREATE_OBJECT_SKELETON</code></div>
+</section>
+<section class="fn-block" id="CREATE_OBJECT_VEC3">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/CREATE_OBJECT_VEC3.html">CREATE_OBJECT</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">isNetwork</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">bScriptHostObj</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">dynamic</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x509D5878EB39E842</code> &middot; 7 args &middot; rust: <code>rrdr_natives::object::CREATE_OBJECT_VEC3</code></div>
+</section>
+<section class="fn-block" id="CREATE_PICKUP">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/CREATE_PICKUP.html">CREATE_PICKUP</a> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">flags</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">https://github.com/Halen84/RDR3-Native-Flags-And-Enums/tree/main/Placement%20Flags
+https://github.com/femga/rdr3_discoveries/blob/master/objects/pickup_list.lua</div>
+<div class="fn-meta"><code>0xFBA08C503DD5FA58</code> &middot; 11 args &middot; rust: <code>rrdr_natives::object::CREATE_PICKUP</code></div>
+</section>
+<section class="fn-block" id="CREATE_PICKUP_ROTATE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/CREATE_PICKUP_ROTATE.html">CREATE_PICKUP_ROTATE</a> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">posX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">posY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">posZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">flags</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p12</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p13</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p14</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">flags: see CREATE_PICKUP</div>
+<div class="fn-meta"><code>0x891804727E0A98B7</code> &middot; 15 args &middot; rust: <code>rrdr_natives::object::CREATE_PICKUP_ROTATE</code></div>
+</section>
+<section class="fn-block" id="CREATE_PICKUP_ROTATE_VEC3">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/CREATE_PICKUP_ROTATE_VEC3.html">CREATE_PICKUP_ROTATE</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">pos</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">rot</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">flags</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p12</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p13</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p14</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x891804727E0A98B7</code> &middot; 11 args &middot; rust: <code>rrdr_natives::object::CREATE_PICKUP_ROTATE_VEC3</code></div>
+</section>
+<section class="fn-block" id="CREATE_PICKUP_VEC3">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/CREATE_PICKUP_VEC3.html">CREATE_PICKUP</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">flags</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFBA08C503DD5FA58</code> &middot; 9 args &middot; rust: <code>rrdr_natives::object::CREATE_PICKUP_VEC3</code></div>
+</section>
+<section class="fn-block" id="CREATE_PORTABLE_PICKUP">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/CREATE_PORTABLE_PICKUP.html">CREATE_PORTABLE_PICKUP</a> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">placeOnGround</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2EAF1FDB2FB55698</code> &middot; 6 args &middot; rust: <code>rrdr_natives::object::CREATE_PORTABLE_PICKUP</code></div>
+</section>
+<section class="fn-block" id="CREATE_PORTABLE_PICKUP_VEC3">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/CREATE_PORTABLE_PICKUP_VEC3.html">CREATE_PORTABLE_PICKUP</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">placeOnGround</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2EAF1FDB2FB55698</code> &middot; 4 args &middot; rust: <code>rrdr_natives::object::CREATE_PORTABLE_PICKUP_VEC3</code></div>
+</section>
+<section class="fn-block" id="DELETE_OBJECT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DELETE_OBJECT.html">DELETE_OBJECT</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int*</span><span class="paren">)</span></h3>
+<div class="docblock">Deletes the specified object, then sets the handle pointed to by the pointer to NULL.</div>
+<div class="fn-meta"><code>0x931914268722C263</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::DELETE_OBJECT</code></div>
+</section>
+<section class="fn-block" id="DETACH_PORTABLE_PICKUP_FROM_PED">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DETACH_PORTABLE_PICKUP_FROM_PED.html">DETACH_PORTABLE_PICKUP_FROM_PED</a> <span class="paren">(</span><span class="p-name">pickupObject</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCF463D1E9A0AECB1</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::DETACH_PORTABLE_PICKUP_FROM_PED</code></div>
+</section>
+<section class="fn-block" id="DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS.html">DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">hash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xBFA48E2FF417213F</code> &middot; 6 args &middot; rust: <code>rrdr_natives::object::DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS</code></div>
+</section>
+<section class="fn-block" id="DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS_VEC3">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS_VEC3.html">DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">hash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xBFA48E2FF417213F</code> &middot; 4 args &middot; rust: <code>rrdr_natives::object::DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS_VEC3</code></div>
+</section>
+<section class="fn-block" id="DOES_PICKUP_EXIST">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DOES_PICKUP_EXIST.html">DOES_PICKUP_EXIST</a> <span class="paren">(</span><span class="p-name">pickup</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xAFC1CA75AD4074D1</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::DOES_PICKUP_EXIST</code></div>
+</section>
+<section class="fn-block" id="DOES_PICKUP_OBJECT_EXIST">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DOES_PICKUP_OBJECT_EXIST.html">DOES_PICKUP_OBJECT_EXIST</a> <span class="paren">(</span><span class="p-name">pickupObject</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD9EFB6DBF7DAAEA3</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::DOES_PICKUP_OBJECT_EXIST</code></div>
+</section>
+<section class="fn-block" id="DOES_PICKUP_OF_TYPE_EXIST_IN_AREA">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DOES_PICKUP_OF_TYPE_EXIST_IN_AREA.html">DOES_PICKUP_OF_TYPE_EXIST_IN_AREA</a> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF9C36251F6E48E33</code> &middot; 5 args &middot; rust: <code>rrdr_natives::object::DOES_PICKUP_OF_TYPE_EXIST_IN_AREA</code></div>
+</section>
+<section class="fn-block" id="DOES_PICKUP_OF_TYPE_EXIST_IN_AREA_VEC3">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DOES_PICKUP_OF_TYPE_EXIST_IN_AREA_VEC3.html">DOES_PICKUP_OF_TYPE_EXIST_IN_AREA</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF9C36251F6E48E33</code> &middot; 3 args &middot; rust: <code>rrdr_natives::object::DOES_PICKUP_OF_TYPE_EXIST_IN_AREA_VEC3</code></div>
+</section>
+<section class="fn-block" id="DOES_RAYFIRE_MAP_OBJECT_EXIST">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DOES_RAYFIRE_MAP_OBJECT_EXIST.html">DOES_RAYFIRE_MAP_OBJECT_EXIST</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x52AF537A0C5B8AAD</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::DOES_RAYFIRE_MAP_OBJECT_EXIST</code></div>
+</section>
+<section class="fn-block" id="DOOR_SYSTEM_GET_DOOR_STATE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DOOR_SYSTEM_GET_DOOR_STATE.html">DOOR_SYSTEM_GET_DOOR_STATE</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x160AA1B32F6139B8</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::DOOR_SYSTEM_GET_DOOR_STATE</code></div>
+</section>
+<section class="fn-block" id="DOOR_SYSTEM_GET_OPEN_RATIO">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DOOR_SYSTEM_GET_OPEN_RATIO.html">DOOR_SYSTEM_GET_OPEN_RATIO</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">float</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x65499865FCA6E5EC</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::DOOR_SYSTEM_GET_OPEN_RATIO</code></div>
+</section>
+<section class="fn-block" id="DOOR_SYSTEM_SET_AUTOMATIC_DISTANCE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DOOR_SYSTEM_SET_AUTOMATIC_DISTANCE.html">DOOR_SYSTEM_SET_AUTOMATIC_DISTANCE</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">distance</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9BA001CB45CBF627</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::DOOR_SYSTEM_SET_AUTOMATIC_DISTANCE</code></div>
+</section>
+<section class="fn-block" id="DOOR_SYSTEM_SET_AUTOMATIC_RATE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DOOR_SYSTEM_SET_AUTOMATIC_RATE.html">DOOR_SYSTEM_SET_AUTOMATIC_RATE</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">rate</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x03C27E13B42A0E82</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::DOOR_SYSTEM_SET_AUTOMATIC_RATE</code></div>
+</section>
+<section class="fn-block" id="DOOR_SYSTEM_SET_DOOR_STATE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DOOR_SYSTEM_SET_DOOR_STATE.html">DOOR_SYSTEM_SET_DOOR_STATE</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">state</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock">Door lock states:
+enum eDoorState
+{
+DOORSTATE_INVALID = -1,
+DOORSTATE_UNLOCKED,
+DOORSTATE_LOCKED_UNBREAKABLE,
+DOORSTATE_LOCKED_BREAKABLE,
+DOORSTATE_HOLD_OPEN_POSITIVE,
+DOORSTATE_HOLD_OPEN_NEGATIVE
+};</div>
+<div class="fn-meta"><code>0x6BAB9442830C7F53</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::DOOR_SYSTEM_SET_DOOR_STATE</code></div>
+</section>
+<section class="fn-block" id="DOOR_SYSTEM_SET_OPEN_RATIO">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/DOOR_SYSTEM_SET_OPEN_RATIO.html">DOOR_SYSTEM_SET_OPEN_RATIO</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">ajar</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">forceUpdate</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock">Sets the ajar angle of a door.
+Ranges from -1.0 to 1.0, and 0.0 is closed / default.</div>
+<div class="fn-meta"><code>0xB6E6FBA95C7324AC</code> &middot; 3 args &middot; rust: <code>rrdr_natives::object::DOOR_SYSTEM_SET_OPEN_RATIO</code></div>
+</section>
+<section class="fn-block" id="FIX_OBJECT_FRAGMENT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/FIX_OBJECT_FRAGMENT.html">FIX_OBJECT_FRAGMENT</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF9C1681347C8BD15</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::FIX_OBJECT_FRAGMENT</code></div>
+</section>
+<section class="fn-block" id="FORCE_PICKUP_REGENERATE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/FORCE_PICKUP_REGENERATE.html">FORCE_PICKUP_REGENERATE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x758A5C1B3B1E1990</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::FORCE_PICKUP_REGENERATE</code></div>
+</section>
+<section class="fn-block" id="GET_CLOSEST_OBJECT_OF_TYPE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/GET_CLOSEST_OBJECT_OF_TYPE.html">GET_CLOSEST_OBJECT_OF_TYPE</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">missionScriptObject</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">scriptHostObject</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">networkObject</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">missionScriptObject - if true won&#x27;t return mission script objects
+scriptHostObject - if true won&#x27;t return script host objects
+networkObject - if true won&#x27;t return networked objects</div>
+<div class="fn-meta"><code>0xE143FA2249364369</code> &middot; 8 args &middot; rust: <code>rrdr_natives::object::GET_CLOSEST_OBJECT_OF_TYPE</code></div>
+</section>
+<section class="fn-block" id="GET_CLOSEST_OBJECT_OF_TYPE_VEC3">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/GET_CLOSEST_OBJECT_OF_TYPE_VEC3.html">GET_CLOSEST_OBJECT_OF_TYPE</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">missionScriptObject</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">scriptHostObject</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">networkObject</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE143FA2249364369</code> &middot; 6 args &middot; rust: <code>rrdr_natives::object::GET_CLOSEST_OBJECT_OF_TYPE_VEC3</code></div>
+</section>
+<section class="fn-block" id="GET_OBJECT_FRAGMENT_DAMAGE_HEALTH">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/GET_OBJECT_FRAGMENT_DAMAGE_HEALTH.html">GET_OBJECT_FRAGMENT_DAMAGE_HEALTH</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">float</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB6FBFD079B8D0596</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::GET_OBJECT_FRAGMENT_DAMAGE_HEALTH</code></div>
+</section>
+<section class="fn-block" id="GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS.html">GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS</a> <span class="paren">(</span><span class="p-name">xPos</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">yPos</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">zPos</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">heading</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">xOffset</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">yOffset</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">zOffset</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">Vector3</span></h3>
+<div class="docblock">Old name: _GET_OBJECT_OFFSET_FROM_COORDS</div>
+<div class="fn-meta"><code>0x163E252DE035A133</code> &middot; old name <code>_GET_OBJECT_OFFSET_FROM_COORDS</code> &middot; 7 args &middot; rust: <code>rrdr_natives::object::GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS</code></div>
+</section>
+<section class="fn-block" id="GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS_VEC3">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS_VEC3.html">GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">pos</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">heading</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">offset</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">Vector3</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x163E252DE035A133</code> &middot; 3 args &middot; rust: <code>rrdr_natives::object::GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS_VEC3</code></div>
+</section>
+<section class="fn-block" id="GET_PICKUP_COORDS">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/GET_PICKUP_COORDS.html">GET_PICKUP_COORDS</a> <span class="paren">(</span><span class="p-name">pickup</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">Vector3</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x225B8B35C88029B3</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::GET_PICKUP_COORDS</code></div>
+</section>
+<section class="fn-block" id="GET_PICKUP_OBJECT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/GET_PICKUP_OBJECT.html">GET_PICKUP_OBJECT</a> <span class="paren">(</span><span class="p-name">pickup</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5099BC55630B25AE</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::GET_PICKUP_OBJECT</code></div>
+</section>
+<section class="fn-block" id="GET_RAYFIRE_MAP_OBJECT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/GET_RAYFIRE_MAP_OBJECT.html">GET_RAYFIRE_MAP_OBJECT</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB48FCED898292E52</code> &middot; 5 args &middot; rust: <code>rrdr_natives::object::GET_RAYFIRE_MAP_OBJECT</code></div>
+</section>
+<section class="fn-block" id="GET_RAYFIRE_MAP_OBJECT_ANIM_PHASE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/GET_RAYFIRE_MAP_OBJECT_ANIM_PHASE.html">GET_RAYFIRE_MAP_OBJECT_ANIM_PHASE</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">float</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x260EE4FDBDF4DB01</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::GET_RAYFIRE_MAP_OBJECT_ANIM_PHASE</code></div>
+</section>
+<section class="fn-block" id="GET_RAYFIRE_MAP_OBJECT_VEC3">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/GET_RAYFIRE_MAP_OBJECT_VEC3.html">GET_RAYFIRE_MAP_OBJECT</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB48FCED898292E52</code> &middot; 3 args &middot; rust: <code>rrdr_natives::object::GET_RAYFIRE_MAP_OBJECT_VEC3</code></div>
+</section>
+<section class="fn-block" id="GET_SAFE_PICKUP_COORDS">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/GET_SAFE_PICKUP_COORDS.html">GET_SAFE_PICKUP_COORDS</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">Vector3</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x6E16BC2503FF1FF0</code> &middot; 6 args &middot; rust: <code>rrdr_natives::object::GET_SAFE_PICKUP_COORDS</code></div>
+</section>
+<section class="fn-block" id="GET_STATE_OF_RAYFIRE_MAP_OBJECT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/GET_STATE_OF_RAYFIRE_MAP_OBJECT.html">GET_STATE_OF_RAYFIRE_MAP_OBJECT</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x899BA936634A322E</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::GET_STATE_OF_RAYFIRE_MAP_OBJECT</code></div>
+</section>
+<section class="fn-block" id="GET_WEAPON_TYPE_FROM_PICKUP_TYPE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/GET_WEAPON_TYPE_FROM_PICKUP_TYPE.html">GET_WEAPON_TYPE_FROM_PICKUP_TYPE</a> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">uint</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x08F96CA6C551AD51</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::GET_WEAPON_TYPE_FROM_PICKUP_TYPE</code></div>
+</section>
+<section class="fn-block" id="HAS_CLOSEST_OBJECT_OF_TYPE_BEEN_BROKEN">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/HAS_CLOSEST_OBJECT_OF_TYPE_BEEN_BROKEN.html">HAS_CLOSEST_OBJECT_OF_TYPE_BEEN_BROKEN</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x761B0E69AC4D007E</code> &middot; 6 args &middot; rust: <code>rrdr_natives::object::HAS_CLOSEST_OBJECT_OF_TYPE_BEEN_BROKEN</code></div>
+</section>
+<section class="fn-block" id="HAS_OBJECT_BEEN_BROKEN">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/HAS_OBJECT_BEEN_BROKEN.html">HAS_OBJECT_BEEN_BROKEN</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8ABFB70C49CC43E2</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::HAS_OBJECT_BEEN_BROKEN</code></div>
+</section>
+<section class="fn-block" id="HAS_PICKUP_BEEN_COLLECTED">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/HAS_PICKUP_BEEN_COLLECTED.html">HAS_PICKUP_BEEN_COLLECTED</a> <span class="paren">(</span><span class="p-name">pickup</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x80EC48E6679313F9</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::HAS_PICKUP_BEEN_COLLECTED</code></div>
+</section>
+<section class="fn-block" id="IS_DOOR_CLOSED">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/IS_DOOR_CLOSED.html">IS_DOOR_CLOSED</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC531EE8A1145A149</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::IS_DOOR_CLOSED</code></div>
+</section>
+<section class="fn-block" id="IS_DOOR_REGISTERED_WITH_SYSTEM">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/IS_DOOR_REGISTERED_WITH_SYSTEM.html">IS_DOOR_REGISTERED_WITH_SYSTEM</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC153C43EA202C8C1</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::IS_DOOR_REGISTERED_WITH_SYSTEM</code></div>
+</section>
+<section class="fn-block" id="IS_OBJECT_A_PORTABLE_PICKUP">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/IS_OBJECT_A_PORTABLE_PICKUP.html">IS_OBJECT_A_PORTABLE_PICKUP</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0378C08504160D0D</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::IS_OBJECT_A_PORTABLE_PICKUP</code></div>
+</section>
+<section class="fn-block" id="IS_OBJECT_VISIBLE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/IS_OBJECT_VISIBLE.html">IS_OBJECT_VISIBLE</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8B32ACE6326A7546</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::IS_OBJECT_VISIBLE</code></div>
+</section>
+<section class="fn-block" id="IS_POINT_IN_ANGLED_AREA">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/IS_POINT_IN_ANGLED_AREA.html">IS_POINT_IN_ANGLED_AREA</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p11</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2A70BAE8883E4C81</code> &middot; 12 args &middot; rust: <code>rrdr_natives::object::IS_POINT_IN_ANGLED_AREA</code></div>
+</section>
+<section class="fn-block" id="ONLY_CLEAN_UP_OBJECT_WHEN_OUT_OF_RANGE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/ONLY_CLEAN_UP_OBJECT_WHEN_OUT_OF_RANGE.html">ONLY_CLEAN_UP_OBJECT_WHEN_OUT_OF_RANGE</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock">Old name: _MARK_OBJECT_FOR_DELETION</div>
+<div class="fn-meta"><code>0xADBE4809F19F927A</code> &middot; old name <code>_MARK_OBJECT_FOR_DELETION</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::ONLY_CLEAN_UP_OBJECT_WHEN_OUT_OF_RANGE</code></div>
+</section>
+<section class="fn-block" id="PLACE_OBJECT_ON_GROUND_PROPERLY">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/PLACE_OBJECT_ON_GROUND_PROPERLY.html">PLACE_OBJECT_ON_GROUND_PROPERLY</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x58A850EAEE20FAA3</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::PLACE_OBJECT_ON_GROUND_PROPERLY</code></div>
+</section>
+<section class="fn-block" id="PREVENT_COLLECTION_OF_PORTABLE_PICKUP">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/PREVENT_COLLECTION_OF_PORTABLE_PICKUP.html">PREVENT_COLLECTION_OF_PORTABLE_PICKUP</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x92AEFB5F6E294023</code> &middot; 3 args &middot; rust: <code>rrdr_natives::object::PREVENT_COLLECTION_OF_PORTABLE_PICKUP</code></div>
+</section>
+<section class="fn-block" id="REMOVE_ALL_PICKUPS_OF_TYPE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/REMOVE_ALL_PICKUPS_OF_TYPE.html">REMOVE_ALL_PICKUPS_OF_TYPE</a> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x27F9D613092159CF</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::REMOVE_ALL_PICKUPS_OF_TYPE</code></div>
+</section>
+<section class="fn-block" id="REMOVE_DOOR_FROM_SYSTEM">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/REMOVE_DOOR_FROM_SYSTEM.html">REMOVE_DOOR_FROM_SYSTEM</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x464D8E1427156FE4</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::REMOVE_DOOR_FROM_SYSTEM</code></div>
+</section>
+<section class="fn-block" id="REMOVE_PICKUP">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/REMOVE_PICKUP.html">REMOVE_PICKUP</a> <span class="paren">(</span><span class="p-name">pickup</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3288D8ACAECD2AB2</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::REMOVE_PICKUP</code></div>
+</section>
+<section class="fn-block" id="SET_ACTIVATE_OBJECT_PHYSICS_AS_SOON_AS_IT_IS_UNFROZEN">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_ACTIVATE_OBJECT_PHYSICS_AS_SOON_AS_IT_IS_UNFROZEN.html">SET_ACTIVATE_OBJECT_PHYSICS_AS_SOON_AS_IT_IS_UNFROZEN</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x406137F8EF90EAF5</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_ACTIVATE_OBJECT_PHYSICS_AS_SOON_AS_IT_IS_UNFROZEN</code></div>
+</section>
+<section class="fn-block" id="SET_CUSTOM_TEXTURES_ON_OBJECT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_CUSTOM_TEXTURES_ON_OBJECT.html">SET_CUSTOM_TEXTURES_ON_OBJECT</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">txdHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE124889AE0521FCF</code> &middot; 4 args &middot; rust: <code>rrdr_natives::object::SET_CUSTOM_TEXTURES_ON_OBJECT</code></div>
+</section>
+<section class="fn-block" id="SET_FORCE_OBJECT_THIS_FRAME">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_FORCE_OBJECT_THIS_FRAME.html">SET_FORCE_OBJECT_THIS_FRAME</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF538081986E49E9D</code> &middot; 4 args &middot; rust: <code>rrdr_natives::object::SET_FORCE_OBJECT_THIS_FRAME</code></div>
+</section>
+<section class="fn-block" id="SET_FORCE_OBJECT_THIS_FRAME_VEC3">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_FORCE_OBJECT_THIS_FRAME_VEC3.html">SET_FORCE_OBJECT_THIS_FRAME</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF538081986E49E9D</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_FORCE_OBJECT_THIS_FRAME_VEC3</code></div>
+</section>
+<section class="fn-block" id="SET_LOCAL_PLAYER_CAN_COLLECT_PORTABLE_PICKUPS">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_LOCAL_PLAYER_CAN_COLLECT_PORTABLE_PICKUPS.html">SET_LOCAL_PLAYER_CAN_COLLECT_PORTABLE_PICKUPS</a> <span class="paren">(</span><span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x78857FC65CADB909</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::SET_LOCAL_PLAYER_CAN_COLLECT_PORTABLE_PICKUPS</code></div>
+</section>
+<section class="fn-block" id="SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL.html">SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL</a> <span class="paren">(</span><span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock">Maximum amount of pickup models that can be disallowed is 10.
+
+Old name: _SET_LOCAL_PLAYER_CAN_USE_PICKUPS_WITH_THIS_MODEL</div>
+<div class="fn-meta"><code>0x88EAEC617CD26926</code> &middot; old name <code>_SET_LOCAL_PLAYER_CAN_USE_PICKUPS_WITH_THIS_MODEL</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL</code></div>
+</section>
+<section class="fn-block" id="SET_MAX_NUM_PORTABLE_PICKUPS_CARRIED_BY_PLAYER">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_MAX_NUM_PORTABLE_PICKUPS_CARRIED_BY_PLAYER.html">SET_MAX_NUM_PORTABLE_PICKUPS_CARRIED_BY_PLAYER</a> <span class="paren">(</span><span class="p-name">modelHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0BF3B3BD47D79C08</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_MAX_NUM_PORTABLE_PICKUPS_CARRIED_BY_PLAYER</code></div>
+</section>
+<section class="fn-block" id="SET_OBJECT_ALLOW_LOW_LOD_BUOYANCY">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_OBJECT_ALLOW_LOW_LOD_BUOYANCY.html">SET_OBJECT_ALLOW_LOW_LOD_BUOYANCY</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4D89D607CB3DD1D2</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_OBJECT_ALLOW_LOW_LOD_BUOYANCY</code></div>
+</section>
+<section class="fn-block" id="SET_OBJECT_PHYSICS_PARAMS">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_OBJECT_PHYSICS_PARAMS.html">SET_OBJECT_PHYSICS_PARAMS</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">weight</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">gravity</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">buoyancy</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock">Adjust the physics parameters of a prop, or otherwise known as &quot;object&quot;. This is useful for simulated gravity.
+
+Other parameters seem to be unknown.
+
+p2: seems to be weight and gravity related. Higher value makes the obj fall faster. Very sensitive?
+p3: seems similar to p2
+p4: makes obj fall slower the higher the value
+p5: similar to p4</div>
+<div class="fn-meta"><code>0xF6DF6E90DE7DF90F</code> &middot; 12 args &middot; rust: <code>rrdr_natives::object::SET_OBJECT_PHYSICS_PARAMS</code></div>
+</section>
+<section class="fn-block" id="SET_OBJECT_TAKES_DAMAGE_FROM_COLLIDING_WITH_BUILDINGS">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_OBJECT_TAKES_DAMAGE_FROM_COLLIDING_WITH_BUILDINGS.html">SET_OBJECT_TAKES_DAMAGE_FROM_COLLIDING_WITH_BUILDINGS</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">enabled</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xEB6F1A9B5510A5D2</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_OBJECT_TAKES_DAMAGE_FROM_COLLIDING_WITH_BUILDINGS</code></div>
+</section>
+<section class="fn-block" id="SET_OBJECT_TARGETTABLE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_OBJECT_TARGETTABLE.html">SET_OBJECT_TARGETTABLE</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">targettable</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8A7391690F5AFD81</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_OBJECT_TARGETTABLE</code></div>
+</section>
+<section class="fn-block" id="SET_OBJECT_TINT_INDEX">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_OBJECT_TINT_INDEX.html">SET_OBJECT_TINT_INDEX</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">textureVariation</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock">Alt name: _SET_OBJECT_TINT
+
+Old name: _SET_OBJECT_TEXTURE_VARIATION</div>
+<div class="fn-meta"><code>0x971DA0055324D033</code> &middot; old name <code>_SET_OBJECT_TEXTURE_VARIATION</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_OBJECT_TINT_INDEX</code></div>
+</section>
+<section class="fn-block" id="SET_PICKUP_DO_NOT_AUTO_PLACE_ON_GROUND">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_PICKUP_DO_NOT_AUTO_PLACE_ON_GROUND.html">SET_PICKUP_DO_NOT_AUTO_PLACE_ON_GROUND</a> <span class="paren">(</span><span class="p-name">pickupObject</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x634C19521485AB25</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::SET_PICKUP_DO_NOT_AUTO_PLACE_ON_GROUND</code></div>
+</section>
+<section class="fn-block" id="SET_PICKUP_GENERATION_RANGE_MULTIPLIER">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_PICKUP_GENERATION_RANGE_MULTIPLIER.html">SET_PICKUP_GENERATION_RANGE_MULTIPLIER</a> <span class="paren">(</span><span class="p-name">multiplier</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x318516E02DE3ECE2</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::SET_PICKUP_GENERATION_RANGE_MULTIPLIER</code></div>
+</section>
+<section class="fn-block" id="SET_PICKUP_HIDDEN_WHEN_UNCOLLECTABLE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_PICKUP_HIDDEN_WHEN_UNCOLLECTABLE.html">SET_PICKUP_HIDDEN_WHEN_UNCOLLECTABLE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x81218CE01B672219</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_PICKUP_HIDDEN_WHEN_UNCOLLECTABLE</code></div>
+</section>
+<section class="fn-block" id="SET_PICKUP_NOT_LOOTABLE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_PICKUP_NOT_LOOTABLE.html">SET_PICKUP_NOT_LOOTABLE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x92E87F60F21A0C3A</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_PICKUP_NOT_LOOTABLE</code></div>
+</section>
+<section class="fn-block" id="SET_PICKUP_PARTICLE_FX_HIGHLIGHT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_PICKUP_PARTICLE_FX_HIGHLIGHT.html">SET_PICKUP_PARTICLE_FX_HIGHLIGHT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1607C7D9B3021DF5</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_PICKUP_PARTICLE_FX_HIGHLIGHT</code></div>
+</section>
+<section class="fn-block" id="SET_PICKUP_PARTICLE_FX_SPAWN">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_PICKUP_PARTICLE_FX_SPAWN.html">SET_PICKUP_PARTICLE_FX_SPAWN</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xEB9740A38FD6D634</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_PICKUP_PARTICLE_FX_SPAWN</code></div>
+</section>
+<section class="fn-block" id="SET_PICKUP_REGENERATION_TIME">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_PICKUP_REGENERATION_TIME.html">SET_PICKUP_REGENERATION_TIME</a> <span class="paren">(</span><span class="p-name">pickup</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">duration</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x78015C9B4B3ECC9D</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_PICKUP_REGENERATION_TIME</code></div>
+</section>
+<section class="fn-block" id="SET_PICKUP_UNCOLLECTABLE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_PICKUP_UNCOLLECTABLE.html">SET_PICKUP_UNCOLLECTABLE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4A8CB328CD6F1C9B</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_PICKUP_UNCOLLECTABLE</code></div>
+</section>
+<section class="fn-block" id="SET_STATE_OF_RAYFIRE_MAP_OBJECT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_STATE_OF_RAYFIRE_MAP_OBJECT.html">SET_STATE_OF_RAYFIRE_MAP_OBJECT</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">state</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5C29F698D404C5E1</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SET_STATE_OF_RAYFIRE_MAP_OBJECT</code></div>
+</section>
+<section class="fn-block" id="SET_TEAM_PICKUP_OBJECT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SET_TEAM_PICKUP_OBJECT.html">SET_TEAM_PICKUP_OBJECT</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x53E0DF1A2A3CF0CA</code> &middot; 3 args &middot; rust: <code>rrdr_natives::object::SET_TEAM_PICKUP_OBJECT</code></div>
+</section>
+<section class="fn-block" id="SLIDE_OBJECT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SLIDE_OBJECT.html">SLIDE_OBJECT</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">toX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">toY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">toZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">speedX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">speedY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">speedZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">collision</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2FDFF4107B8C1147</code> &middot; 8 args &middot; rust: <code>rrdr_natives::object::SLIDE_OBJECT</code></div>
+</section>
+<section class="fn-block" id="SLIDE_OBJECT_VEC3">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SLIDE_OBJECT_VEC3.html">SLIDE_OBJECT</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">to</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">speed</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">collision</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2FDFF4107B8C1147</code> &middot; 4 args &middot; rust: <code>rrdr_natives::object::SLIDE_OBJECT_VEC3</code></div>
+</section>
+<section class="fn-block" id="SUPPRESS_PICKUP_REWARD_TYPE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/SUPPRESS_PICKUP_REWARD_TYPE.html">SUPPRESS_PICKUP_REWARD_TYPE</a> <span class="paren">(</span><span class="p-name">rewardType</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">suppress</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF92099527DB8E2A7</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::SUPPRESS_PICKUP_REWARD_TYPE</code></div>
+</section>
+<section class="fn-block" id="TRACK_OBJECT_VISIBILITY">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/TRACK_OBJECT_VISIBILITY.html">TRACK_OBJECT_VISIBILITY</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB252BC036B525623</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::TRACK_OBJECT_VISIBILITY</code></div>
+</section>
+<section class="fn-block" id="_0x08C5825A2932EA7B">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x08C5825A2932EA7B.html">_0x08C5825A2932EA7B</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x08C5825A2932EA7B</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0x08C5825A2932EA7B</code></div>
+</section>
+<section class="fn-block" id="_0x0943113E02322164">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x0943113E02322164.html">_0x0943113E02322164</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock">Params: p1 = 23 in R* Scripts</div>
+<div class="fn-meta"><code>0x0943113E02322164</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0x0943113E02322164</code></div>
+</section>
+<section class="fn-block" id="_0x0C0A373D181BF900">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x0C0A373D181BF900.html">_0x0C0A373D181BF900</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0C0A373D181BF900</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0x0C0A373D181BF900</code></div>
+</section>
+<section class="fn-block" id="_0x1BC47A9DEDC8DF5D">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x1BC47A9DEDC8DF5D.html">_0x1BC47A9DEDC8DF5D</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1BC47A9DEDC8DF5D</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0x1BC47A9DEDC8DF5D</code></div>
+</section>
+<section class="fn-block" id="_0x1F5E07E14A86FAFC">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x1F5E07E14A86FAFC.html">_0x1F5E07E14A86FAFC</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock">_SET_A(MBIENT_PICKUP_?)*</div>
+<div class="fn-meta"><code>0x1F5E07E14A86FAFC</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0x1F5E07E14A86FAFC</code></div>
+</section>
+<section class="fn-block" id="_0x20135AF9C10D2A3D">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x20135AF9C10D2A3D.html">_0x20135AF9C10D2A3D</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x20135AF9C10D2A3D</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0x20135AF9C10D2A3D</code></div>
+</section>
+<section class="fn-block" id="_0x22031584496CFB70">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x22031584496CFB70.html">_0x22031584496CFB70</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x22031584496CFB70</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0x22031584496CFB70</code></div>
+</section>
+<section class="fn-block" id="_0x235C863DA77BD88D">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x235C863DA77BD88D.html">_0x235C863DA77BD88D</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x235C863DA77BD88D</code> &middot; 3 args &middot; rust: <code>rrdr_natives::object::_0x235C863DA77BD88D</code></div>
+</section>
+<section class="fn-block" id="_0x250EBB11E81A10BE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x250EBB11E81A10BE.html">_0x250EBB11E81A10BE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x250EBB11E81A10BE</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0x250EBB11E81A10BE</code></div>
+</section>
+<section class="fn-block" id="_0x2BF1953C0C21AC88">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x2BF1953C0C21AC88.html">_0x2BF1953C0C21AC88</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2BF1953C0C21AC88</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0x2BF1953C0C21AC88</code></div>
+</section>
+<section class="fn-block" id="_0x3A77DAE8B4FD7586">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x3A77DAE8B4FD7586.html">_0x3A77DAE8B4FD7586</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3A77DAE8B4FD7586</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0x3A77DAE8B4FD7586</code></div>
+</section>
+<section class="fn-block" id="_0x3DF1A0A58498E209">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x3DF1A0A58498E209.html">_0x3DF1A0A58498E209</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3DF1A0A58498E209</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0x3DF1A0A58498E209</code></div>
+</section>
+<section class="fn-block" id="_0x3E2616E7EA539480">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x3E2616E7EA539480.html">_0x3E2616E7EA539480</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3E2616E7EA539480</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0x3E2616E7EA539480</code></div>
+</section>
+<section class="fn-block" id="_0x46CBCF0E98A4E156">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x46CBCF0E98A4E156.html">_0x46CBCF0E98A4E156</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x46CBCF0E98A4E156</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0x46CBCF0E98A4E156</code></div>
+</section>
+<section class="fn-block" id="_0x491439AEF410A2FC">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x491439AEF410A2FC.html">_0x491439AEF410A2FC</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x491439AEF410A2FC</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0x491439AEF410A2FC</code></div>
+</section>
+<section class="fn-block" id="_0x4AE07EBA3462C5D5">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x4AE07EBA3462C5D5.html">_0x4AE07EBA3462C5D5</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4AE07EBA3462C5D5</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0x4AE07EBA3462C5D5</code></div>
+</section>
+<section class="fn-block" id="_0x4D8611DFE1126478">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x4D8611DFE1126478.html">_0x4D8611DFE1126478</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4D8611DFE1126478</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0x4D8611DFE1126478</code></div>
+</section>
+<section class="fn-block" id="_0x5230BF34EB0EC645">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x5230BF34EB0EC645.html">_0x5230BF34EB0EC645</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5230BF34EB0EC645</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0x5230BF34EB0EC645</code></div>
+</section>
+<section class="fn-block" id="_0x57C242543B7B8FB9">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x57C242543B7B8FB9.html">_0x57C242543B7B8FB9</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x57C242543B7B8FB9</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0x57C242543B7B8FB9</code></div>
+</section>
+<section class="fn-block" id="_0x58DE624FA7FB0E7F">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x58DE624FA7FB0E7F.html">_0x58DE624FA7FB0E7F</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x58DE624FA7FB0E7F</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0x58DE624FA7FB0E7F</code></div>
+</section>
+<section class="fn-block" id="_0x614D0B4533F842D3">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x614D0B4533F842D3.html">_0x614D0B4533F842D3</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x614D0B4533F842D3</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0x614D0B4533F842D3</code></div>
+</section>
+<section class="fn-block" id="_0x6579860A5558524A">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x6579860A5558524A.html">_0x6579860A5558524A</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x6579860A5558524A</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0x6579860A5558524A</code></div>
+</section>
+<section class="fn-block" id="_0x6E2AA80BB0C03728">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x6E2AA80BB0C03728.html">_0x6E2AA80BB0C03728</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x6E2AA80BB0C03728</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0x6E2AA80BB0C03728</code></div>
+</section>
+<section class="fn-block" id="_0x7D4411D6736CD295">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x7D4411D6736CD295.html">_0x7D4411D6736CD295</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7D4411D6736CD295</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0x7D4411D6736CD295</code></div>
+</section>
+<section class="fn-block" id="_0x7F458B543006C8FE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x7F458B543006C8FE.html">_0x7F458B543006C8FE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7F458B543006C8FE</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0x7F458B543006C8FE</code></div>
+</section>
+<section class="fn-block" id="_0x7FCD49388BC9B775">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x7FCD49388BC9B775.html">_0x7FCD49388BC9B775</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7FCD49388BC9B775</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0x7FCD49388BC9B775</code></div>
+</section>
+<section class="fn-block" id="_0x9A74A9CADFA8A598">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x9A74A9CADFA8A598.html">_0x9A74A9CADFA8A598</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9A74A9CADFA8A598</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0x9A74A9CADFA8A598</code></div>
+</section>
+<section class="fn-block" id="_0x9F52AD67D1A91BAD">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0x9F52AD67D1A91BAD.html">_0x9F52AD67D1A91BAD</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9F52AD67D1A91BAD</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0x9F52AD67D1A91BAD</code></div>
+</section>
+<section class="fn-block" id="_0xA93F925F1942E434">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xA93F925F1942E434.html">_0xA93F925F1942E434</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA93F925F1942E434</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0xA93F925F1942E434</code></div>
+</section>
+<section class="fn-block" id="_0xAAACF33CBF9B990A">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xAAACF33CBF9B990A.html">_0xAAACF33CBF9B990A</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xAAACF33CBF9B990A</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0xAAACF33CBF9B990A</code></div>
+</section>
+<section class="fn-block" id="_0xACD4F9831DFAD7F5">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xACD4F9831DFAD7F5.html">_0xACD4F9831DFAD7F5</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xACD4F9831DFAD7F5</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0xACD4F9831DFAD7F5</code></div>
+</section>
+<section class="fn-block" id="_0xAEE6C800E124CFE1">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xAEE6C800E124CFE1.html">_0xAEE6C800E124CFE1</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xAEE6C800E124CFE1</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0xAEE6C800E124CFE1</code></div>
+</section>
+<section class="fn-block" id="_0xB3B1546D23DF8DE1">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xB3B1546D23DF8DE1.html">_0xB3B1546D23DF8DE1</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB3B1546D23DF8DE1</code> &middot; 5 args &middot; rust: <code>rrdr_natives::object::_0xB3B1546D23DF8DE1</code></div>
+</section>
+<section class="fn-block" id="_0xC07B91B996C1DE89">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xC07B91B996C1DE89.html">_0xC07B91B996C1DE89</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC07B91B996C1DE89</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0xC07B91B996C1DE89</code></div>
+</section>
+<section class="fn-block" id="_0xCAAF2BCCFEF37F77">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xCAAF2BCCFEF37F77.html">_0xCAAF2BCCFEF37F77</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock">_SET_OBJECT_*</div>
+<div class="fn-meta"><code>0xCAAF2BCCFEF37F77</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0xCAAF2BCCFEF37F77</code></div>
+</section>
+<section class="fn-block" id="_0xCBFBD38F2E0A263B">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xCBFBD38F2E0A263B.html">_0xCBFBD38F2E0A263B</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCBFBD38F2E0A263B</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0xCBFBD38F2E0A263B</code></div>
+</section>
+<section class="fn-block" id="_0xCEAB54F4632C6EF6">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xCEAB54F4632C6EF6.html">_0xCEAB54F4632C6EF6</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCEAB54F4632C6EF6</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0xCEAB54F4632C6EF6</code></div>
+</section>
+<section class="fn-block" id="_0xD503D6F0986D58BC">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xD503D6F0986D58BC.html">_0xD503D6F0986D58BC</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD503D6F0986D58BC</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0xD503D6F0986D58BC</code></div>
+</section>
+<section class="fn-block" id="_0xD91E55B6C005EB09">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xD91E55B6C005EB09.html">_0xD91E55B6C005EB09</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD91E55B6C005EB09</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0xD91E55B6C005EB09</code></div>
+</section>
+<section class="fn-block" id="_0xDE116ECFFDD4B997">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xDE116ECFFDD4B997.html">_0xDE116ECFFDD4B997</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xDE116ECFFDD4B997</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0xDE116ECFFDD4B997</code></div>
+</section>
+<section class="fn-block" id="_0xDFA1237F5228263F">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xDFA1237F5228263F.html">_0xDFA1237F5228263F</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xDFA1237F5228263F</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0xDFA1237F5228263F</code></div>
+</section>
+<section class="fn-block" id="_0xE157A8A336C7F04A">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xE157A8A336C7F04A.html">_0xE157A8A336C7F04A</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE157A8A336C7F04A</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0xE157A8A336C7F04A</code></div>
+</section>
+<section class="fn-block" id="_0xEBA314768FB35D58">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xEBA314768FB35D58.html">_0xEBA314768FB35D58</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xEBA314768FB35D58</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0xEBA314768FB35D58</code></div>
+</section>
+<section class="fn-block" id="_0xF65EDE5D02A7A760">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xF65EDE5D02A7A760.html">_0xF65EDE5D02A7A760</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF65EDE5D02A7A760</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0xF65EDE5D02A7A760</code></div>
+</section>
+<section class="fn-block" id="_0xF6E88489B4E6EBE5">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xF6E88489B4E6EBE5.html">_0xF6E88489B4E6EBE5</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF6E88489B4E6EBE5</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_0xF6E88489B4E6EBE5</code></div>
+</section>
+<section class="fn-block" id="_0xFA99E8E575F2FEF8">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_0xFA99E8E575F2FEF8.html">_0xFA99E8E575F2FEF8</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFA99E8E575F2FEF8</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_0xFA99E8E575F2FEF8</code></div>
+</section>
+<section class="fn-block" id="_ADD_DOOR_TO_SYSTEM_NEW">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_ADD_DOOR_TO_SYSTEM_NEW.html">_ADD_DOOR_TO_SYSTEM_NEW</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">threadId</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock">Registers a door, hashes: https://github.com/femga/rdr3_discoveries/tree/master/doorHashes</div>
+<div class="fn-meta"><code>0xD99229FE93B46286</code> &middot; 7 args &middot; rust: <code>rrdr_natives::object::_ADD_DOOR_TO_SYSTEM_NEW</code></div>
+</section>
+<section class="fn-block" id="_DAMAGE_BONE_ON_PROP">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_DAMAGE_BONE_ON_PROP.html">_DAMAGE_BONE_ON_PROP</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">bone</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE4EFB315BCD2A838</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_DAMAGE_BONE_ON_PROP</code></div>
+</section>
+<section class="fn-block" id="_DOOR_SYSTEM_CHANGE_SCRIPT_OWNER">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_DOOR_SYSTEM_CHANGE_SCRIPT_OWNER.html">_DOOR_SYSTEM_CHANGE_SCRIPT_OWNER</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x985767F5FA45BC44</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_DOOR_SYSTEM_CHANGE_SCRIPT_OWNER</code></div>
+</section>
+<section class="fn-block" id="_DOOR_SYSTEM_FORCE_SHUT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_DOOR_SYSTEM_FORCE_SHUT.html">_DOOR_SYSTEM_FORCE_SHUT</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x276AAF0F1C7F2494</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_DOOR_SYSTEM_FORCE_SHUT</code></div>
+</section>
+<section class="fn-block" id="_DOOR_SYSTEM_GET_AUTOMATIC_RATE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_DOOR_SYSTEM_GET_AUTOMATIC_RATE.html">_DOOR_SYSTEM_GET_AUTOMATIC_RATE</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">float</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8433E1954BE323FC</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_DOOR_SYSTEM_GET_AUTOMATIC_RATE</code></div>
+</section>
+<section class="fn-block" id="_DOOR_SYSTEM_SET_ABLE_TO_CHANGE_OPEN_RATIO_WHILE_LOCKED">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_DOOR_SYSTEM_SET_ABLE_TO_CHANGE_OPEN_RATIO_WHILE_LOCKED.html">_DOOR_SYSTEM_SET_ABLE_TO_CHANGE_OPEN_RATIO_WHILE_LOCKED</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1F1FABFE9B2A1254</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_DOOR_SYSTEM_SET_ABLE_TO_CHANGE_OPEN_RATIO_WHILE_LOCKED</code></div>
+</section>
+<section class="fn-block" id="_GET_AMMO_TYPE_FROM_PICKUP_TYPE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_GET_AMMO_TYPE_FROM_PICKUP_TYPE.html">_GET_AMMO_TYPE_FROM_PICKUP_TYPE</a> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">uint</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x44B09A23D728045A</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_GET_AMMO_TYPE_FROM_PICKUP_TYPE</code></div>
+</section>
+<section class="fn-block" id="_GET_LIGHT_INTENSITY_FROM_OBJECT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_GET_LIGHT_INTENSITY_FROM_OBJECT.html">_GET_LIGHT_INTENSITY_FROM_OBJECT</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">float</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFA3B61EC249B4674</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_GET_LIGHT_INTENSITY_FROM_OBJECT</code></div>
+</section>
+<section class="fn-block" id="_GET_OBJECT_LIGHT_INTENSITY">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_GET_OBJECT_LIGHT_INTENSITY.html">_GET_OBJECT_LIGHT_INTENSITY</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">float</span></h3>
+<div class="docblock">Returns float value to be used with _SET_LIGHT_INTENSITY_FOR_OBJECT</div>
+<div class="fn-meta"><code>0x3397CD4E0353DFBA</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_GET_OBJECT_LIGHT_INTENSITY</code></div>
+</section>
+<section class="fn-block" id="_HIDE_PICKUP_OBJECT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_HIDE_PICKUP_OBJECT.html">_HIDE_PICKUP_OBJECT</a> <span class="paren">(</span><span class="p-name">pickupObject</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2777150CC7D9365E</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_HIDE_PICKUP_OBJECT</code></div>
+</section>
+<section class="fn-block" id="_IS_DOOR_REGISTERED_WITH_NETWORK">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_IS_DOOR_REGISTERED_WITH_NETWORK.html">_IS_DOOR_REGISTERED_WITH_NETWORK</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB5DED7B65C604FDF</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_IS_DOOR_REGISTERED_WITH_NETWORK</code></div>
+</section>
+<section class="fn-block" id="_IS_DOOR_REGISTERED_WITH_OWNER">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_IS_DOOR_REGISTERED_WITH_OWNER.html">_IS_DOOR_REGISTERED_WITH_OWNER</a> <span class="paren">(</span><span class="p-name">doorHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Returns true if door is alredy registered with owner</div>
+<div class="fn-meta"><code>0x4F89DAD4156BA145</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_IS_DOOR_REGISTERED_WITH_OWNER</code></div>
+</section>
+<section class="fn-block" id="_IS_PICKUP_TYPE_VALID">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_IS_PICKUP_TYPE_VALID.html">_IS_PICKUP_TYPE_VALID</a> <span class="paren">(</span><span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x007BD043587F7C82</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_IS_PICKUP_TYPE_VALID</code></div>
+</section>
+<section class="fn-block" id="_MAKE_ITEM_CARRIABLE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_MAKE_ITEM_CARRIABLE.html">_MAKE_ITEM_CARRIABLE</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock">_PRE* or _Q* or _RE*</div>
+<div class="fn-meta"><code>0x1461DF6DB886BE3F</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_MAKE_ITEM_CARRIABLE</code></div>
+</section>
+<section class="fn-block" id="_RESET_OBJECT_VELOCITY">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_RESET_OBJECT_VELOCITY.html">_RESET_OBJECT_VELOCITY</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF40AB58D83C35027</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_RESET_OBJECT_VELOCITY</code></div>
+</section>
+<section class="fn-block" id="_SET_AMBIENT_PICKUP_LIFETIME">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_AMBIENT_PICKUP_LIFETIME.html">_SET_AMBIENT_PICKUP_LIFETIME</a> <span class="paren">(</span><span class="p-name">lifetime</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xAC9AE68F0A463752</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_SET_AMBIENT_PICKUP_LIFETIME</code></div>
+</section>
+<section class="fn-block" id="_SET_AUTO_JUMPABLE_BY_HORSE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_AUTO_JUMPABLE_BY_HORSE.html">_SET_AUTO_JUMPABLE_BY_HORSE</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock">Sets object as auto-jumpable by horse.</div>
+<div class="fn-meta"><code>0x98D2D9C053A1F449</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_SET_AUTO_JUMPABLE_BY_HORSE</code></div>
+</section>
+<section class="fn-block" id="_SET_LIGHT_INTENSITY_FOR_OBJECT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_LIGHT_INTENSITY_FOR_OBJECT.html">_SET_LIGHT_INTENSITY_FOR_OBJECT</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">lightIntensity</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF49574E2332A8F06</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_SET_LIGHT_INTENSITY_FOR_OBJECT</code></div>
+</section>
+<section class="fn-block" id="_SET_LIGHT_SCATTERING_DISABLED_FOR_OBJECT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_LIGHT_SCATTERING_DISABLED_FOR_OBJECT.html">_SET_LIGHT_SCATTERING_DISABLED_FOR_OBJECT</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">disable</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x04D1D4E411CE52D0</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_SET_LIGHT_SCATTERING_DISABLED_FOR_OBJECT</code></div>
+</section>
+<section class="fn-block" id="_SET_LIGHT_TRANSLUCENCY_FOR_OBJECT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_LIGHT_TRANSLUCENCY_FOR_OBJECT.html">_SET_LIGHT_TRANSLUCENCY_FOR_OBJECT</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock">Params: value = 0.0 - 586.67 (?)</div>
+<div class="fn-meta"><code>0x63E39F09310F481F</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_SET_LIGHT_TRANSLUCENCY_FOR_OBJECT</code></div>
+</section>
+<section class="fn-block" id="_SET_NETWORK_PICKUP_USABLE_FOR_PLAYER">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_NETWORK_PICKUP_USABLE_FOR_PLAYER.html">_SET_NETWORK_PICKUP_USABLE_FOR_PLAYER</a> <span class="paren">(</span><span class="p-name">player</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">pickupHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">isUsable</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock">Params: p2 controls whether to make pickups usable/collectable or not in networked games</div>
+<div class="fn-meta"><code>0x94F3D956BFAEAE18</code> &middot; 3 args &middot; rust: <code>rrdr_natives::object::_SET_NETWORK_PICKUP_USABLE_FOR_PLAYER</code></div>
+</section>
+<section class="fn-block" id="_SET_NOT_JUMPABLE_BY_HORSE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_NOT_JUMPABLE_BY_HORSE.html">_SET_NOT_JUMPABLE_BY_HORSE</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock">Sets object as not jumpable by horse.</div>
+<div class="fn-meta"><code>0xE1C708BA4885796B</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_SET_NOT_JUMPABLE_BY_HORSE</code></div>
+</section>
+<section class="fn-block" id="_SET_OBJECT_BREAK_SCALE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_OBJECT_BREAK_SCALE.html">_SET_OBJECT_BREAK_SCALE</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">scale</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFFB99FFD17F65889</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_SET_OBJECT_BREAK_SCALE</code></div>
+</section>
+<section class="fn-block" id="_SET_OBJECT_BURN_INTENSITY">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_OBJECT_BURN_INTENSITY.html">_SET_OBJECT_BURN_INTENSITY</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">intensity</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC8E21C1677DC5E6F</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_SET_OBJECT_BURN_INTENSITY</code></div>
+</section>
+<section class="fn-block" id="_SET_OBJECT_BURN_LEVEL">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_OBJECT_BURN_LEVEL.html">_SET_OBJECT_BURN_LEVEL</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">burnLevel</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">affectAsh</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock">Seems to mostly have effect on wood-made objects https://imgur.com/a/32oQvOn</div>
+<div class="fn-meta"><code>0x2797C633DCDBBAC5</code> &middot; 3 args &middot; rust: <code>rrdr_natives::object::_SET_OBJECT_BURN_LEVEL</code></div>
+</section>
+<section class="fn-block" id="_SET_OBJECT_BURN_OPACITY">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_OBJECT_BURN_OPACITY.html">_SET_OBJECT_BURN_OPACITY</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">opacity</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7D7285EFEAB5AF15</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_SET_OBJECT_BURN_OPACITY</code></div>
+</section>
+<section class="fn-block" id="_SET_OBJECT_BURN_SPEED">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_OBJECT_BURN_SPEED.html">_SET_OBJECT_BURN_SPEED</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">speed</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock">p2 is usually the same as speed parameter</div>
+<div class="fn-meta"><code>0x646564A3B7DF68F8</code> &middot; 3 args &middot; rust: <code>rrdr_natives::object::_SET_OBJECT_BURN_SPEED</code></div>
+</section>
+<section class="fn-block" id="_SET_OBJECT_KICKABLE">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_OBJECT_KICKABLE.html">_SET_OBJECT_KICKABLE</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">kickable</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB7017DA4D498269F</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_SET_OBJECT_KICKABLE</code></div>
+</section>
+<section class="fn-block" id="_SET_OBJECT_TARGETTABLE_2">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_OBJECT_TARGETTABLE_2.html">_SET_OBJECT_TARGETTABLE_2</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">targettable</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x581EDBE56E8D62C9</code> &middot; 2 args &middot; rust: <code>rrdr_natives::object::_SET_OBJECT_TARGETTABLE_2</code></div>
+</section>
+<section class="fn-block" id="_SET_OBJECT_TARGETTABLE_FOCUS">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_OBJECT_TARGETTABLE_FOCUS.html">_SET_OBJECT_TARGETTABLE_FOCUS</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock">When p1 and p2 are true you can focus on the object (similar to when you focus a ped)</div>
+<div class="fn-meta"><code>0xA22712E8471AA08E</code> &middot; 3 args &middot; rust: <code>rrdr_natives::object::_SET_OBJECT_TARGETTABLE_FOCUS</code></div>
+</section>
+<section class="fn-block" id="_SET_PICKUP_COLLECTABLE_ON_MOUNT">
+<h3 class="code-header"><span class="fn-mod">OBJECT::</span><a class="fn-name" href="n/object/_SET_PICKUP_COLLECTABLE_ON_MOUNT.html">_SET_PICKUP_COLLECTABLE_ON_MOUNT</a> <span class="paren">(</span><span class="p-name">_object</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x00EE08603EADEE92</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::object::_SET_PICKUP_COLLECTABLE_ON_MOUNT</code></div>
+</section>
+</section>
+</main>
+<script src="search-index.js?v=7501"></script>
+<script src="static/search.js?v=7501" data-root=""></script>
+</body></html>

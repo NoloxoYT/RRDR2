@@ -1,0 +1,46 @@
+name: RRDR
+
+on:
+  push:
+    branches:
+      - main
+      - build_tools
+      - docs
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  rrdr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Test
+        working-directory: build_tools
+        run: cargo test --locked --all-targets
+
+      - name: Clippy
+        working-directory: build_tools
+        run: cargo clippy --locked --all-targets -- -D warnings
+
+      - name: Format
+        working-directory: build_tools
+        run: cargo fmt --check
+
+  site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Regenerate the natives pages
+        run: python3 tools/generate_natives_site.py
+
+      - name: Check the generated links
+        run: |
+          test -f site/natives/index.html
+          grep -q 'NATIVE_INDEX' site/natives/search-index.js
+          echo "natives pages: $(find site/natives/n -name '*.html' | wc -l)"
