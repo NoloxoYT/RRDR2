@@ -57,7 +57,7 @@ fn run_init(root: Option<&Path>, name: Option<&str>, path: Option<&Path>, force:
     };
 
     let name = match name {
-        Some(name) => name.to_string(),
+        Some(name) => Some(name.to_string()),
         None => match init::ask_name() {
             Ok(name) => name,
             Err(error) => {
@@ -65,6 +65,20 @@ fn run_init(root: Option<&Path>, name: Option<&str>, path: Option<&Path>, force:
                 return ExitCode::FAILURE;
             }
         },
+    };
+
+    let Some(name) = name else {
+        // No prompt answer: name the package after the target directory.
+        return match init::run_default_name(root.as_deref(), path, force) {
+            Ok(created) => {
+                init::report(&created);
+                ExitCode::SUCCESS
+            }
+            Err(error) => {
+                log(LVL::Error, error);
+                ExitCode::FAILURE
+            }
+        };
     };
 
     match init::run(root.as_deref(), &name, path, force) {

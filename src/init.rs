@@ -25,10 +25,13 @@ pub struct Created {
 
 /// Creates the crate named `name`.
 ///
-/// `dir` is `--path`: the parent directory to create the crate in. Without it
-/// the crate goes to `<root>/rust/crates/<name>` when `root` is an RRDR
-/// checkout, and errors otherwise (a bare `--no-checkout`-style call is not
-/// useful for mods, which need the framework crates).
+/// Like `cargo init`, it writes into the current directory:
+///
+/// * inside an RRDR checkout: `rust/crates/<name>`;
+/// * outside one: the current directory itself, if it is empty (a folder you
+///   just created), or `./<name>` when the current directory has files in it.
+///
+/// `--path <dir>` always means "write into `<dir>` itself".
 pub fn run(
     root: Option<&Path>,
     name: &str,
@@ -37,30 +40,23 @@ pub fn run(
 ) -> Result<Created, String> {
     validate_name(name)?;
 
-    let in_checkout = root.is_some() && dir.is_none();
+    let current = std::env::current_dir()
+        .map_err(|error| format!("Failed to read the current directory: {error}"))?;
 
-    let directory = match (in_checkout, dir) {
-        (true, _) => root.expect("checked").join("rust/crates").join(name),
-        (false, Some(parent)) => {
-            let parent = if parent.is_absolute() {
-                parent.to_path_buf()
-            } else {
-                std::env::current_dir()
-                    .map_err(|error| format!("Failed to read the current directory: {error}"))?
-                    .join(parent)
-            };
-            normalise(&parent.join(name))
-        }
-        (false, None) => {
-            return Err(
-                "`rrdr init` needs an RRDR checkout to create a mod in, or --path <dir>. \
-                 Run it from a checkout, or pass --root <dir> / --path <dir>."
-                    .to_string(),
-            );
-        }
+    let (directory, in_checkout) = match (root, dir) {
+        (_, Some(dir)) => (normalise(&absolute_from(&current, dir)), false),
+        (Some(root), None) => (root.join("rust/crates").join(name), true),
+        (None, None) => (in_place_or_child(&current, name), false),
     };
 
-    create_crate(&directory, name, force)?;
+    if is_src_dir(&directory) {
+        return Err(format!(
+            "{} is a `src/` directory: run the command one level up, that is where Cargo.toml goes.",
+            directory.display()
+        ));
+    }
+
+    create_crate(&directory, name, force, dir.is_some())?;
 
     if in_checkout {
         let manifest = root.expect("checked").join("rust/Cargo.toml");
@@ -68,7 +64,7 @@ pub fn run(
     } else {
         log(
             LVL::Info,
-            "Standalone crate: I did not find rust/Cargo.toml next to it, so it is not registered in an RRDR workspace.",
+            "Not inside an RRDR checkout: the crate is standalone and not registered in a workspace.",
         );
     }
 
@@ -80,28 +76,31 @@ pub fn run(
 }
 
 /// Asks which name to use, defaulting to the directory name like `cargo init`.
-pub fn ask_name() -> Result<String, String> {
+///
+/// `None` means "keep the default": the caller then names the package after
+/// the target directory, so `rrdr init` in `hunt/` needs no typing.
+pub fn ask_name() -> Result<Option<String>, String> {
     let default = std::env::current_dir()
         .ok()
         .and_then(|path| {
             path.file_name()
                 .map(|name| name.to_string_lossy().into_owned())
         })
-        .unwrap_or_default();
+        .filter(|name| !name.is_empty());
 
-    if !io::stdin().is_terminal() {
-        return default.is_empty().then_some(default).ok_or_else(|| {
-            "No name given (and stdin is not a terminal). Usage: rrdr init <name>".to_string()
-        });
+    let interactive = io::stdin().is_terminal();
+
+    match &default {
+        Some(default) if interactive => {
+            print!("Mod name [{default}]: ");
+        }
+        Some(_) => return Ok(None),
+        None if interactive => {
+            print!("Mod name: ");
+        }
+        None => return Err("No name given. Usage: rrdr init <name>".to_string()),
     }
 
-    let prompt = if default.is_empty() {
-        "Mod name: ".to_string()
-    } else {
-        format!("Mod name [{default}]: ")
-    };
-
-    print!("{prompt}");
     io::stdout()
         .flush()
         .map_err(|error| format!("Failed to write to stdout: {error}"))?;
@@ -114,13 +113,116 @@ pub fn ask_name() -> Result<String, String> {
 
     let answer = line.trim();
     if answer.is_empty() {
-        if default.is_empty() {
-            return Err("No name given. Usage: rrdr init <name>".to_string());
-        }
-        return Ok(default);
+        return match default {
+            Some(_) => Ok(None),
+            None => Err("No name given. Usage: rrdr init <name>".to_string()),
+        };
     }
 
-    Ok(answer.to_string())
+    Ok(Some(answer.to_string()))
+}
+
+/// Same as [`run`], with the package named after the target directory.
+pub fn run_default_name(
+    root: Option<&Path>,
+    dir: Option<&Path>,
+    force: bool,
+) -> Result<Created, String> {
+    let directory = target_directory(root, dir)?;
+    let name = crate_name_from(&directory).ok_or_else(|| {
+        format!(
+            "Cannot derive a crate name from {}: pass a name, e.g. `rrdr init my-mod`",
+            directory.display()
+        )
+    })?;
+
+    match run(root, &name, dir, force) {
+        Ok(created) => Ok(created),
+        Err(error) if error.contains("Invalid crate name") => {
+            // `hunt the deer` or `my mod` still give a valid package name.
+            let cleaned = clean_name(&name);
+            log(
+                LVL::Info,
+                format!(
+                    "Directory name `{name}` cannot be a crate name; using `{cleaned}` (rename with `name = \"{cleaned}\"` in Cargo.toml if you prefer)"
+                ),
+            );
+            run(root, &cleaned, dir, force)
+        }
+        Err(error) => Err(error),
+    }
+}
+
+/// Turns a directory name into something Cargo accepts.
+fn clean_name(name: &str) -> String {
+    let mut out: String = name
+        .chars()
+        .map(|c| {
+            if c.is_ascii_alphanumeric() || c == '-' || c == '_' {
+                c
+            } else {
+                '_'
+            }
+        })
+        .collect();
+
+    if out.starts_with(|c: char| c.is_ascii_digit() || c == '-' || c == '_') {
+        out.insert_str(0, "mod_");
+    }
+
+    while out.contains("__") {
+        out = out.replace("__", "_");
+    }
+
+    if out.is_empty() {
+        "mod".to_string()
+    } else {
+        out
+    }
+}
+
+/// Package name for a directory: `My Mod` -> `my_mod`, `2nd` -> `mod_2nd`.
+fn crate_name_from(directory: &Path) -> Option<String> {
+    let raw = directory.file_name()?.to_string_lossy().into_owned();
+    Some(clean_name(&raw))
+}
+
+/// Where the crate will be written when no name is typed.
+fn target_directory(root: Option<&Path>, dir: Option<&Path>) -> Result<PathBuf, String> {
+    let current = std::env::current_dir()
+        .map_err(|error| format!("Failed to read the current directory: {error}"))?;
+
+    // Without a name, create `<cwd>/<cwd name>` only when the folder already
+    // holds files; an empty folder is named after itself.
+    Ok(match (root, dir) {
+        (_, Some(dir)) => normalise(&absolute_from(&current, dir)),
+        (Some(root), None) if is_init_target(&root.join("rust/crates")) => {
+            root.join("rust/crates").join(
+                current
+                    .file_name()
+                    .map(|name| name.to_string_lossy().into_owned())
+                    .unwrap_or_default(),
+            )
+        }
+        (Some(root), None) => root.join("rust/crates").join(
+            current
+                .file_name()
+                .map(|name| name.to_string_lossy().into_owned())
+                .unwrap_or_default(),
+        ),
+        (None, None) if is_init_target(&current) => current.clone(),
+        (None, None) => current.join(
+            current
+                .file_name()
+                .map(|name| name.to_string_lossy().into_owned())
+                .unwrap_or_default(),
+        ),
+    })
+}
+
+/// A `src/` folder is never the crate root.
+fn is_src_dir(path: &Path) -> bool {
+    path.file_name().and_then(|name| name.to_str()) == Some("src")
 }
 
 /// Print the crate-created summary.
@@ -146,6 +248,59 @@ pub fn report(created: &Created) {
             "Move it under rust/crates/ of a checkout and add it to the workspace members, or run rrdr init again from the checkout.",
         );
     }
+}
+
+/// Absolute form of `path`, relative to `base` when needed.
+fn absolute_from(base: &Path, path: &Path) -> PathBuf {
+    if path.is_absolute() {
+        path.to_path_buf()
+    } else {
+        base.join(path)
+    }
+}
+
+/// `cargo init` behaviour outside a workspace: write in place when the folder
+/// is empty, otherwise create `<current>/<name>`.
+fn in_place_or_child(current: &Path, name: &str) -> PathBuf {
+    if is_init_target(current) {
+        current.to_path_buf()
+    } else {
+        current.join(name)
+    }
+}
+
+/// True when the crate can be written into `directory` in place: it does not
+/// hold another crate yet, and has no source or mod files of its own
+/// (`.git`, `notes.txt` and `.gitignore` are fine: that is a fresh folder).
+fn is_init_target(directory: &Path) -> bool {
+    let Ok(entries) = fs::read_dir(directory) else {
+        return false;
+    };
+
+    // A crate that is half created: `name` is what tells the caller to use
+    // `<dir>/<name>` instead of writing here.
+    if directory.join("Cargo.toml").is_file() || directory.join("src/lib.rs").exists() {
+        return false;
+    }
+
+    // Cargo files that are not a crate root (`rust/Cargo.toml`, a workspace
+    // manifest above `crates/`): never land a crate next to them. The workspace
+    // root itself is caught too, so "run it from the checkout" never nests.
+    for marker in ["Cargo.lock", "rust"] {
+        if directory.join(marker).exists() {
+            return false;
+        }
+    }
+    if directory.join("Cargo.toml").is_file() && !directory.join("src").is_dir() {
+        return false;
+    }
+
+    entries.filter_map(|entry| entry.ok()).all(|entry| {
+        matches!(
+            entry.file_name().to_str(),
+            Some(".git") | Some(".gitignore")
+        )
+    })
 }
 
 /// Removes `.` and `..` components so the printed path is readable.
@@ -213,16 +368,18 @@ pub fn library_name(name: &str) -> String {
     }
 }
 
-fn create_crate(directory: &Path, name: &str, force: bool) -> Result<(), String> {
-    if directory.exists() {
-        let mut entries = fs::read_dir(directory)
-            .map_err(|error| format!("Failed to read {}: {error}", directory.display()))?;
-        if !force && entries.next().is_some() {
-            return Err(format!(
-                "{} already exists and is not empty (use --force to write the template anyway)",
-                directory.display()
-            ));
-        }
+fn create_crate(directory: &Path, name: &str, force: bool, strict: bool) -> Result<(), String> {
+    if strict && !force && directory.exists() && !is_init_target(directory) {
+        let has_manifest = directory.join("Cargo.toml").is_file();
+        return Err(format!(
+            "{} already exists and is not empty{}. Use --force to write the template anyway.",
+            directory.display(),
+            if has_manifest {
+                " (it already has a Cargo.toml: is this mod already created?)"
+            } else {
+                ""
+            }
+        ));
     }
 
     let library = library_name(name);

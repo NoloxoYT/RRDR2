@@ -32,14 +32,16 @@ locations.
 `rrdr init` works like `cargo init` and creates a ready-to-build mod crate:
 
 ```bash
-rrdr init hunt              # rust/crates/hunt, DLL HuntCore.dll, added to the workspace
-rrdr init hunt --force      # rewrite the template in an existing folder
-rrdr init my-mod --path .   # crate in ./my-mod, outside a checkout
+rrdr init                   # uses the folder name: hunt/ -> HuntCore.dll
+rrdr init hunt              # crate named hunt, DLL HuntCore.dll
+rrdr init my-mod --path .   # crate written into ./, outside a checkout
 ```
 
-Inside a checkout the crate goes to `rust/crates/<name>` and is registered in
-`rust/Cargo.toml`. The template ships a `Mod` implementation, a config file and a
-`.gitignore`; the next `rrdr` run builds and packages it.
+Like `cargo init`, it writes into the current directory: `rust/crates/<name>`
+inside a checkout (registered in `rust/Cargo.toml`), the current folder when it
+is empty (a fresh `mkdir` plus `git init` is fine), and `./<name>` when the
+folder already holds files. The template ships a `Mod` implementation, a config
+file and a `.gitignore`; the next `rrdr` run builds and packages it.
 
 | Step | Command it runs |
 | --- | --- |

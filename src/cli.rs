@@ -40,13 +40,14 @@ pub struct Cli {
 pub enum Command {
     /// Create a new mod crate, like `cargo init`.
     ///
-    /// Inside an RRDR checkout the crate goes to rust/crates/<name> and is added
-    /// to the workspace. The DLL is named <Name>Core.dll.
+    /// Writes into the current directory: rust/crates/<name> inside an RRDR
+    /// checkout, the current folder when it is empty, ./<name> otherwise.
+    /// The DLL is named <Name>Core.dll.
     Init {
-        /// Crate name. Defaults to the name of the target directory.
+        /// Crate name. Defaults to the name of the current (or target) directory.
         name: Option<String>,
 
-        /// Parent directory for the crate, outside of a checkout.
+        /// Write the crate into this directory instead of the current one.
         #[arg(long, value_name = "DIR")]
         path: Option<PathBuf>,
 
