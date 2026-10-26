@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rrdr_natives::scripts - RRDR natives</title>
+<link rel="stylesheet" href="static/normalize.css">
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/favicon.svg">
+</head><body>
+
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <img class="brand-mark" src="static/logo.svg" alt="RRDR" width="24" height="24" />
+    <span class="brand-text">rrdr<span class="brand-dim">.natives</span></span>
+  </a>
+
+<div class="live-search">
+  <label for="search-input" class="sr-only">Search natives</label>
+  <span class="hs-icon">&#8902;</span>
+  <input id="search-input" type="text" autocomplete="off" spellcheck="false"
+         placeholder="Search natives - name or description" tabindex="-1" />
+  <span class="hs-hint" title="Press / to focus">/</span>
+  <div class="live-results" id="live-results" hidden></div>
+</div>
+
+</header>
+
+<nav class="sidebar">
+<div class="side-crate"><a href="index.html">rrdr_natives</a></div>
+<h3 class="side-bucket dim">Ped related</h3>
+<a class="side-mod" href="ped.html">ped<span class="count">1051</span></a>
+<a class="side-mod" href="perschar.html">perschar<span class="count">51</span></a>
+<a class="side-mod" href="companion.html">companion<span class="count">25</span></a>
+<a class="side-mod" href="population.html">population<span class="count">32</span></a>
+<a class="side-mod" href="brain.html">brain<span class="count">11</span></a>
+<a class="side-mod" href="ik.html">ik<span class="count">5</span></a>
+<a class="side-mod" href="attribute.html">attribute<span class="count">27</span></a>
+<a class="side-mod" href="task.html">task<span class="count">706</span></a>
+<a class="side-mod" href="animscene.html">animscene<span class="count">100</span></a>
+<a class="side-mod" href="flock.html">flock<span class="count">47</span></a>
+<a class="side-mod" href="interaction.html">interaction<span class="count">6</span></a>
+<h3 class="side-bucket dim">Player related</h3>
+<a class="side-mod" href="player.html">player<span class="count">397</span></a>
+<a class="side-mod" href="stats.html">stats<span class="count">89</span></a>
+<a class="side-mod" href="law.html">law<span class="count">131</span></a>
+<a class="side-mod" href="money.html">money<span class="count">8</span></a>
+<a class="side-mod" href="bounty.html">bounty<span class="count">33</span></a>
+<a class="side-mod" href="posse.html">posse<span class="count">31</span></a>
+<a class="side-mod" href="crew.html">crew<span class="count">18</span></a>
+<h3 class="side-bucket dim">World related</h3>
+<a class="side-mod" href="entity.html">entity<span class="count">295</span></a>
+<a class="side-mod" href="object.html">object<span class="count">166</span></a>
+<a class="side-mod" href="misc.html">misc<span class="count">303</span></a>
+<a class="side-mod" href="fire.html">fire<span class="count">43</span></a>
+<a class="side-mod" href="water.html">water<span class="count">21</span></a>
+<a class="side-mod" href="zone.html">zone<span class="count">4</span></a>
+<a class="side-mod" href="map.html">map<span class="count">94</span></a>
+<a class="side-mod" href="pathfind.html">pathfind<span class="count">92</span></a>
+<a class="side-mod" href="interior.html">interior<span class="count">35</span></a>
+<a class="side-mod" href="volume.html">volume<span class="count">99</span></a>
+<a class="side-mod" href="physics.html">physics<span class="count">78</span></a>
+<a class="side-mod" href="graphics.html">graphics<span class="count">297</span></a>
+<a class="side-mod" href="clock.html">clock<span class="count">19</span></a>
+<a class="side-mod" href="streaming.html">streaming<span class="count">124</span></a>
+<a class="side-mod" href="shapetest.html">shapetest<span class="count">13</span></a>
+<a class="side-mod" href="event.html">event<span class="count">42</span></a>
+<a class="side-mod" href="collection.html">collection<span class="count">31</span></a>
+<h3 class="side-bucket dim">Vehicles</h3>
+<a class="side-mod" href="vehicle.html">vehicle<span class="count">408</span></a>
+<a class="side-mod" href="aitransport.html">aitransport<span class="count">24</span></a>
+<a class="side-mod" href="aicoverpoint.html">aicoverpoint<span class="count">17</span></a>
+<h3 class="side-bucket dim">Camera</h3>
+<a class="side-mod" href="cam.html">cam<span class="count">248</span></a>
+<a class="side-mod" href="txd.html">txd<span class="count">8</span></a>
+<h3 class="side-bucket dim">Audio</h3>
+<a class="side-mod" href="audio.html">audio<span class="count">229</span></a>
+<a class="side-mod" href="voice.html">voice<span class="count">24</span></a>
+<h3 class="side-bucket dim">UI &amp; Input</h3>
+<a class="side-mod" href="hud.html">hud<span class="count">190</span></a>
+<a class="side-mod" href="pad.html">pad<span class="count">40</span></a>
+<a class="side-mod" href="minigame.html">minigame<span class="count">48</span></a>
+<a class="side-mod" href="localization.html">localization<span class="count">4</span></a>
+<a class="side-mod" href="uiapps.html">uiapps<span class="count">19</span></a>
+<a class="side-mod" href="uidebug.html">uidebug<span class="count">3</span></a>
+<a class="side-mod" href="uievents.html">uievents<span class="count">4</span></a>
+<a class="side-mod" href="uifeed.html">uifeed<span class="count">27</span></a>
+<a class="side-mod" href="uilog.html">uilog<span class="count">31</span></a>
+<a class="side-mod" href="uipinning.html">uipinning<span class="count">1</span></a>
+<a class="side-mod" href="uitutorial.html">uitutorial<span class="count">3</span></a>
+<a class="side-mod" href="uistatemachine.html">uistatemachine<span class="count">12</span></a>
+<a class="side-mod" href="uistickyfeed.html">uistickyfeed<span class="count">8</span></a>
+<a class="side-mod" href="compapp.html">compapp<span class="count">5</span></a>
+<h3 class="side-bucket">AI &amp; Scripts</h3>
+<a class="side-mod" href="missiondata.html">missiondata<span class="count">18</span></a>
+<a class="side-mod active" href="scripts.html">scripts<span class="count">94</span></a>
+<a class="side-mod" href="spactionproxy.html">spactionproxy<span class="count">6</span></a>
+<a class="side-mod" href="recording.html">recording<span class="count">1</span></a>
+<a class="side-mod" href="replay.html">replay<span class="count">5</span></a>
+<h3 class="side-bucket dim">Data &amp; Storage</h3>
+<a class="side-mod" href="datafile.html">datafile<span class="count">59</span></a>
+<a class="side-mod" href="decorator.html">decorator<span class="count">15</span></a>
+<a class="side-mod" href="databinding.html">databinding<span class="count">82</span></a>
+<a class="side-mod" href="inventory.html">inventory<span class="count">83</span></a>
+<a class="side-mod" href="itemdatabase.html">itemdatabase<span class="count">84</span></a>
+<a class="side-mod" href="itemset.html">itemset<span class="count">11</span></a>
+<a class="side-mod" href="dlc.html">dlc<span class="count">4</span></a>
+<a class="side-mod" href="save.html">save<span class="count">24</span></a>
+<a class="side-mod" href="persistence.html">persistence<span class="count">26</span></a>
+<a class="side-mod" href="netshopping.html">netshopping<span class="count">24</span></a>
+<a class="side-mod" href="unlock.html">unlock<span class="count">9</span></a>
+<h3 class="side-bucket dim">Online &amp; Telemetry</h3>
+<a class="side-mod" href="network.html">network<span class="count">571</span></a>
+<a class="side-mod" href="socialclub.html">socialclub<span class="count">33</span></a>
+<a class="side-mod" href="socialclubfeed.html">socialclubfeed<span class="count">2</span></a>
+<a class="side-mod" href="telemetry.html">telemetry<span class="count">78</span></a>
+<a class="side-mod" href="google_analytics.html">google_analytics<span class="count">4</span></a>
+<h3 class="side-bucket dim">System &amp; Utility</h3>
+<a class="side-mod" href="builtin.html">builtin<span class="count">26</span></a>
+<a class="side-mod" href="debug.html">debug<span class="count">3</span></a>
+<a class="side-mod" href="crashlog.html">crashlog<span class="count">14</span></a>
+<a class="side-mod" href="queue.html">queue<span class="count">2</span></a>
+<a class="side-mod" href="_namespace4.html">_namespace4<span class="count">1</span></a>
+<a class="side-mod" href="compendium.html">compendium<span class="count">36</span></a>
+<h3 class="side-bucket">Functions</h3>
+<a class="side-fn" href="n/scripts/AWARDS_GET_RESULT_ITEM.html">AWARDS_GET_RESULT_ITEM</a>
+<a class="side-fn" href="n/scripts/BAIL_TO_LANDING_PAGE.html">BAIL_TO_LANDING_PAGE</a>
+<a class="side-fn" href="n/scripts/BAIL_WITH_PASS_THROUGH_PARAMS.html">BAIL_WITH_PASS_THROUGH_PARAMS</a>
+<a class="side-fn" href="n/scripts/BG_DOES_LAUNCH_PARAM_EXIST.html">BG_DOES_LAUNCH_PARAM_EXIST</a>
+<a class="side-fn" href="n/scripts/BG_END_CONTEXT.html">BG_END_CONTEXT</a>
+<a class="side-fn" href="n/scripts/BG_END_CONTEXT_HASH.html">BG_END_CONTEXT_HASH</a>
+<a class="side-fn" href="n/scripts/BG_GET_LAUNCH_PARAM_VALUE.html">BG_GET_LAUNCH_PARAM_VALUE</a>
+<a class="side-fn" href="n/scripts/BG_GET_SCRIPT_ID_FROM_NAME_HASH.html">BG_GET_SCRIPT_ID_FROM_NAME_HASH</a>
+<a class="side-fn" href="n/scripts/BG_IS_EXITFLAG_SET.html">BG_IS_EXITFLAG_SET</a>
+<a class="side-fn" href="n/scripts/BG_SET_EXITFLAG_RESPONSE.html">BG_SET_EXITFLAG_RESPONSE</a>
+<a class="side-fn" href="n/scripts/BG_START_CONTEXT.html">BG_START_CONTEXT</a>
+<a class="side-fn" href="n/scripts/BG_START_CONTEXT_HASH.html">BG_START_CONTEXT_HASH</a>
+<a class="side-fn" href="n/scripts/COUNT_PARTICIPANT_BITS.html">COUNT_PARTICIPANT_BITS</a>
+<a class="side-fn" href="n/scripts/COUNT_PLAYER_BITS.html">COUNT_PLAYER_BITS</a>
+<a class="side-fn" href="n/scripts/DOES_SCRIPT_EXIST.html">DOES_SCRIPT_EXIST</a>
+<a class="side-fn" href="n/scripts/DOES_SCRIPT_WITH_NAME_HASH_EXIST.html">DOES_SCRIPT_WITH_NAME_HASH_EXIST</a>
+<a class="side-fn" href="n/scripts/DOES_THREAD_EXIST.html">DOES_THREAD_EXIST</a>
+<a class="side-fn" href="n/scripts/GET_BLOCK_OF_PLAYER_BITS.html">GET_BLOCK_OF_PLAYER_BITS</a>
+<a class="side-fn" href="n/scripts/GET_EVENT_AT_INDEX.html">GET_EVENT_AT_INDEX</a>
+<a class="side-fn" href="n/scripts/GET_EVENT_DATA.html">GET_EVENT_DATA</a>
+<a class="side-fn" href="n/scripts/GET_EVENT_EXISTS.html">GET_EVENT_EXISTS</a>
+<a class="side-fn" href="n/scripts/GET_HASH_OF_THIS_SCRIPT_NAME.html">GET_HASH_OF_THIS_SCRIPT_NAME</a>
+<a class="side-fn" href="n/scripts/GET_ID_OF_THIS_THREAD.html">GET_ID_OF_THIS_THREAD</a>
+<a class="side-fn" href="n/scripts/GET_NO_LOADING_SCREEN.html">GET_NO_LOADING_SCREEN</a>
+<a class="side-fn" href="n/scripts/GET_NUMBER_OF_EVENTS.html">GET_NUMBER_OF_EVENTS</a>
+<a class="side-fn" href="n/scripts/GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH.html">GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH</a>
+<a class="side-fn" href="n/scripts/GET_THREAD_EXISTENCE_DETAILS.html">GET_THREAD_EXISTENCE_DETAILS</a>
+<a class="side-fn" href="n/scripts/HAS_SCRIPT_LOADED.html">HAS_SCRIPT_LOADED</a>
+<a class="side-fn" href="n/scripts/HAS_SCRIPT_WITH_NAME_HASH_LOADED.html">HAS_SCRIPT_WITH_NAME_HASH_LOADED</a>
+<a class="side-fn" href="n/scripts/HAVE_ALL_CHILD_SCRIPTS_TERMINATED.html">HAVE_ALL_CHILD_SCRIPTS_TERMINATED</a>
+<a class="side-fn" href="n/scripts/IS_LOADING_SCREEN_VISIBLE.html">IS_LOADING_SCREEN_VISIBLE</a>
+<a class="side-fn" href="n/scripts/IS_THREAD_ACTIVE.html">IS_THREAD_ACTIVE</a>
+<a class="side-fn" href="n/scripts/IS_THREAD_EXIT_REQUESTED.html">IS_THREAD_EXIT_REQUESTED</a>
+<a class="side-fn" href="n/scripts/REQUEST_SCRIPT.html">REQUEST_SCRIPT</a>
+<a class="side-fn" href="n/scripts/REQUEST_SCRIPT_WITH_NAME_HASH.html">REQUEST_SCRIPT_WITH_NAME_HASH</a>
+<a class="side-fn" href="n/scripts/SCRIPT_THREAD_ITERATOR_GET_NEXT_THREAD_ID.html">SCRIPT_THREAD_ITERATOR_GET_NEXT_THREAD_ID</a>
+<a class="side-fn" href="n/scripts/SCRIPT_THREAD_ITERATOR_RESET.html">SCRIPT_THREAD_ITERATOR_RESET</a>
+<a class="side-fn" href="n/scripts/SET_BLOCK_OF_PLAYER_BITS.html">SET_BLOCK_OF_PLAYER_BITS</a>
+<a class="side-fn" href="n/scripts/SET_EVENT_FLAG_FOR_DELETION.html">SET_EVENT_FLAG_FOR_DELETION</a>
+<a class="side-fn" href="n/scripts/SET_NO_LOADING_SCREEN.html">SET_NO_LOADING_SCREEN</a>
+<a class="side-fn" href="n/scripts/SET_SCRIPT_AS_NO_LONGER_NEEDED.html">SET_SCRIPT_AS_NO_LONGER_NEEDED</a>
+<a class="side-fn" href="n/scripts/SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED.html">SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED</a>
+<a class="side-fn" href="n/scripts/SHUTDOWN_LOADING_SCREEN.html">SHUTDOWN_LOADING_SCREEN</a>
+<a class="side-fn" href="n/scripts/START_NEW_SCRIPT.html">START_NEW_SCRIPT</a>
+<a class="side-fn" href="n/scripts/START_NEW_SCRIPT_WITH_ARGS.html">START_NEW_SCRIPT_WITH_ARGS</a>
+<a class="side-fn" href="n/scripts/START_NEW_SCRIPT_WITH_NAME_HASH.html">START_NEW_SCRIPT_WITH_NAME_HASH</a>
+<a class="side-fn" href="n/scripts/START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS.html">START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS</a>
+<a class="side-fn" href="n/scripts/STOP_DISPLAYING_MP_TRANSITION_LOADING_SCREENS.html">STOP_DISPLAYING_MP_TRANSITION_LOADING_SCREENS</a>
+<a class="side-fn" href="n/scripts/TERMINATE_THIS_THREAD.html">TERMINATE_THIS_THREAD</a>
+<a class="side-fn" href="n/scripts/TERMINATE_THREAD.html">TERMINATE_THREAD</a>
+<a class="side-fn" href="n/scripts/TRIGGER_SCRIPT_EVENT.html">TRIGGER_SCRIPT_EVENT</a>
+<a class="side-fn" href="n/scripts/_0x0A79C81C418F5D38.html">_0x0A79C81C418F5D38</a>
+<a class="side-fn" href="n/scripts/_0x11B0A0B282FA9B10.html">_0x11B0A0B282FA9B10</a>
+<a class="side-fn" href="n/scripts/_0x1BDB5A07307F6929.html">_0x1BDB5A07307F6929</a>
+<a class="side-fn" href="n/scripts/_0x1C5EB3C27F7508CB.html">_0x1C5EB3C27F7508CB</a>
+<a class="side-fn" href="n/scripts/_0x29FB4CE89472C3CB.html">_0x29FB4CE89472C3CB</a>
+<a class="side-fn" href="n/scripts/_0x42A429CDFED6D99D.html">_0x42A429CDFED6D99D</a>
+<a class="side-fn" href="n/scripts/_0x5827BE85A87B073D.html">_0x5827BE85A87B073D</a>
+<a class="side-fn" href="n/scripts/_0x64F765D9A1F8F02C.html">_0x64F765D9A1F8F02C</a>
+<a class="side-fn" href="n/scripts/_0x6F700A4BF7C3331B.html">_0x6F700A4BF7C3331B</a>
+<a class="side-fn" href="n/scripts/_0x76CBCD9EADC00955.html">_0x76CBCD9EADC00955</a>
+<a class="side-fn" href="n/scripts/_0xA88E1D7FA1E20080.html">_0xA88E1D7FA1E20080</a>
+<a class="side-fn" href="n/scripts/_0xE4ABE20DCE7C7CFE.html">_0xE4ABE20DCE7C7CFE</a>
+<a class="side-fn" href="n/scripts/_0xE7282390542F570D.html">_0xE7282390542F570D</a>
+<a class="side-fn" href="n/scripts/_0xF9E951A1E5517C06.html">_0xF9E951A1E5517C06</a>
+<a class="side-fn" href="n/scripts/_0xFFDDF802279BE128.html">_0xFFDDF802279BE128</a>
+<a class="side-fn" href="n/scripts/_ACTIVATE_GOAL_CONTEXT.html">_ACTIVATE_GOAL_CONTEXT</a>
+<a class="side-fn" href="n/scripts/_AWARDS_GET_UNLOCK_CLAIM_DATA.html">_AWARDS_GET_UNLOCK_CLAIM_DATA</a>
+<a class="side-fn" href="n/scripts/_BG_RELOAD_ALL_BACKGROUND_SCRIPTS.html">_BG_RELOAD_ALL_BACKGROUND_SCRIPTS</a>
+<a class="side-fn" href="n/scripts/_CLEAR_ALL_PLAYER_BITS.html">_CLEAR_ALL_PLAYER_BITS</a>
+<a class="side-fn" href="n/scripts/_CLEAR_PLAYER_BIT_AT_INDEX.html">_CLEAR_PLAYER_BIT_AT_INDEX</a>
+<a class="side-fn" href="n/scripts/_DEACTIVATE_GOAL_CONTEXT.html">_DEACTIVATE_GOAL_CONTEXT</a>
+<a class="side-fn" href="n/scripts/_DISPLAY_LOADING_SCREENS.html">_DISPLAY_LOADING_SCREENS</a>
+<a class="side-fn" href="n/scripts/_DOES_COMPRESSED_GLOBAL_BLOCK_BUFFER_EXIST.html">_DOES_COMPRESSED_GLOBAL_BLOCK_BUFFER_EXIST</a>
+<a class="side-fn" href="n/scripts/_GET_GLOBAL_BLOCK_CAN_BE_ACCESSED.html">_GET_GLOBAL_BLOCK_CAN_BE_ACCESSED</a>
+<a class="side-fn" href="n/scripts/_GET_HASH_OF_THREAD.html">_GET_HASH_OF_THREAD</a>
+<a class="side-fn" href="n/scripts/_GET_THREAD_EXIT_REASON.html">_GET_THREAD_EXIT_REASON</a>
+<a class="side-fn" href="n/scripts/_IS_ANY_PLAYER_BIT_SET.html">_IS_ANY_PLAYER_BIT_SET</a>
+<a class="side-fn" href="n/scripts/_IS_BACKGROUND_SCRIPT.html">_IS_BACKGROUND_SCRIPT</a>
+<a class="side-fn" href="n/scripts/_IS_GOAL_CONTEXT_ACTIVE.html">_IS_GOAL_CONTEXT_ACTIVE</a>
+<a class="side-fn" href="n/scripts/_IS_PLAYER_BIT_SET_AT_INDEX.html">_IS_PLAYER_BIT_SET_AT_INDEX</a>
+<a class="side-fn" href="n/scripts/_IS_THREAD_EXIT_REQUESTED_FOR_THREAD_WITH_THIS_ID.html">_IS_THREAD_EXIT_REQUESTED_FOR_THREAD_WITH_THIS_ID</a>
+<a class="side-fn" href="n/scripts/_LOOT_GET_LOOT_CLAIM_DATA.html">_LOOT_GET_LOOT_CLAIM_DATA</a>
+<a class="side-fn" href="n/scripts/_LOOT_GET_RESULT_ITEM.html">_LOOT_GET_RESULT_ITEM</a>
+<a class="side-fn" href="n/scripts/_NET_RPC_GUID_TO_STRING.html">_NET_RPC_GUID_TO_STRING</a>
+<a class="side-fn" href="n/scripts/_REQUEST_THREAD_EXIT.html">_REQUEST_THREAD_EXIT</a>
+<a class="side-fn" href="n/scripts/_REQUEST_THREAD_EXIT_FOR_ALL_THREADS_WITH_THIS_NAME.html">_REQUEST_THREAD_EXIT_FOR_ALL_THREADS_WITH_THIS_NAME</a>
+<a class="side-fn" href="n/scripts/_RESTORE_GLOBAL_BLOCK.html">_RESTORE_GLOBAL_BLOCK</a>
+<a class="side-fn" href="n/scripts/_SET_ALL_GLOBAL_BLOCKS_HAVE_BEEN_LOADED.html">_SET_ALL_GLOBAL_BLOCKS_HAVE_BEEN_LOADED</a>
+<a class="side-fn" href="n/scripts/_SET_ALL_PLAYER_BITS.html">_SET_ALL_PLAYER_BITS</a>
+<a class="side-fn" href="n/scripts/_SET_GLOBAL_BLOCK_CAN_BE_ACCESSED.html">_SET_GLOBAL_BLOCK_CAN_BE_ACCESSED</a>
+<a class="side-fn" href="n/scripts/_SET_PLAYER_BIT_AT_INDEX.html">_SET_PLAYER_BIT_AT_INDEX</a>
+<a class="side-fn" href="n/scripts/_STORE_GLOBAL_BLOCK.html">_STORE_GLOBAL_BLOCK</a>
+<a class="side-fn" href="n/scripts/_TRIGGER_SCRIPT_EVENT_2.html">_TRIGGER_SCRIPT_EVENT_2</a>
+</nav>
+<main class="content">
+<div class="doc-page-head">
+<h1 class="module-title"><span class="ns">rrdr_natives::</span>scripts</h1>
+<div class="crumb"><a href="index.html">AI &amp; Scripts</a> <span class="sep">&#8250;</span> <a href="scripts.html">scripts</a></div>
+<div class="mod-stats">94 functions &middot; 94 unique native hashes</div>
+</div>
+<section class="item-list">
+<section class="fn-block" id="AWARDS_GET_RESULT_ITEM">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/AWARDS_GET_RESULT_ITEM.html">AWARDS_GET_RESULT_ITEM</a> <span class="paren">(</span><span class="p-name">rpcGuid</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">awardHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">itemIndex</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">outResultItem</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xAC8FAB22A914AE34</code> &middot; 4 args &middot; rust: <code>rrdr_natives::scripts::AWARDS_GET_RESULT_ITEM</code></div>
+</section>
+<section class="fn-block" id="BAIL_TO_LANDING_PAGE">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/BAIL_TO_LANDING_PAGE.html">BAIL_TO_LANDING_PAGE</a> <span class="paren">(</span><span class="p-name">bailCode</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xBC2C927F5C264243</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::BAIL_TO_LANDING_PAGE</code></div>
+</section>
+<section class="fn-block" id="BAIL_WITH_PASS_THROUGH_PARAMS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/BAIL_WITH_PASS_THROUGH_PARAMS.html">BAIL_WITH_PASS_THROUGH_PARAMS</a> <span class="paren">(</span><span class="p-name">_params</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE98204D3C25AE14C</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::BAIL_WITH_PASS_THROUGH_PARAMS</code></div>
+</section>
+<section class="fn-block" id="BG_DOES_LAUNCH_PARAM_EXIST">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/BG_DOES_LAUNCH_PARAM_EXIST.html">BG_DOES_LAUNCH_PARAM_EXIST</a> <span class="paren">(</span><span class="p-name">scriptIndex</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4AE1DFF337A86FDE</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::BG_DOES_LAUNCH_PARAM_EXIST</code></div>
+</section>
+<section class="fn-block" id="BG_END_CONTEXT">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/BG_END_CONTEXT.html">BG_END_CONTEXT</a> <span class="paren">(</span><span class="p-name">contextName</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span></h3>
+<div class="docblock">Deletes the given context from the background scripts context map.</div>
+<div class="fn-meta"><code>0x3ABF7BA1C3E2C8CF</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::BG_END_CONTEXT</code></div>
+</section>
+<section class="fn-block" id="BG_END_CONTEXT_HASH">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/BG_END_CONTEXT_HASH.html">BG_END_CONTEXT_HASH</a> <span class="paren">(</span><span class="p-name">contextHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock">Hashed version of BG_END_CONTEXT</div>
+<div class="fn-meta"><code>0x6D1431744182CDE8</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::BG_END_CONTEXT_HASH</code></div>
+</section>
+<section class="fn-block" id="BG_GET_LAUNCH_PARAM_VALUE">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/BG_GET_LAUNCH_PARAM_VALUE.html">BG_GET_LAUNCH_PARAM_VALUE</a> <span class="paren">(</span><span class="p-name">scriptIndex</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x55C40B7592BAD213</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::BG_GET_LAUNCH_PARAM_VALUE</code></div>
+</section>
+<section class="fn-block" id="BG_GET_SCRIPT_ID_FROM_NAME_HASH">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/BG_GET_SCRIPT_ID_FROM_NAME_HASH.html">BG_GET_SCRIPT_ID_FROM_NAME_HASH</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x829CD22E043A2577</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::BG_GET_SCRIPT_ID_FROM_NAME_HASH</code></div>
+</section>
+<section class="fn-block" id="BG_IS_EXITFLAG_SET">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/BG_IS_EXITFLAG_SET.html">BG_IS_EXITFLAG_SET</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Returns true if GtaThread+0x77C is equal to 1.
+
+Old name: _BG_EXITED_BECAUSE_BACKGROUND_THREAD_STOPPED</div>
+<div class="fn-meta"><code>0x2238EC3EC631AB1F</code> &middot; old name <code>_BG_EXITED_BECAUSE_BACKGROUND_THREAD_STOPPED</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::BG_IS_EXITFLAG_SET</code></div>
+</section>
+<section class="fn-block" id="BG_SET_EXITFLAG_RESPONSE">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/BG_SET_EXITFLAG_RESPONSE.html">BG_SET_EXITFLAG_RESPONSE</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock">Sets bit 0 in GtaThread+0x784</div>
+<div class="fn-meta"><code>0x4858148E3B8A75D0</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::BG_SET_EXITFLAG_RESPONSE</code></div>
+</section>
+<section class="fn-block" id="BG_START_CONTEXT">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/BG_START_CONTEXT.html">BG_START_CONTEXT</a> <span class="paren">(</span><span class="p-name">contextName</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span></h3>
+<div class="docblock">Inserts the given context into the background scripts context map.</div>
+<div class="fn-meta"><code>0x49BA5678BA040CA7</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::BG_START_CONTEXT</code></div>
+</section>
+<section class="fn-block" id="BG_START_CONTEXT_HASH">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/BG_START_CONTEXT_HASH.html">BG_START_CONTEXT_HASH</a> <span class="paren">(</span><span class="p-name">contextHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock">Hashed version of BG_START_CONTEXT</div>
+<div class="fn-meta"><code>0x2EB67D564DCC09D5</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::BG_START_CONTEXT_HASH</code></div>
+</section>
+<section class="fn-block" id="COUNT_PARTICIPANT_BITS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/COUNT_PARTICIPANT_BITS.html">COUNT_PARTICIPANT_BITS</a> <span class="paren">(</span><span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2F050A3FF8738245</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::COUNT_PARTICIPANT_BITS</code></div>
+</section>
+<section class="fn-block" id="COUNT_PLAYER_BITS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/COUNT_PLAYER_BITS.html">COUNT_PLAYER_BITS</a> <span class="paren">(</span><span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x462C687BEA254BD9</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::COUNT_PLAYER_BITS</code></div>
+</section>
+<section class="fn-block" id="DOES_SCRIPT_EXIST">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/DOES_SCRIPT_EXIST.html">DOES_SCRIPT_EXIST</a> <span class="paren">(</span><span class="p-name">scriptName</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x552B171E3F69E5AE</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::DOES_SCRIPT_EXIST</code></div>
+</section>
+<section class="fn-block" id="DOES_SCRIPT_WITH_NAME_HASH_EXIST">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/DOES_SCRIPT_WITH_NAME_HASH_EXIST.html">DOES_SCRIPT_WITH_NAME_HASH_EXIST</a> <span class="paren">(</span><span class="p-name">scriptHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA34E89749F628284</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::DOES_SCRIPT_WITH_NAME_HASH_EXIST</code></div>
+</section>
+<section class="fn-block" id="DOES_THREAD_EXIST">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/DOES_THREAD_EXIST.html">DOES_THREAD_EXIST</a> <span class="paren">(</span><span class="p-name">threadId</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFF975BC4435A0FA3</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::DOES_THREAD_EXIST</code></div>
+</section>
+<section class="fn-block" id="GET_BLOCK_OF_PLAYER_BITS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/GET_BLOCK_OF_PLAYER_BITS.html">GET_BLOCK_OF_PLAYER_BITS</a> <span class="paren">(</span><span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFA3B530A5CC693D5</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::GET_BLOCK_OF_PLAYER_BITS</code></div>
+</section>
+<section class="fn-block" id="GET_EVENT_AT_INDEX">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/GET_EVENT_AT_INDEX.html">GET_EVENT_AT_INDEX</a> <span class="paren">(</span><span class="p-name">eventGroup</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">eventIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">uint</span></h3>
+<div class="docblock">eventGroup: 0 = SCRIPT_EVENT_QUEUE_AI (CEventGroupScriptAI), 1 = SCRIPT_EVENT_QUEUE_NETWORK (CEventGroupScriptNetwork), 2 = unk, 3 = unk, 4 = SCRIPT_EVENT_QUEUE_SCRIPT_ERRORS (CEventGroupScriptErrors)
+
+Returns event name hash: https://alloc8or.re/rdr3/doc/enums/eEventType.txt</div>
+<div class="fn-meta"><code>0xA85E614430EFF816</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::GET_EVENT_AT_INDEX</code></div>
+</section>
+<section class="fn-block" id="GET_EVENT_DATA">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/GET_EVENT_DATA.html">GET_EVENT_DATA</a> <span class="paren">(</span><span class="p-name">eventGroup</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">eventIndex</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">eventData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">eventDataSize</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">eventGroup: 0 = SCRIPT_EVENT_QUEUE_AI (CEventGroupScriptAI), 1 = SCRIPT_EVENT_QUEUE_NETWORK (CEventGroupScriptNetwork), 2 = unk, 3 = unk, 4 = SCRIPT_EVENT_QUEUE_SCRIPT_ERRORS (CEventGroupScriptErrors)
+
+Note: eventDataSize is NOT the size in bytes, it is the size determined by the SIZE_OF operator (RAGE Script operator, not C/C++ sizeof). That is, the size in bytes divided by 8 (script variables are always 8-byte aligned!).
+
+https://github.com/femga/rdr3_discoveries/tree/master/AI/EVENTS</div>
+<div class="fn-meta"><code>0x57EC5FA4D4D6AFCA</code> &middot; 4 args &middot; rust: <code>rrdr_natives::scripts::GET_EVENT_DATA</code></div>
+</section>
+<section class="fn-block" id="GET_EVENT_EXISTS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/GET_EVENT_EXISTS.html">GET_EVENT_EXISTS</a> <span class="paren">(</span><span class="p-name">eventGroup</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">eventIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">eventGroup: 0 = SCRIPT_EVENT_QUEUE_AI (CEventGroupScriptAI), 1 = SCRIPT_EVENT_QUEUE_NETWORK (CEventGroupScriptNetwork), 2 = unk, 3 = unk, 4 = SCRIPT_EVENT_QUEUE_SCRIPT_ERRORS (CEventGroupScriptErrors)</div>
+<div class="fn-meta"><code>0xC9F59C0A710ECD34</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::GET_EVENT_EXISTS</code></div>
+</section>
+<section class="fn-block" id="GET_HASH_OF_THIS_SCRIPT_NAME">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/GET_HASH_OF_THIS_SCRIPT_NAME.html">GET_HASH_OF_THIS_SCRIPT_NAME</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">uint</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xBC2C927F5C264960</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::GET_HASH_OF_THIS_SCRIPT_NAME</code></div>
+</section>
+<section class="fn-block" id="GET_ID_OF_THIS_THREAD">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/GET_ID_OF_THIS_THREAD.html">GET_ID_OF_THIS_THREAD</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x55525C346BEF6960</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::GET_ID_OF_THIS_THREAD</code></div>
+</section>
+<section class="fn-block" id="GET_NO_LOADING_SCREEN">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/GET_NO_LOADING_SCREEN.html">GET_NO_LOADING_SCREEN</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x323DAF00687E0F28</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::GET_NO_LOADING_SCREEN</code></div>
+</section>
+<section class="fn-block" id="GET_NUMBER_OF_EVENTS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/GET_NUMBER_OF_EVENTS.html">GET_NUMBER_OF_EVENTS</a> <span class="paren">(</span><span class="p-name">eventGroup</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">eventGroup: 0 = SCRIPT_EVENT_QUEUE_AI (CEventGroupScriptAI), 1 = SCRIPT_EVENT_QUEUE_NETWORK (CEventGroupScriptNetwork), 2 = unk, 3 = unk, 4 = SCRIPT_EVENT_QUEUE_ERRORS (CEventGroupScriptErrors)</div>
+<div class="fn-meta"><code>0x5CE8DE5909565748</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::GET_NUMBER_OF_EVENTS</code></div>
+</section>
+<section class="fn-block" id="GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH.html">GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH</a> <span class="paren">(</span><span class="p-name">scriptHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">Gets the number of instances of the specified script is currently running.
+
+Actually returns numRefs - 1.
+if (program)
+v3 = rage::scrProgram::GetNumRefs(program) - 1;
+return v3;
+
+Old name: _GET_NUMBER_OF_REFERENCES_OF_SCRIPT_WITH_NAME_HASH</div>
+<div class="fn-meta"><code>0x8E34C953364A76DD</code> &middot; old name <code>_GET_NUMBER_OF_REFERENCES_OF_SCRIPT_WITH_NAME_HASH</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH</code></div>
+</section>
+<section class="fn-block" id="GET_THREAD_EXISTENCE_DETAILS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/GET_THREAD_EXISTENCE_DETAILS.html">GET_THREAD_EXISTENCE_DETAILS</a> <span class="paren">(</span><span class="p-name">threadId</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">threadExists</span><span class="p-sep">:</span> <span class="p-type">bool*</span>, <span class="p-name">hasScriptHandler</span><span class="p-sep">:</span> <span class="p-type">bool*</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD92FA81B64920E85</code> &middot; 3 args &middot; rust: <code>rrdr_natives::scripts::GET_THREAD_EXISTENCE_DETAILS</code></div>
+</section>
+<section class="fn-block" id="HAS_SCRIPT_LOADED">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/HAS_SCRIPT_LOADED.html">HAS_SCRIPT_LOADED</a> <span class="paren">(</span><span class="p-name">scriptName</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Returns if a script has been loaded into the game. Used to see if a script was loaded after requesting.</div>
+<div class="fn-meta"><code>0xE97BD36574F8B0A6</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::HAS_SCRIPT_LOADED</code></div>
+</section>
+<section class="fn-block" id="HAS_SCRIPT_WITH_NAME_HASH_LOADED">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/HAS_SCRIPT_WITH_NAME_HASH_LOADED.html">HAS_SCRIPT_WITH_NAME_HASH_LOADED</a> <span class="paren">(</span><span class="p-name">scriptHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA5D8E0C2F3C7EEBC</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::HAS_SCRIPT_WITH_NAME_HASH_LOADED</code></div>
+</section>
+<section class="fn-block" id="HAVE_ALL_CHILD_SCRIPTS_TERMINATED">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/HAVE_ALL_CHILD_SCRIPTS_TERMINATED.html">HAVE_ALL_CHILD_SCRIPTS_TERMINATED</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Waiting for child scripts to terminate / waiting for collapse of child scripts</div>
+<div class="fn-meta"><code>0x380FFA15B72408FB</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::HAVE_ALL_CHILD_SCRIPTS_TERMINATED</code></div>
+</section>
+<section class="fn-block" id="IS_LOADING_SCREEN_VISIBLE">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/IS_LOADING_SCREEN_VISIBLE.html">IS_LOADING_SCREEN_VISIBLE</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Same as GET_IS_LOADING_SCREEN_ACTIVE</div>
+<div class="fn-meta"><code>0xB54ADBE65D528FCB</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::IS_LOADING_SCREEN_VISIBLE</code></div>
+</section>
+<section class="fn-block" id="IS_THREAD_ACTIVE">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/IS_THREAD_ACTIVE.html">IS_THREAD_ACTIVE</a> <span class="paren">(</span><span class="p-name">threadId</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">ignoreKilledState</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x46E9AE36D8FA6417</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::IS_THREAD_ACTIVE</code></div>
+</section>
+<section class="fn-block" id="IS_THREAD_EXIT_REQUESTED">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/IS_THREAD_EXIT_REQUESTED.html">IS_THREAD_EXIT_REQUESTED</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9E4EF615E307FBBE</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::IS_THREAD_EXIT_REQUESTED</code></div>
+</section>
+<section class="fn-block" id="REQUEST_SCRIPT">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/REQUEST_SCRIPT.html">REQUEST_SCRIPT</a> <span class="paren">(</span><span class="p-name">scriptName</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x46ED607DDD40D7FE</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::REQUEST_SCRIPT</code></div>
+</section>
+<section class="fn-block" id="REQUEST_SCRIPT_WITH_NAME_HASH">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/REQUEST_SCRIPT_WITH_NAME_HASH.html">REQUEST_SCRIPT_WITH_NAME_HASH</a> <span class="paren">(</span><span class="p-name">scriptHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF6B9CE3F8D5B9B74</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::REQUEST_SCRIPT_WITH_NAME_HASH</code></div>
+</section>
+<section class="fn-block" id="SCRIPT_THREAD_ITERATOR_GET_NEXT_THREAD_ID">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/SCRIPT_THREAD_ITERATOR_GET_NEXT_THREAD_ID.html">SCRIPT_THREAD_ITERATOR_GET_NEXT_THREAD_ID</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">If the function returns 0, the end of the iteration has been reached.</div>
+<div class="fn-meta"><code>0x3CE3FB167E837D7C</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::SCRIPT_THREAD_ITERATOR_GET_NEXT_THREAD_ID</code></div>
+</section>
+<section class="fn-block" id="SCRIPT_THREAD_ITERATOR_RESET">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/SCRIPT_THREAD_ITERATOR_RESET.html">SCRIPT_THREAD_ITERATOR_RESET</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock">Starts a new iteration of the current threads.
+Call this first, then SCRIPT_THREAD_ITERATOR_GET_NEXT_THREAD_ID (0x30B4FA1C82DD4B9F)</div>
+<div class="fn-meta"><code>0x39382EB8DCD8684D</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::SCRIPT_THREAD_ITERATOR_RESET</code></div>
+</section>
+<section class="fn-block" id="SET_BLOCK_OF_PLAYER_BITS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/SET_BLOCK_OF_PLAYER_BITS.html">SET_BLOCK_OF_PLAYER_BITS</a> <span class="paren">(</span><span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC6DFB8C04C86D5A5</code> &middot; 3 args &middot; rust: <code>rrdr_natives::scripts::SET_BLOCK_OF_PLAYER_BITS</code></div>
+</section>
+<section class="fn-block" id="SET_EVENT_FLAG_FOR_DELETION">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/SET_EVENT_FLAG_FOR_DELETION.html">SET_EVENT_FLAG_FOR_DELETION</a> <span class="paren">(</span><span class="p-name">eventGroup</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">eventIndex</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4768D5252EAEB76F</code> &middot; 3 args &middot; rust: <code>rrdr_natives::scripts::SET_EVENT_FLAG_FOR_DELETION</code></div>
+</section>
+<section class="fn-block" id="SET_NO_LOADING_SCREEN">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/SET_NO_LOADING_SCREEN.html">SET_NO_LOADING_SCREEN</a> <span class="paren">(</span><span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5CB83156AA038F95</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::SET_NO_LOADING_SCREEN</code></div>
+</section>
+<section class="fn-block" id="SET_SCRIPT_AS_NO_LONGER_NEEDED">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/SET_SCRIPT_AS_NO_LONGER_NEEDED.html">SET_SCRIPT_AS_NO_LONGER_NEEDED</a> <span class="paren">(</span><span class="p-name">scriptName</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0086D3067E1CFD1C</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::SET_SCRIPT_AS_NO_LONGER_NEEDED</code></div>
+</section>
+<section class="fn-block" id="SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED.html">SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED</a> <span class="paren">(</span><span class="p-name">scriptHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x50723A1567C8361E</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED</code></div>
+</section>
+<section class="fn-block" id="SHUTDOWN_LOADING_SCREEN">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/SHUTDOWN_LOADING_SCREEN.html">SHUTDOWN_LOADING_SCREEN</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFC179D7E8886DADF</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::SHUTDOWN_LOADING_SCREEN</code></div>
+</section>
+<section class="fn-block" id="START_NEW_SCRIPT">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/START_NEW_SCRIPT.html">START_NEW_SCRIPT</a> <span class="paren">(</span><span class="p-name">scriptName</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">stackSize</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE81651AD79516E48</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::START_NEW_SCRIPT</code></div>
+</section>
+<section class="fn-block" id="START_NEW_SCRIPT_WITH_ARGS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/START_NEW_SCRIPT_WITH_ARGS.html">START_NEW_SCRIPT_WITH_ARGS</a> <span class="paren">(</span><span class="p-name">scriptName</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">args</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">argCount</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">stackSize</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">return : script thread id, 0 if failed
+Pass pointer to struct of args in p1, size of struct goes into p2</div>
+<div class="fn-meta"><code>0xB8BA7F44DF1575E1</code> &middot; 4 args &middot; rust: <code>rrdr_natives::scripts::START_NEW_SCRIPT_WITH_ARGS</code></div>
+</section>
+<section class="fn-block" id="START_NEW_SCRIPT_WITH_NAME_HASH">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/START_NEW_SCRIPT_WITH_NAME_HASH.html">START_NEW_SCRIPT_WITH_NAME_HASH</a> <span class="paren">(</span><span class="p-name">scriptHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">stackSize</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xEB1C67C3A5333A92</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::START_NEW_SCRIPT_WITH_NAME_HASH</code></div>
+</section>
+<section class="fn-block" id="START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS.html">START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS</a> <span class="paren">(</span><span class="p-name">scriptHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">args</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">argCount</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">stackSize</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC4BB298BD441BE78</code> &middot; 4 args &middot; rust: <code>rrdr_natives::scripts::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS</code></div>
+</section>
+<section class="fn-block" id="STOP_DISPLAYING_MP_TRANSITION_LOADING_SCREENS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/STOP_DISPLAYING_MP_TRANSITION_LOADING_SCREENS.html">STOP_DISPLAYING_MP_TRANSITION_LOADING_SCREENS</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x778D4733E0F2F265</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::STOP_DISPLAYING_MP_TRANSITION_LOADING_SCREENS</code></div>
+</section>
+<section class="fn-block" id="TERMINATE_THIS_THREAD">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/TERMINATE_THIS_THREAD.html">TERMINATE_THIS_THREAD</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5E8B6D17FF91CD59</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::TERMINATE_THIS_THREAD</code></div>
+</section>
+<section class="fn-block" id="TERMINATE_THREAD">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/TERMINATE_THREAD.html">TERMINATE_THREAD</a> <span class="paren">(</span><span class="p-name">threadId</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x87ED52AE40EA1A52</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::TERMINATE_THREAD</code></div>
+</section>
+<section class="fn-block" id="TRIGGER_SCRIPT_EVENT">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/TRIGGER_SCRIPT_EVENT.html">TRIGGER_SCRIPT_EVENT</a> <span class="paren">(</span><span class="p-name">eventGroup</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">eventData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">eventDataSize</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">scriptMetadataIndex</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">playerBits</span><span class="p-sep">:</span> <span class="p-type">int*</span><span class="paren">)</span></h3>
+<div class="docblock">eventGroup: 0 = SCRIPT_EVENT_QUEUE_AI (CEventGroupScriptAI), 1 = SCRIPT_EVENT_QUEUE_NETWORK (CEventGroupScriptNetwork), 2 = unk, 3 = unk, 4 = SCRIPT_EVENT_QUEUE_SCRIPT_ERRORS (CEventGroupScriptErrors)
+
+Note: eventDataSize is NOT the size in bytes, it is the size determined by the SIZE_OF operator (RAGE Script operator, not C/C++ sizeof). That is, the size in bytes divided by 8 (script variables are always 8-byte aligned!).
+
+playerBits (also known as playersToBroadcastTo) is a bitset that indicates which players this event should be sent to. In order to send the event to specific players only, use (1 &lt;&lt; playerIndex). Set all bits if it should be broadcast to all players.</div>
+<div class="fn-meta"><code>0x5AE99C571D5BBE5D</code> &middot; 5 args &middot; rust: <code>rrdr_natives::scripts::TRIGGER_SCRIPT_EVENT</code></div>
+</section>
+<section class="fn-block" id="_0x0A79C81C418F5D38">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0x0A79C81C418F5D38.html">_0x0A79C81C418F5D38</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0A79C81C418F5D38</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::_0x0A79C81C418F5D38</code></div>
+</section>
+<section class="fn-block" id="_0x11B0A0B282FA9B10">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0x11B0A0B282FA9B10.html">_0x11B0A0B282FA9B10</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock">Used in Script Function DISABLE_REGISTERED_WORLD_BRAINS</div>
+<div class="fn-meta"><code>0x11B0A0B282FA9B10</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_0x11B0A0B282FA9B10</code></div>
+</section>
+<section class="fn-block" id="_0x1BDB5A07307F6929">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0x1BDB5A07307F6929.html">_0x1BDB5A07307F6929</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1BDB5A07307F6929</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::_0x1BDB5A07307F6929</code></div>
+</section>
+<section class="fn-block" id="_0x1C5EB3C27F7508CB">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0x1C5EB3C27F7508CB.html">_0x1C5EB3C27F7508CB</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1C5EB3C27F7508CB</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::_0x1C5EB3C27F7508CB</code></div>
+</section>
+<section class="fn-block" id="_0x29FB4CE89472C3CB">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0x29FB4CE89472C3CB.html">_0x29FB4CE89472C3CB</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x29FB4CE89472C3CB</code> &middot; 8 args &middot; rust: <code>rrdr_natives::scripts::_0x29FB4CE89472C3CB</code></div>
+</section>
+<section class="fn-block" id="_0x42A429CDFED6D99D">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0x42A429CDFED6D99D.html">_0x42A429CDFED6D99D</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x42A429CDFED6D99D</code> &middot; 3 args &middot; rust: <code>rrdr_natives::scripts::_0x42A429CDFED6D99D</code></div>
+</section>
+<section class="fn-block" id="_0x5827BE85A87B073D">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0x5827BE85A87B073D.html">_0x5827BE85A87B073D</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5827BE85A87B073D</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_0x5827BE85A87B073D</code></div>
+</section>
+<section class="fn-block" id="_0x64F765D9A1F8F02C">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0x64F765D9A1F8F02C.html">_0x64F765D9A1F8F02C</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x64F765D9A1F8F02C</code> &middot; 3 args &middot; rust: <code>rrdr_natives::scripts::_0x64F765D9A1F8F02C</code></div>
+</section>
+<section class="fn-block" id="_0x6F700A4BF7C3331B">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0x6F700A4BF7C3331B.html">_0x6F700A4BF7C3331B</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x6F700A4BF7C3331B</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_0x6F700A4BF7C3331B</code></div>
+</section>
+<section class="fn-block" id="_0x76CBCD9EADC00955">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0x76CBCD9EADC00955.html">_0x76CBCD9EADC00955</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x76CBCD9EADC00955</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::_0x76CBCD9EADC00955</code></div>
+</section>
+<section class="fn-block" id="_0xA88E1D7FA1E20080">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0xA88E1D7FA1E20080.html">_0xA88E1D7FA1E20080</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA88E1D7FA1E20080</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_0xA88E1D7FA1E20080</code></div>
+</section>
+<section class="fn-block" id="_0xE4ABE20DCE7C7CFE">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0xE4ABE20DCE7C7CFE.html">_0xE4ABE20DCE7C7CFE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE4ABE20DCE7C7CFE</code> &middot; 3 args &middot; rust: <code>rrdr_natives::scripts::_0xE4ABE20DCE7C7CFE</code></div>
+</section>
+<section class="fn-block" id="_0xE7282390542F570D">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0xE7282390542F570D.html">_0xE7282390542F570D</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE7282390542F570D</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_0xE7282390542F570D</code></div>
+</section>
+<section class="fn-block" id="_0xF9E951A1E5517C06">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0xF9E951A1E5517C06.html">_0xF9E951A1E5517C06</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF9E951A1E5517C06</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::_0xF9E951A1E5517C06</code></div>
+</section>
+<section class="fn-block" id="_0xFFDDF802279BE128">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_0xFFDDF802279BE128.html">_0xFFDDF802279BE128</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFFDDF802279BE128</code> &middot; 3 args &middot; rust: <code>rrdr_natives::scripts::_0xFFDDF802279BE128</code></div>
+</section>
+<section class="fn-block" id="_ACTIVATE_GOAL_CONTEXT">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_ACTIVATE_GOAL_CONTEXT.html">_ACTIVATE_GOAL_CONTEXT</a> <span class="paren">(</span><span class="p-name">goalContext</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock">goalContext: see &lt;availableContexts&gt; in common/data/stats_and_challenges/goals_*.meta</div>
+<div class="fn-meta"><code>0x7D654266025E921B</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_ACTIVATE_GOAL_CONTEXT</code></div>
+</section>
+<section class="fn-block" id="_AWARDS_GET_UNLOCK_CLAIM_DATA">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_AWARDS_GET_UNLOCK_CLAIM_DATA.html">_AWARDS_GET_UNLOCK_CLAIM_DATA</a> <span class="paren">(</span><span class="p-name">rpcGuid</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">awardHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">dataIndex</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">outUnlockData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB9467E41DAB1CF2C</code> &middot; 4 args &middot; rust: <code>rrdr_natives::scripts::_AWARDS_GET_UNLOCK_CLAIM_DATA</code></div>
+</section>
+<section class="fn-block" id="_BG_RELOAD_ALL_BACKGROUND_SCRIPTS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_BG_RELOAD_ALL_BACKGROUND_SCRIPTS.html">_BG_RELOAD_ALL_BACKGROUND_SCRIPTS</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xBE7D814CFA181B56</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::_BG_RELOAD_ALL_BACKGROUND_SCRIPTS</code></div>
+</section>
+<section class="fn-block" id="_CLEAR_ALL_PLAYER_BITS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_CLEAR_ALL_PLAYER_BITS.html">_CLEAR_ALL_PLAYER_BITS</a> <span class="paren">(</span><span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xDE544B7EC0C187CC</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_CLEAR_ALL_PLAYER_BITS</code></div>
+</section>
+<section class="fn-block" id="_CLEAR_PLAYER_BIT_AT_INDEX">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_CLEAR_PLAYER_BIT_AT_INDEX.html">_CLEAR_PLAYER_BIT_AT_INDEX</a> <span class="paren">(</span><span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">bitIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD426E2E3288469D6</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::_CLEAR_PLAYER_BIT_AT_INDEX</code></div>
+</section>
+<section class="fn-block" id="_DEACTIVATE_GOAL_CONTEXT">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_DEACTIVATE_GOAL_CONTEXT.html">_DEACTIVATE_GOAL_CONTEXT</a> <span class="paren">(</span><span class="p-name">goalContext</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock">goalContext: see _ACTIVATE_GOAL_CONTEXT</div>
+<div class="fn-meta"><code>0x50B72A754EE64A71</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_DEACTIVATE_GOAL_CONTEXT</code></div>
+</section>
+<section class="fn-block" id="_DISPLAY_LOADING_SCREENS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_DISPLAY_LOADING_SCREENS.html">_DISPLAY_LOADING_SCREENS</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">gamemodeName</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">title</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">subtitle</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1E5B70E53DB661E5</code> &middot; 6 args &middot; rust: <code>rrdr_natives::scripts::_DISPLAY_LOADING_SCREENS</code></div>
+</section>
+<section class="fn-block" id="_DOES_COMPRESSED_GLOBAL_BLOCK_BUFFER_EXIST">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_DOES_COMPRESSED_GLOBAL_BLOCK_BUFFER_EXIST.html">_DOES_COMPRESSED_GLOBAL_BLOCK_BUFFER_EXIST</a> <span class="paren">(</span><span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x66EE5B93C308F734</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_DOES_COMPRESSED_GLOBAL_BLOCK_BUFFER_EXIST</code></div>
+</section>
+<section class="fn-block" id="_GET_GLOBAL_BLOCK_CAN_BE_ACCESSED">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_GET_GLOBAL_BLOCK_CAN_BE_ACCESSED.html">_GET_GLOBAL_BLOCK_CAN_BE_ACCESSED</a> <span class="paren">(</span><span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x42A7EB5C814C2DE0</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_GET_GLOBAL_BLOCK_CAN_BE_ACCESSED</code></div>
+</section>
+<section class="fn-block" id="_GET_HASH_OF_THREAD">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_GET_HASH_OF_THREAD.html">_GET_HASH_OF_THREAD</a> <span class="paren">(</span><span class="p-name">threadId</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">uint</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x724CB89D35B283D0</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_GET_HASH_OF_THREAD</code></div>
+</section>
+<section class="fn-block" id="_GET_THREAD_EXIT_REASON">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_GET_THREAD_EXIT_REASON.html">_GET_THREAD_EXIT_REASON</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">enum eThreadExitReason
+{
+THREAD_EXIT_REASON_NONE,
+THREAD_EXIT_REASON_BACKGROUND_THREAD_STOPPED,
+THREAD_EXIT_REASON_SESSION_MERGE,
+THREAD_EXIT_REASON_SCENARIO_OUT_OF_SCOPE,
+THREAD_EXIT_REASON_REQUESTED_BY_SCRIPT
+};</div>
+<div class="fn-meta"><code>0x54AE4FDEEFEAB77E</code> &middot; 0 args &middot; rust: <code>rrdr_natives::scripts::_GET_THREAD_EXIT_REASON</code></div>
+</section>
+<section class="fn-block" id="_IS_ANY_PLAYER_BIT_SET">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_IS_ANY_PLAYER_BIT_SET.html">_IS_ANY_PLAYER_BIT_SET</a> <span class="paren">(</span><span class="p-name">playerBits</span><span class="p-sep">:</span> <span class="p-type">int*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x179A6F0EE2E79026</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_IS_ANY_PLAYER_BIT_SET</code></div>
+</section>
+<section class="fn-block" id="_IS_BACKGROUND_SCRIPT">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_IS_BACKGROUND_SCRIPT.html">_IS_BACKGROUND_SCRIPT</a> <span class="paren">(</span><span class="p-name">threadId</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x20B7F69B40C6B755</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_IS_BACKGROUND_SCRIPT</code></div>
+</section>
+<section class="fn-block" id="_IS_GOAL_CONTEXT_ACTIVE">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_IS_GOAL_CONTEXT_ACTIVE.html">_IS_GOAL_CONTEXT_ACTIVE</a> <span class="paren">(</span><span class="p-name">goalContext</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">goalContext: see _ACTIVATE_GOAL_CONTEXT</div>
+<div class="fn-meta"><code>0x7409669C5ED50144</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_IS_GOAL_CONTEXT_ACTIVE</code></div>
+</section>
+<section class="fn-block" id="_IS_PLAYER_BIT_SET_AT_INDEX">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_IS_PLAYER_BIT_SET_AT_INDEX.html">_IS_PLAYER_BIT_SET_AT_INDEX</a> <span class="paren">(</span><span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">bitIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x72B2E00C9BAC6789</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::_IS_PLAYER_BIT_SET_AT_INDEX</code></div>
+</section>
+<section class="fn-block" id="_IS_THREAD_EXIT_REQUESTED_FOR_THREAD_WITH_THIS_ID">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_IS_THREAD_EXIT_REQUESTED_FOR_THREAD_WITH_THIS_ID.html">_IS_THREAD_EXIT_REQUESTED_FOR_THREAD_WITH_THIS_ID</a> <span class="paren">(</span><span class="p-name">threadId</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x30BED53646C86D11</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_IS_THREAD_EXIT_REQUESTED_FOR_THREAD_WITH_THIS_ID</code></div>
+</section>
+<section class="fn-block" id="_LOOT_GET_LOOT_CLAIM_DATA">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_LOOT_GET_LOOT_CLAIM_DATA.html">_LOOT_GET_LOOT_CLAIM_DATA</a> <span class="paren">(</span><span class="p-name">rpcGuid</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">dataIndex</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">outLootData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF1E9045F5AA9E428</code> &middot; 3 args &middot; rust: <code>rrdr_natives::scripts::_LOOT_GET_LOOT_CLAIM_DATA</code></div>
+</section>
+<section class="fn-block" id="_LOOT_GET_RESULT_ITEM">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_LOOT_GET_RESULT_ITEM.html">_LOOT_GET_RESULT_ITEM</a> <span class="paren">(</span><span class="p-name">rpcGuid</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">itemIndex</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">outResultItem</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4293B44A855F82CC</code> &middot; 3 args &middot; rust: <code>rrdr_natives::scripts::_LOOT_GET_RESULT_ITEM</code></div>
+</section>
+<section class="fn-block" id="_NET_RPC_GUID_TO_STRING">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_NET_RPC_GUID_TO_STRING.html">_NET_RPC_GUID_TO_STRING</a> <span class="paren">(</span><span class="p-name">netRpcGuid</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">string</span></h3>
+<div class="docblock">Returns &quot;INVALID_NET_RPC_GUID&quot; if netRpcGuid is invalid.</div>
+<div class="fn-meta"><code>0xAC9FF854BD4BA9B5</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_NET_RPC_GUID_TO_STRING</code></div>
+</section>
+<section class="fn-block" id="_REQUEST_THREAD_EXIT">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_REQUEST_THREAD_EXIT.html">_REQUEST_THREAD_EXIT</a> <span class="paren">(</span><span class="p-name">threadId</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7DE4643157AD646C</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_REQUEST_THREAD_EXIT</code></div>
+</section>
+<section class="fn-block" id="_REQUEST_THREAD_EXIT_FOR_ALL_THREADS_WITH_THIS_NAME">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_REQUEST_THREAD_EXIT_FOR_ALL_THREADS_WITH_THIS_NAME.html">_REQUEST_THREAD_EXIT_FOR_ALL_THREADS_WITH_THIS_NAME</a> <span class="paren">(</span><span class="p-name">nameHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7423F7835770F619</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_REQUEST_THREAD_EXIT_FOR_ALL_THREADS_WITH_THIS_NAME</code></div>
+</section>
+<section class="fn-block" id="_RESTORE_GLOBAL_BLOCK">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_RESTORE_GLOBAL_BLOCK.html">_RESTORE_GLOBAL_BLOCK</a> <span class="paren">(</span><span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xDC3914A99B4A5FDF</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_RESTORE_GLOBAL_BLOCK</code></div>
+</section>
+<section class="fn-block" id="_SET_ALL_GLOBAL_BLOCKS_HAVE_BEEN_LOADED">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_SET_ALL_GLOBAL_BLOCKS_HAVE_BEEN_LOADED.html">_SET_ALL_GLOBAL_BLOCKS_HAVE_BEEN_LOADED</a> <span class="paren">(</span><span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x11986B05885564D2</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_SET_ALL_GLOBAL_BLOCKS_HAVE_BEEN_LOADED</code></div>
+</section>
+<section class="fn-block" id="_SET_ALL_PLAYER_BITS">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_SET_ALL_PLAYER_BITS.html">_SET_ALL_PLAYER_BITS</a> <span class="paren">(</span><span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x20F4CB76689ACDBC</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_SET_ALL_PLAYER_BITS</code></div>
+</section>
+<section class="fn-block" id="_SET_GLOBAL_BLOCK_CAN_BE_ACCESSED">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_SET_GLOBAL_BLOCK_CAN_BE_ACCESSED.html">_SET_GLOBAL_BLOCK_CAN_BE_ACCESSED</a> <span class="paren">(</span><span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE66F392BFCE734AF</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::_SET_GLOBAL_BLOCK_CAN_BE_ACCESSED</code></div>
+</section>
+<section class="fn-block" id="_SET_PLAYER_BIT_AT_INDEX">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_SET_PLAYER_BIT_AT_INDEX.html">_SET_PLAYER_BIT_AT_INDEX</a> <span class="paren">(</span><span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">bitIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x31010318BA9897AC</code> &middot; 2 args &middot; rust: <code>rrdr_natives::scripts::_SET_PLAYER_BIT_AT_INDEX</code></div>
+</section>
+<section class="fn-block" id="_STORE_GLOBAL_BLOCK">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_STORE_GLOBAL_BLOCK.html">_STORE_GLOBAL_BLOCK</a> <span class="paren">(</span><span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB952A3AC41D58F2F</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::scripts::_STORE_GLOBAL_BLOCK</code></div>
+</section>
+<section class="fn-block" id="_TRIGGER_SCRIPT_EVENT_2">
+<h3 class="code-header"><span class="fn-mod">SCRIPTS::</span><a class="fn-name" href="n/scripts/_TRIGGER_SCRIPT_EVENT_2.html">_TRIGGER_SCRIPT_EVENT_2</a> <span class="paren">(</span><span class="p-name">eventData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">eventDataSize</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">scriptMetadataIndex</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">threadId</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8B61C950A148FFA2</code> &middot; 4 args &middot; rust: <code>rrdr_natives::scripts::_TRIGGER_SCRIPT_EVENT_2</code></div>
+</section>
+</section>
+</main>
+<script src="search-index.js?v=7501"></script>
+<script src="static/search.js?v=7501" data-root=""></script>
+</body></html>

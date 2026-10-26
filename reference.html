@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference - RRDR</title>
+<meta name="description" content="RRDR loaders, configuration, ABI, repository layout, native bindings and troubleshooting.">
+<link rel="icon" href="natives/static/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <img class="brand-mark" src="natives/static/logo.svg" alt="" width="24" height="24">
+    <span class="brand-text">rrdr</span>
+  </a>
+  <nav class="topnav">
+    <a href="start.html">Quick start</a>
+    <a href="reference.html">Reference</a>
+    <a href="natives/index.html">Natives</a>
+    <a href="https://github.com/NoloxoYT/RRDR2" rel="noreferrer">GitHub</a>
+  </nav>
+</header>
+
+<main class="prose">
+
+<h1>Reference</h1>
+<p>Everything beyond the first ten minutes: loaders, configuration, ABI, layout and troubleshooting.</p>
+
+<h2>Loaders</h2>
+<table>
+  <tr><th>Loader</th><th>Needs</th><th>Use it when</th></tr>
+  <tr>
+    <td><code>RRDR.asi</code> (native)</td>
+    <td>ScriptHookRDR2 + <code>dinput8.dll</code></td>
+    <td>Default. No .NET involved.</td>
+  </tr>
+  <tr>
+    <td><code>RRDR.Host.dll</code> (managed)</td>
+    <td>ScriptHookRDR2DotNet V2 + .NET Framework 4.8</td>
+    <td>You already run ScriptHookRDR2DotNet mods.</td>
+  </tr>
+</table>
+<p>Both scan <code>scripts/Rscripts/</code> and load every DLL that exports <code>rd_abi_version</code>. Run only one loader: two loaders tick every mod twice per frame.</p>
+
+<h3>How the native loader fits</h3>
+<pre><code>RDR2.exe
+├─ dinput8.dll (ASI loader)
+│  └─ RRDR.asi                    native loader
+│     ├─ RRDR.asi.ini
+│     └─ scripts/Rscripts/*.dll   every core exporting rd_abi_version
+│
+└─ ScriptHookRDR2.dll
+   └─ ScriptHookRDR2DotNet.asi
+      └─ scripts/Rscripts/RRDR.Host.dll   alternative managed loader
+         └─ scripts/Rscripts/*.dll         same cores</code></pre>
+<p><code>RRDR.asi</code> resolves its ScriptHookRDR2 imports at runtime with <code>GetProcAddress</code> and calls <code>scriptRegister</code>, <code>scriptWait</code> and <code>nativeCall</code> directly, so a Rust <code>cdylib</code> needs no .NET metadata.</p>
+
+<h2>Manual install</h2>
+<h3>Native loader</h3>
+<p>Copy to the folder containing <code>RDR2.exe</code>:</p>
+<pre><code>RRDR.asi
+RRDR.asi.ini</code></pre>
+<p>Then from the package's <code>scripts/</code> into <code>&lt;RDR2&gt;/scripts/</code>:</p>
+<pre><code>Rscripts/RealisticDamagesCore.dll
+Rscripts/RealisticDamages.ini</code></pre>
+<p><code>RRDR.Host.dll</code> and <code>RRDR.Host.ini</code> are not needed in this mode.</p>
+
+<h3>Managed loader</h3>
+<p>Copy the package's <code>scripts/Rscripts/</code> into <code>&lt;RDR2&gt;/scripts/</code> and do not copy <code>RRDR.asi</code>.</p>
+
+<h2>Configuration</h2>
+<h3>Loader</h3>
+<p><code>RRDR.asi.ini</code>, next to <code>RDR2.exe</code>:</p>
+<table>
+  <tr><th>Key</th><th>Default</th><th>Effect</th></tr>
+  <tr><td><code>mods_dir</code></td><td>empty</td><td>Folder scanned for cores. Empty means <code>scripts\Rscripts</code>. Relative paths start at the game folder.</td></tr>
+  <tr><td><code>reload_config</code></td><td><code>true</code></td><td>Reload a core's <code>.ini</code> when its modification time changes.</td></tr>
+  <tr><td><code>disable</code></td><td>empty</td><td>Comma-separated DLL names to skip.</td></tr>
+</table>
+<p><code>RRDR.Host.ini</code> accepts the same keys plus <code>log_file</code>.</p>
+
+<h3>RealisticDamages</h3>
+<p><code>scripts/Rscripts/RealisticDamages.ini</code> is hot-reloadable, but the current core keeps its numbers in code:</p>
+<table>
+  <tr><th>Behaviour</th><th>Value</th></tr>
+  <tr><td>Torso hit</td><td><code>damage * 1.5</code> extra damage, then starts or extends a bleed</td></tr>
+  <tr><td>Right-arm hit</td><td><code>damage * 0.5</code> extra damage, drops the gun, then bleeds</td></tr>
+  <tr><td>Bleed rate</td><td><code>round(damage / 4)</code> HP/s, clamped to 3..12</td></tr>
+  <tr><td>Bleed duration</td><td>7 s from the last qualifying hit</td></tr>
+  <tr><td>Headshot</td><td>lethal on a projectile hit to a head bone</td></tr>
+  <tr><td>Medicine</td><td>a Health Cure stops the bleed</td></tr>
+</table>
+<p><code>better_economy.dll</code> is an empty skeleton with no behaviour.</p>
+
+<h2>The core ABI</h2>
+<p>A core is a Rust <code>cdylib</code> exporting:</p>
+<ul>
+  <li><code>rd_abi_version</code></li>
+  <li><code>rd_init_v3</code> (or <code>rd_init</code>)</li>
+  <li><code>rd_tick</code>, <code>rd_reload_config</code>, <code>rd_shutdown</code></li>
+</ul>
+<p>The loader passes a host table with a <code>call_native(hash, args)</code> callback; every native call goes through the game's script thread. The full C ABI is in <a href="https://github.com/NoloxoYT/RRDR2/blob/main/docs/ABI.md">docs/ABI.md</a>.</p>
+<p>A core reads its config from <code>&lt;DllName&gt;.ini</code> next to the DLL. An empty path is passed when the file is absent.</p>
+
+<h2>Crate conventions</h2>
+<ul>
+  <li>Do not name a mod crate <code>rrdr-*</code>; the prefix is reserved for the framework.</li>
+  <li>Do not name the DLL <code>RRDR.*</code> or <code>ScriptHook*</code>; the loaders skip those names.</li>
+  <li>Prefer one crate per feature so a broken mod cannot take the others down.</li>
+</ul>
+
+<h2>Generated native bindings</h2>
+<p><code>rrdr-natives</code> has a typed function for every native in <code>lib/NativeDecl.cs</code>: 7501 functions across 86 modules.</p>
+<pre><code>use rrdr_natives::{entity, player};
+
+let player_id = player::PLAYER_ID(api);
+let ped = player::GET_PLAYER_PED(api, player_id);
+let health = entity::GET_ENTITY_HEALTH(api, ped);
+let pos = entity::GET_ENTITY_COORDS(api, ped, true, true);</code></pre>
+<p><code>Vector3</code> overloads use the <code>_VEC3</code> suffix; every function also has a <code>HASH_&lt;NAME&gt;</code> constant for raw <code>GameApi</code> calls. Two variadic natives are listed in <code>rrdr_natives::SKIPPED_VARIADIC</code> because the ABI cannot express them.</p>
+
+<h2>Calling natives by hand</h2>
+<pre><code>let health = api.call_i32(GET_ENTITY_HEALTH, &amp;[Arg::I32(ped)]);
+let pos = api.call_vec3(GET_ENTITY_COORDS, &amp;[Arg::I32(ped), Arg::Bool(true), Arg::Bool(true)]);
+let mut bone = 0i32;
+let valid = api.call_bool(
+    GET_PED_LAST_DAMAGE_BONE,
+    &amp;[Arg::I32(ped), Arg::Ptr(std::ptr::addr_of_mut!(bone) as u64)],
+);</code></pre>
+<p>Arguments are <code>I32</code>, <code>U32</code>, <code>F32</code>, <code>Bool</code>, <code>U64</code>, <code>Str</code> and <code>Ptr</code>. A <code>Ptr</code> points at an output variable written synchronously by the native.</p>
+
+<h2>Threading rules</h2>
+<p>Never call <code>GameApi</code> from a Rust thread: natives must run on the game's script thread. Do all work in <code>tick</code>, <code>init</code>, <code>reload</code> or <code>shutdown</code>, and keep ticks short.</p>
+
+<h2>Repository layout</h2>
+<pre><code>rust/crates/rrdr-bridge/     ABI, Mod trait, GameApi, native dispatch
+rust/crates/rrdr-natives/    generated typed bindings
+rust/crates/rrdr-game/       Entity, Ped, Vehicle, Player, World API
+rust/crates/realistic-damages/   example core (RealisticDamagesCore)
+rust/crates/better_economy/  empty mod template
+native/RRDR.Asi/             native ASI loader (C++)
+lib/managed/RRDR.Host/       managed loader (net48)
+lib/managed/RRDR.Sim/        end-to-end test without the game
+build_tools/                 the rrdr build tool
+site/                        this documentation site
+tools/                       binding and site generators</code></pre>
+
+<h2>Individual commands</h2>
+<table>
+  <tr><th>Command</th><th>Purpose</th></tr>
+  <tr><td><code>cargo test --manifest-path rust/Cargo.toml --workspace</code></td><td>Rust unit tests.</td></tr>
+  <tr><td><code>cargo build --manifest-path rust/Cargo.toml</code></td><td>Cores for the local OS (used by the simulator).</td></tr>
+  <tr><td><code>cargo xwin build --manifest-path rust/Cargo.toml -p realistic-damages --release --target x86_64-pc-windows-msvc</code></td><td>One core for Windows.</td></tr>
+  <tr><td><code>dotnet run --project lib/managed/RRDR.Sim/RRDR.Sim.csproj</code></td><td>End-to-end simulator.</td></tr>
+  <tr><td><code>dotnet build lib/managed/RRDR.Host/RRDR.Host.csproj -c Release -f net48 -p:UseRealApi=true</code></td><td>Managed loader.</td></tr>
+  <tr><td><code>./tools/build_asi.sh dist/RRDR/RRDR.asi</code></td><td>Native loader.</td></tr>
+  <tr><td><code>python3 tools/generate_natives.py</code></td><td>Regenerate the native bindings.</td></tr>
+  <tr><td><code>python3 tools/generate_natives_site.py</code></td><td>Regenerate the natives pages under <code>site/natives/</code>.</td></tr>
+</table>
+
+<h2>Logs and troubleshooting</h2>
+<table>
+  <tr><th>Loader</th><th>Log</th></tr>
+  <tr><td><code>RRDR.asi</code></td><td><code>scripts/Rscripts/RRDR.asi.log</code></td></tr>
+  <tr><td><code>RRDR.Host.dll</code></td><td><code>scripts/Rscripts/RRDR.Host.log</code></td></tr>
+</table>
+<table>
+  <tr><th>Symptom</th><th>Check</th></tr>
+  <tr><td>No log file at all</td><td>Loader DLL not in the game folder, or <code>ScriptHookRDR2.dll</code> missing.</td></tr>
+  <tr><td><code>Skipping (no rd_abi_version export)</code></td><td>A DLL in <code>Rscripts/</code> is not an RRDR core. The log names it; move it out.</td></tr>
+  <tr><td><code>LoadLibraryW ... Win32 error 193</code></td><td>The DLL is 32-bit. Game and core must both be x86_64.</td></tr>
+  <tr><td><code>rd_init failed</code></td><td>The core rejected its config; the reason is a few lines above.</td></tr>
+  <tr><td>Effects happen twice</td><td>Both loaders are active, or a stale <code>RRDR.Host.dll</code> sits in <code>scripts/</code>. Keep one loader.</td></tr>
+  <tr><td>Headshot never kills</td><td>Headshots require a weapon impact; falls and fire do not count.</td></tr>
+  <tr><td>Bleed never starts</td><td>The hit must report a torso or right-arm bone. The log prints <code>zone=...</code> and <code>bone=...</code>.</td></tr>
+</table>
+
+<h3>Linux and Wine</h3>
+<p>The managed loader needs a real .NET Framework 4.8 install. <code>winetricks dotnet48</code> can fail on Wine 11; a Wine 8/9 prefix such as <code>wine-ge-8-26-x86_64</code> works. The native loader needs no .NET.</p>
+<p>Lutris rewrites <code>WINEDLLOVERRIDES</code> for DXVK, so put overrides in <code>wine.overrides</code> instead of <code>system.env</code>:</p>
+<pre><code>wine:
+  overrides:
+    dinput8: n,b
+    version: n,b
+    ScriptHookRDR2: n,b
+    ScriptHookRDRDotNet: n,b</code></pre>
+<p>If <code>RDR2.exe</code> exits right after <code>Launcher.exe</code> starts it, add the <code>RDR2.exe</code> application overrides <code>amd_ags_x64 = builtin,native</code> and <code>vulkan-1 = native,builtin</code>.</p>
+
+<h2>Limitations</h2>
+<ul>
+  <li>x64 only.</li>
+  <li><code>Vector2</code>, <code>Matrix</code> and other struct returns need an ABI extension. 64-bit, <code>Vector3</code> and string returns are covered.</li>
+  <li>Keyboard events are not exposed by the ABI; poll control natives in <code>tick</code>.</li>
+  <li>Pool enumeration needs ABI v3, which both loaders provide.</li>
+  <li>The ASI loader always writes <code>RRDR.asi.log</code>; its <code>log_file</code> key is not read yet.</li>
+  <li>RealisticDamages is intentionally small. <code>GET_PED_LAST_DAMAGE_BONE</code> can be stale after a fall or fire.</li>
+</ul>
+
+<h2>License and credits</h2>
+<ul>
+  <li>RRDR is MIT licensed. See <a href="https://github.com/NoloxoYT/RRDR2/blob/main/LICENSE">LICENSE</a>.</li>
+  <li><code>lib/ScriptHookRDRNetAPI.dll</code> comes from ScriptHookRDR2DotNet V2 and is zlib licensed.</li>
+  <li>ScriptHookRDR2 is by Alexander Blade. Red Dead Redemption 2 is a trademark of Rockstar Games. This project is not affiliated with either.</li>
+</ul>
+
+<div class="next">
+  <a href="start.html">&larr; Quick start</a>
+  <a href="natives/index.html">Browse the natives &rarr;</a>
+</div>
+
+</main>
+
+<footer>
+  <p>RRDR is MIT licensed. ScriptHookRDR2 is by Alexander Blade. Red Dead Redemption 2 is a trademark of Rockstar Games.</p>
+</footer>
+
+</body>
+</html>

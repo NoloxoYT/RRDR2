@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rrdr_natives::propset - RRDR natives</title>
+<link rel="stylesheet" href="static/normalize.css">
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/favicon.svg">
+</head><body>
+
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <img class="brand-mark" src="static/logo.svg" alt="RRDR" width="24" height="24" />
+    <span class="brand-text">rrdr<span class="brand-dim">.natives</span></span>
+  </a>
+
+<div class="live-search">
+  <label for="search-input" class="sr-only">Search natives</label>
+  <span class="hs-icon">&#8902;</span>
+  <input id="search-input" type="text" autocomplete="off" spellcheck="false"
+         placeholder="Search natives - name or description" tabindex="-1" />
+  <span class="hs-hint" title="Press / to focus">/</span>
+  <div class="live-results" id="live-results" hidden></div>
+</div>
+
+</header>
+
+<nav class="sidebar">
+<div class="side-crate"><a href="index.html">rrdr_natives</a></div>
+<h3 class="side-bucket dim">Ped related</h3>
+<a class="side-mod" href="ped.html">ped<span class="count">1051</span></a>
+<a class="side-mod" href="perschar.html">perschar<span class="count">51</span></a>
+<a class="side-mod" href="companion.html">companion<span class="count">25</span></a>
+<a class="side-mod" href="population.html">population<span class="count">32</span></a>
+<a class="side-mod" href="brain.html">brain<span class="count">11</span></a>
+<a class="side-mod" href="ik.html">ik<span class="count">5</span></a>
+<a class="side-mod" href="attribute.html">attribute<span class="count">27</span></a>
+<a class="side-mod" href="task.html">task<span class="count">706</span></a>
+<a class="side-mod" href="animscene.html">animscene<span class="count">100</span></a>
+<a class="side-mod" href="flock.html">flock<span class="count">47</span></a>
+<a class="side-mod" href="interaction.html">interaction<span class="count">6</span></a>
+<h3 class="side-bucket dim">Player related</h3>
+<a class="side-mod" href="player.html">player<span class="count">397</span></a>
+<a class="side-mod" href="stats.html">stats<span class="count">89</span></a>
+<a class="side-mod" href="law.html">law<span class="count">131</span></a>
+<a class="side-mod" href="money.html">money<span class="count">8</span></a>
+<a class="side-mod" href="bounty.html">bounty<span class="count">33</span></a>
+<a class="side-mod" href="posse.html">posse<span class="count">31</span></a>
+<a class="side-mod" href="crew.html">crew<span class="count">18</span></a>
+<h3 class="side-bucket dim">World related</h3>
+<a class="side-mod" href="entity.html">entity<span class="count">295</span></a>
+<a class="side-mod" href="object.html">object<span class="count">166</span></a>
+<a class="side-mod" href="misc.html">misc<span class="count">303</span></a>
+<a class="side-mod" href="fire.html">fire<span class="count">43</span></a>
+<a class="side-mod" href="water.html">water<span class="count">21</span></a>
+<a class="side-mod" href="zone.html">zone<span class="count">4</span></a>
+<a class="side-mod" href="map.html">map<span class="count">94</span></a>
+<a class="side-mod" href="pathfind.html">pathfind<span class="count">92</span></a>
+<a class="side-mod" href="interior.html">interior<span class="count">35</span></a>
+<a class="side-mod" href="volume.html">volume<span class="count">99</span></a>
+<a class="side-mod" href="physics.html">physics<span class="count">78</span></a>
+<a class="side-mod" href="graphics.html">graphics<span class="count">297</span></a>
+<a class="side-mod" href="clock.html">clock<span class="count">19</span></a>
+<a class="side-mod" href="streaming.html">streaming<span class="count">124</span></a>
+<a class="side-mod" href="shapetest.html">shapetest<span class="count">13</span></a>
+<a class="side-mod" href="event.html">event<span class="count">42</span></a>
+<a class="side-mod" href="collection.html">collection<span class="count">31</span></a>
+<h3 class="side-bucket dim">Vehicles</h3>
+<a class="side-mod" href="vehicle.html">vehicle<span class="count">408</span></a>
+<a class="side-mod" href="aitransport.html">aitransport<span class="count">24</span></a>
+<a class="side-mod" href="aicoverpoint.html">aicoverpoint<span class="count">17</span></a>
+<h3 class="side-bucket dim">Camera</h3>
+<a class="side-mod" href="cam.html">cam<span class="count">248</span></a>
+<a class="side-mod" href="txd.html">txd<span class="count">8</span></a>
+<h3 class="side-bucket dim">Audio</h3>
+<a class="side-mod" href="audio.html">audio<span class="count">229</span></a>
+<a class="side-mod" href="voice.html">voice<span class="count">24</span></a>
+<h3 class="side-bucket dim">UI &amp; Input</h3>
+<a class="side-mod" href="hud.html">hud<span class="count">190</span></a>
+<a class="side-mod" href="pad.html">pad<span class="count">40</span></a>
+<a class="side-mod" href="minigame.html">minigame<span class="count">48</span></a>
+<a class="side-mod" href="localization.html">localization<span class="count">4</span></a>
+<a class="side-mod" href="uiapps.html">uiapps<span class="count">19</span></a>
+<a class="side-mod" href="uidebug.html">uidebug<span class="count">3</span></a>
+<a class="side-mod" href="uievents.html">uievents<span class="count">4</span></a>
+<a class="side-mod" href="uifeed.html">uifeed<span class="count">27</span></a>
+<a class="side-mod" href="uilog.html">uilog<span class="count">31</span></a>
+<a class="side-mod" href="uipinning.html">uipinning<span class="count">1</span></a>
+<a class="side-mod" href="uitutorial.html">uitutorial<span class="count">3</span></a>
+<a class="side-mod" href="uistatemachine.html">uistatemachine<span class="count">12</span></a>
+<a class="side-mod" href="uistickyfeed.html">uistickyfeed<span class="count">8</span></a>
+<a class="side-mod" href="compapp.html">compapp<span class="count">5</span></a>
+<h3 class="side-bucket dim">AI &amp; Scripts</h3>
+<a class="side-mod" href="missiondata.html">missiondata<span class="count">18</span></a>
+<a class="side-mod" href="scripts.html">scripts<span class="count">94</span></a>
+<a class="side-mod" href="spactionproxy.html">spactionproxy<span class="count">6</span></a>
+<a class="side-mod" href="recording.html">recording<span class="count">1</span></a>
+<a class="side-mod" href="replay.html">replay<span class="count">5</span></a>
+<h3 class="side-bucket dim">Data &amp; Storage</h3>
+<a class="side-mod" href="datafile.html">datafile<span class="count">59</span></a>
+<a class="side-mod" href="decorator.html">decorator<span class="count">15</span></a>
+<a class="side-mod" href="databinding.html">databinding<span class="count">82</span></a>
+<a class="side-mod" href="inventory.html">inventory<span class="count">83</span></a>
+<a class="side-mod" href="itemdatabase.html">itemdatabase<span class="count">84</span></a>
+<a class="side-mod" href="itemset.html">itemset<span class="count">11</span></a>
+<a class="side-mod" href="dlc.html">dlc<span class="count">4</span></a>
+<a class="side-mod" href="save.html">save<span class="count">24</span></a>
+<a class="side-mod" href="persistence.html">persistence<span class="count">26</span></a>
+<a class="side-mod" href="netshopping.html">netshopping<span class="count">24</span></a>
+<a class="side-mod" href="unlock.html">unlock<span class="count">9</span></a>
+<h3 class="side-bucket dim">Online &amp; Telemetry</h3>
+<a class="side-mod" href="network.html">network<span class="count">571</span></a>
+<a class="side-mod" href="socialclub.html">socialclub<span class="count">33</span></a>
+<a class="side-mod" href="socialclubfeed.html">socialclubfeed<span class="count">2</span></a>
+<a class="side-mod" href="telemetry.html">telemetry<span class="count">78</span></a>
+<a class="side-mod" href="google_analytics.html">google_analytics<span class="count">4</span></a>
+<h3 class="side-bucket">System &amp; Utility</h3>
+<a class="side-mod" href="builtin.html">builtin<span class="count">26</span></a>
+<a class="side-mod" href="debug.html">debug<span class="count">3</span></a>
+<a class="side-mod" href="crashlog.html">crashlog<span class="count">14</span></a>
+<a class="side-mod" href="queue.html">queue<span class="count">2</span></a>
+<a class="side-mod" href="_namespace4.html">_namespace4<span class="count">1</span></a>
+<a class="side-mod" href="compendium.html">compendium<span class="count">36</span></a>
+<h3 class="side-bucket">Functions</h3>
+<a class="side-fn" href="n/propset/CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY.html">CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY</a>
+<a class="side-fn" href="n/propset/CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_VEC3.html">CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY</a>
+<a class="side-fn" href="n/propset/DOES_PROP_SET_EXIST.html">DOES_PROP_SET_EXIST</a>
+<a class="side-fn" href="n/propset/IS_PROP_SET_FULLY_LOADED.html">IS_PROP_SET_FULLY_LOADED</a>
+<a class="side-fn" href="n/propset/_0x58E0B01D45CA7357.html">_0x58E0B01D45CA7357</a>
+<a class="side-fn" href="n/propset/_0xC4B67EF3FD65622D.html">_0xC4B67EF3FD65622D</a>
+<a class="side-fn" href="n/propset/_ADD_ADDITIONAL_PROP_SET_FOR_VEHICLE.html">_ADD_ADDITIONAL_PROP_SET_FOR_VEHICLE</a>
+<a class="side-fn" href="n/propset/_ADD_LIGHT_PROP_SET_TO_VEHICLE.html">_ADD_LIGHT_PROP_SET_TO_VEHICLE</a>
+<a class="side-fn" href="n/propset/_ADD_PROP_SET_FOR_VEHICLE.html">_ADD_PROP_SET_FOR_VEHICLE</a>
+<a class="side-fn" href="n/propset/_CREATE_PROP_SET.html">_CREATE_PROP_SET</a>
+<a class="side-fn" href="n/propset/_CREATE_PROP_SET_2.html">_CREATE_PROP_SET_2</a>
+<a class="side-fn" href="n/propset/_CREATE_PROP_SET_2_VEC3.html">_CREATE_PROP_SET_2</a>
+<a class="side-fn" href="n/propset/_CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_2.html">_CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_2</a>
+<a class="side-fn" href="n/propset/_CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_2_VEC3.html">_CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_2</a>
+<a class="side-fn" href="n/propset/_CREATE_PROP_SET_VEC3.html">_CREATE_PROP_SET</a>
+<a class="side-fn" href="n/propset/_DELETE_PROP_SET.html">_DELETE_PROP_SET</a>
+<a class="side-fn" href="n/propset/_DOES_PROP_SET_OF_TYPE_EXIST_NEAR_COORDS.html">_DOES_PROP_SET_OF_TYPE_EXIST_NEAR_COORDS</a>
+<a class="side-fn" href="n/propset/_DOES_PROP_SET_OF_TYPE_EXIST_NEAR_COORDS_VEC3.html">_DOES_PROP_SET_OF_TYPE_EXIST_NEAR_COORDS</a>
+<a class="side-fn" href="n/propset/_DOES_VEHICLE_HAVE_ANY_LIGHT_PROP_SET.html">_DOES_VEHICLE_HAVE_ANY_LIGHT_PROP_SET</a>
+<a class="side-fn" href="n/propset/_DOES_VEHICLE_HAVE_ANY_PROP_SET.html">_DOES_VEHICLE_HAVE_ANY_PROP_SET</a>
+<a class="side-fn" href="n/propset/_GET_ENTITIES_FROM_PROP_SET.html">_GET_ENTITIES_FROM_PROP_SET</a>
+<a class="side-fn" href="n/propset/_GET_PROP_SET_AT_COORDS.html">_GET_PROP_SET_AT_COORDS</a>
+<a class="side-fn" href="n/propset/_GET_PROP_SET_AT_COORDS_VEC3.html">_GET_PROP_SET_AT_COORDS</a>
+<a class="side-fn" href="n/propset/_GET_PROP_SET_MODEL.html">_GET_PROP_SET_MODEL</a>
+<a class="side-fn" href="n/propset/_GET_TRAIN_CARRIAGE_PROP_SET.html">_GET_TRAIN_CARRIAGE_PROP_SET</a>
+<a class="side-fn" href="n/propset/_GET_VEHICLE_LIGHT_PROP_SET.html">_GET_VEHICLE_LIGHT_PROP_SET</a>
+<a class="side-fn" href="n/propset/_GET_VEHICLE_PROP_SET.html">_GET_VEHICLE_PROP_SET</a>
+<a class="side-fn" href="n/propset/_GET_VEHICLE_PROP_SET_HASH.html">_GET_VEHICLE_PROP_SET_HASH</a>
+<a class="side-fn" href="n/propset/_HAS_PROP_SET_LOADED.html">_HAS_PROP_SET_LOADED</a>
+<a class="side-fn" href="n/propset/_HAS_PROP_SET_LOADED_2.html">_HAS_PROP_SET_LOADED_2</a>
+<a class="side-fn" href="n/propset/_HAS_VEHICLE_TRAILER_PROP_SET_LOADED.html">_HAS_VEHICLE_TRAILER_PROP_SET_LOADED</a>
+<a class="side-fn" href="n/propset/_IS_PROP_SET_VISIBLE.html">_IS_PROP_SET_VISIBLE</a>
+<a class="side-fn" href="n/propset/_IS_VEHICLE_LIGHT_PROP_SET_LOADED.html">_IS_VEHICLE_LIGHT_PROP_SET_LOADED</a>
+<a class="side-fn" href="n/propset/_IS_VEHICLE_PROP_SET_LOADED.html">_IS_VEHICLE_PROP_SET_LOADED</a>
+<a class="side-fn" href="n/propset/_IS_VEHICLE_PROP_SET_LOADED_ADDITIONAL.html">_IS_VEHICLE_PROP_SET_LOADED_ADDITIONAL</a>
+<a class="side-fn" href="n/propset/_RELEASE_PROP_SET.html">_RELEASE_PROP_SET</a>
+<a class="side-fn" href="n/propset/_REMOVE_VEHICLE_LIGHT_PROP_SETS.html">_REMOVE_VEHICLE_LIGHT_PROP_SETS</a>
+<a class="side-fn" href="n/propset/_REMOVE_VEHICLE_PROP_SETS.html">_REMOVE_VEHICLE_PROP_SETS</a>
+<a class="side-fn" href="n/propset/_REQUEST_PROP_SET.html">_REQUEST_PROP_SET</a>
+<a class="side-fn" href="n/propset/_REQUEST_PROP_SET_2.html">_REQUEST_PROP_SET_2</a>
+<a class="side-fn" href="n/propset/_SET_PROP_SET_AS_NO_LONGER_NEEDED.html">_SET_PROP_SET_AS_NO_LONGER_NEEDED</a>
+<a class="side-fn" href="n/propset/_SET_PROP_SET_FLAG.html">_SET_PROP_SET_FLAG</a>
+<a class="side-fn" href="n/propset/_SET_PROP_SET_VISIBLE.html">_SET_PROP_SET_VISIBLE</a>
+</nav>
+<main class="content">
+<div class="doc-page-head">
+<h1 class="module-title"><span class="ns">rrdr_natives::</span>propset</h1>
+<div class="crumb"><a href="index.html">System &amp; Utility</a> <span class="sep">&#8250;</span> <a href="propset.html">propset</a></div>
+<div class="mod-stats">43 functions &middot; 37 unique native hashes</div>
+</div>
+<section class="item-list">
+<section class="fn-block" id="CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY.html">CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY</a> <span class="paren">(</span><span class="p-name">hash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">entity</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9609DBDDE18FAD8C</code> &middot; 9 args &middot; rust: <code>rrdr_natives::propset::CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY</code></div>
+</section>
+<section class="fn-block" id="CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_VEC3">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_VEC3.html">CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">hash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">entity</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9609DBDDE18FAD8C</code> &middot; 7 args &middot; rust: <code>rrdr_natives::propset::CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_VEC3</code></div>
+</section>
+<section class="fn-block" id="DOES_PROP_SET_EXIST">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/DOES_PROP_SET_EXIST.html">DOES_PROP_SET_EXIST</a> <span class="paren">(</span><span class="p-name">propSet</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7DDDCF815E650FF5</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::DOES_PROP_SET_EXIST</code></div>
+</section>
+<section class="fn-block" id="IS_PROP_SET_FULLY_LOADED">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/IS_PROP_SET_FULLY_LOADED.html">IS_PROP_SET_FULLY_LOADED</a> <span class="paren">(</span><span class="p-name">propSet</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF42DB680A8B2A4D9</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::IS_PROP_SET_FULLY_LOADED</code></div>
+</section>
+<section class="fn-block" id="_0x58E0B01D45CA7357">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_0x58E0B01D45CA7357.html">_0x58E0B01D45CA7357</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x58E0B01D45CA7357</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_0x58E0B01D45CA7357</code></div>
+</section>
+<section class="fn-block" id="_0xC4B67EF3FD65622D">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_0xC4B67EF3FD65622D.html">_0xC4B67EF3FD65622D</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC4B67EF3FD65622D</code> &middot; 6 args &middot; rust: <code>rrdr_natives::propset::_0xC4B67EF3FD65622D</code></div>
+</section>
+<section class="fn-block" id="_ADD_ADDITIONAL_PROP_SET_FOR_VEHICLE">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_ADD_ADDITIONAL_PROP_SET_FOR_VEHICLE.html">_ADD_ADDITIONAL_PROP_SET_FOR_VEHICLE</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">propset</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock">https://github.com/femga/rdr3_discoveries/blob/master/vehicles/vehicle_modding/vehicle_propsets.lua</div>
+<div class="fn-meta"><code>0x75F90E4051CC084C</code> &middot; 2 args &middot; rust: <code>rrdr_natives::propset::_ADD_ADDITIONAL_PROP_SET_FOR_VEHICLE</code></div>
+</section>
+<section class="fn-block" id="_ADD_LIGHT_PROP_SET_TO_VEHICLE">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_ADD_LIGHT_PROP_SET_TO_VEHICLE.html">_ADD_LIGHT_PROP_SET_TO_VEHICLE</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">lightPropset</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock">To remove propsets either parse a zero as hash or call 0xE31C0CB1C3186D40
+0xA6A9712955F53D9C returns lightPropset Hashes
+https://github.com/femga/rdr3_discoveries/blob/master/vehicles/vehicle_modding/vehicle_lantern_propsets.lua</div>
+<div class="fn-meta"><code>0xC0F0417A90402742</code> &middot; 2 args &middot; rust: <code>rrdr_natives::propset::_ADD_LIGHT_PROP_SET_TO_VEHICLE</code></div>
+</section>
+<section class="fn-block" id="_ADD_PROP_SET_FOR_VEHICLE">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_ADD_PROP_SET_FOR_VEHICLE.html">_ADD_PROP_SET_FOR_VEHICLE</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">propset</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock">List of vehicle propsets (wagons &amp; trains): https://pastebin.com/1CsnvGLu / https://pastebin.com/v7TtqTgE</div>
+<div class="fn-meta"><code>0xD80FAF919A2E56EA</code> &middot; 2 args &middot; rust: <code>rrdr_natives::propset::_ADD_PROP_SET_FOR_VEHICLE</code></div>
+</section>
+<section class="fn-block" id="_CREATE_PROP_SET">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_CREATE_PROP_SET.html">_CREATE_PROP_SET</a> <span class="paren">(</span><span class="p-name">propsetType</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">placementType</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">heading</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">zProbe</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">useVegMod</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">propsetType: https://github.com/femga/rdr3_discoveries/blob/master/objects/propsets_list.lua
+placementType: https://github.com/Halen84/RDR3-Native-Flags-And-Enums/tree/main/PlacementType</div>
+<div class="fn-meta"><code>0xE65C5CBA95F0E510</code> &middot; 9 args &middot; rust: <code>rrdr_natives::propset::_CREATE_PROP_SET</code></div>
+</section>
+<section class="fn-block" id="_CREATE_PROP_SET_2">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_CREATE_PROP_SET_2.html">_CREATE_PROP_SET_2</a> <span class="paren">(</span><span class="p-name">propsetType</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">placementType</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">heading</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">zProbe</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">useVegMod</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">Same as _CREATE_PROP_SET</div>
+<div class="fn-meta"><code>0x899C97A1CCE7D483</code> &middot; 9 args &middot; rust: <code>rrdr_natives::propset::_CREATE_PROP_SET_2</code></div>
+</section>
+<section class="fn-block" id="_CREATE_PROP_SET_2_VEC3">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_CREATE_PROP_SET_2_VEC3.html">_CREATE_PROP_SET_2</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">propsetType</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">placementType</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">heading</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">zProbe</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">useVegMod</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x899C97A1CCE7D483</code> &middot; 7 args &middot; rust: <code>rrdr_natives::propset::_CREATE_PROP_SET_2_VEC3</code></div>
+</section>
+<section class="fn-block" id="_CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_2">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_2.html">_CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_2</a> <span class="paren">(</span><span class="p-name">hash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">entity</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">Same as CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY</div>
+<div class="fn-meta"><code>0xACA7FB30269096D4</code> &middot; 9 args &middot; rust: <code>rrdr_natives::propset::_CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_2</code></div>
+</section>
+<section class="fn-block" id="_CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_2_VEC3">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_2_VEC3.html">_CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_2</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">hash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">entity</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xACA7FB30269096D4</code> &middot; 7 args &middot; rust: <code>rrdr_natives::propset::_CREATE_PROP_SET_INSTANCE_ATTACHED_TO_ENTITY_2_VEC3</code></div>
+</section>
+<section class="fn-block" id="_CREATE_PROP_SET_VEC3">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_CREATE_PROP_SET_VEC3.html">_CREATE_PROP_SET</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">propsetType</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">placementType</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">heading</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">zProbe</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">useVegMod</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE65C5CBA95F0E510</code> &middot; 7 args &middot; rust: <code>rrdr_natives::propset::_CREATE_PROP_SET_VEC3</code></div>
+</section>
+<section class="fn-block" id="_DELETE_PROP_SET">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_DELETE_PROP_SET.html">_DELETE_PROP_SET</a> <span class="paren">(</span><span class="p-name">propSet</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x58AC173A55D9D7B4</code> &middot; 3 args &middot; rust: <code>rrdr_natives::propset::_DELETE_PROP_SET</code></div>
+</section>
+<section class="fn-block" id="_DOES_PROP_SET_OF_TYPE_EXIST_NEAR_COORDS">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_DOES_PROP_SET_OF_TYPE_EXIST_NEAR_COORDS.html">_DOES_PROP_SET_OF_TYPE_EXIST_NEAR_COORDS</a> <span class="paren">(</span><span class="p-name">propsetHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x72068021F498E6E3</code> &middot; 4 args &middot; rust: <code>rrdr_natives::propset::_DOES_PROP_SET_OF_TYPE_EXIST_NEAR_COORDS</code></div>
+</section>
+<section class="fn-block" id="_DOES_PROP_SET_OF_TYPE_EXIST_NEAR_COORDS_VEC3">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_DOES_PROP_SET_OF_TYPE_EXIST_NEAR_COORDS_VEC3.html">_DOES_PROP_SET_OF_TYPE_EXIST_NEAR_COORDS</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">propsetHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x72068021F498E6E3</code> &middot; 2 args &middot; rust: <code>rrdr_natives::propset::_DOES_PROP_SET_OF_TYPE_EXIST_NEAR_COORDS_VEC3</code></div>
+</section>
+<section class="fn-block" id="_DOES_VEHICLE_HAVE_ANY_LIGHT_PROP_SET">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_DOES_VEHICLE_HAVE_ANY_LIGHT_PROP_SET.html">_DOES_VEHICLE_HAVE_ANY_LIGHT_PROP_SET</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC9B4B3A36F81FD75</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_DOES_VEHICLE_HAVE_ANY_LIGHT_PROP_SET</code></div>
+</section>
+<section class="fn-block" id="_DOES_VEHICLE_HAVE_ANY_PROP_SET">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_DOES_VEHICLE_HAVE_ANY_PROP_SET.html">_DOES_VEHICLE_HAVE_ANY_PROP_SET</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x53784CEA0159439B</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_DOES_VEHICLE_HAVE_ANY_PROP_SET</code></div>
+</section>
+<section class="fn-block" id="_GET_ENTITIES_FROM_PROP_SET">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_GET_ENTITIES_FROM_PROP_SET.html">_GET_ENTITIES_FROM_PROP_SET</a> <span class="paren">(</span><span class="p-name">propSet</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">itemSet</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">model</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x738271B660FE0695</code> &middot; 5 args &middot; rust: <code>rrdr_natives::propset::_GET_ENTITIES_FROM_PROP_SET</code></div>
+</section>
+<section class="fn-block" id="_GET_PROP_SET_AT_COORDS">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_GET_PROP_SET_AT_COORDS.html">_GET_PROP_SET_AT_COORDS</a> <span class="paren">(</span><span class="p-name">propsetHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC061E50F8D299F95</code> &middot; 4 args &middot; rust: <code>rrdr_natives::propset::_GET_PROP_SET_AT_COORDS</code></div>
+</section>
+<section class="fn-block" id="_GET_PROP_SET_AT_COORDS_VEC3">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_GET_PROP_SET_AT_COORDS_VEC3.html">_GET_PROP_SET_AT_COORDS</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">propsetHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC061E50F8D299F95</code> &middot; 2 args &middot; rust: <code>rrdr_natives::propset::_GET_PROP_SET_AT_COORDS_VEC3</code></div>
+</section>
+<section class="fn-block" id="_GET_PROP_SET_MODEL">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_GET_PROP_SET_MODEL.html">_GET_PROP_SET_MODEL</a> <span class="paren">(</span><span class="p-name">propSet</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">uint</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA6A9712955F53D9C</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_GET_PROP_SET_MODEL</code></div>
+</section>
+<section class="fn-block" id="_GET_TRAIN_CARRIAGE_PROP_SET">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_GET_TRAIN_CARRIAGE_PROP_SET.html">_GET_TRAIN_CARRIAGE_PROP_SET</a> <span class="paren">(</span><span class="p-name">trainCarriage</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">Example before/after deleting a train carriage&#x27;s propset: https://imgur.com/a/qRNrIrK</div>
+<div class="fn-meta"><code>0xCFC0BD09BB1B73FF</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_GET_TRAIN_CARRIAGE_PROP_SET</code></div>
+</section>
+<section class="fn-block" id="_GET_VEHICLE_LIGHT_PROP_SET">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_GET_VEHICLE_LIGHT_PROP_SET.html">_GET_VEHICLE_LIGHT_PROP_SET</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">Returns PropSet handle to be used with _GET_PROP_SET_MODEL</div>
+<div class="fn-meta"><code>0xA079300AF757FB1A</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_GET_VEHICLE_LIGHT_PROP_SET</code></div>
+</section>
+<section class="fn-block" id="_GET_VEHICLE_PROP_SET">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_GET_VEHICLE_PROP_SET.html">_GET_VEHICLE_PROP_SET</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCE2ACD6F602803E5</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_GET_VEHICLE_PROP_SET</code></div>
+</section>
+<section class="fn-block" id="_GET_VEHICLE_PROP_SET_HASH">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_GET_VEHICLE_PROP_SET_HASH.html">_GET_VEHICLE_PROP_SET_HASH</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">uint</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x36F69E7A22655653</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_GET_VEHICLE_PROP_SET_HASH</code></div>
+</section>
+<section class="fn-block" id="_HAS_PROP_SET_LOADED">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_HAS_PROP_SET_LOADED.html">_HAS_PROP_SET_LOADED</a> <span class="paren">(</span><span class="p-name">hash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x48A88FC684C55FDC</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_HAS_PROP_SET_LOADED</code></div>
+</section>
+<section class="fn-block" id="_HAS_PROP_SET_LOADED_2">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_HAS_PROP_SET_LOADED_2.html">_HAS_PROP_SET_LOADED_2</a> <span class="paren">(</span><span class="p-name">hash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Same as _HAS_PROP_SET_LOADED</div>
+<div class="fn-meta"><code>0xD090ABEF4D6A7D96</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_HAS_PROP_SET_LOADED_2</code></div>
+</section>
+<section class="fn-block" id="_HAS_VEHICLE_TRAILER_PROP_SET_LOADED">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_HAS_VEHICLE_TRAILER_PROP_SET_LOADED.html">_HAS_VEHICLE_TRAILER_PROP_SET_LOADED</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">wagonIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8F3333F0A6900B3C</code> &middot; 2 args &middot; rust: <code>rrdr_natives::propset::_HAS_VEHICLE_TRAILER_PROP_SET_LOADED</code></div>
+</section>
+<section class="fn-block" id="_IS_PROP_SET_VISIBLE">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_IS_PROP_SET_VISIBLE.html">_IS_PROP_SET_VISIBLE</a> <span class="paren">(</span><span class="p-name">propSet</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0CE8AAFE9E433A23</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_IS_PROP_SET_VISIBLE</code></div>
+</section>
+<section class="fn-block" id="_IS_VEHICLE_LIGHT_PROP_SET_LOADED">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_IS_VEHICLE_LIGHT_PROP_SET_LOADED.html">_IS_VEHICLE_LIGHT_PROP_SET_LOADED</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0790473EEE1977D3</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_IS_VEHICLE_LIGHT_PROP_SET_LOADED</code></div>
+</section>
+<section class="fn-block" id="_IS_VEHICLE_PROP_SET_LOADED">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_IS_VEHICLE_PROP_SET_LOADED.html">_IS_VEHICLE_PROP_SET_LOADED</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x155B2FBE72D7D1D0</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_IS_VEHICLE_PROP_SET_LOADED</code></div>
+</section>
+<section class="fn-block" id="_IS_VEHICLE_PROP_SET_LOADED_ADDITIONAL">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_IS_VEHICLE_PROP_SET_LOADED_ADDITIONAL.html">_IS_VEHICLE_PROP_SET_LOADED_ADDITIONAL</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7264F9CA87A9830B</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_IS_VEHICLE_PROP_SET_LOADED_ADDITIONAL</code></div>
+</section>
+<section class="fn-block" id="_RELEASE_PROP_SET">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_RELEASE_PROP_SET.html">_RELEASE_PROP_SET</a> <span class="paren">(</span><span class="p-name">hash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB1964A83B345B4AB</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_RELEASE_PROP_SET</code></div>
+</section>
+<section class="fn-block" id="_REMOVE_VEHICLE_LIGHT_PROP_SETS">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_REMOVE_VEHICLE_LIGHT_PROP_SETS.html">_REMOVE_VEHICLE_LIGHT_PROP_SETS</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE31C0CB1C3186D40</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_REMOVE_VEHICLE_LIGHT_PROP_SETS</code></div>
+</section>
+<section class="fn-block" id="_REMOVE_VEHICLE_PROP_SETS">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_REMOVE_VEHICLE_PROP_SETS.html">_REMOVE_VEHICLE_PROP_SETS</a> <span class="paren">(</span><span class="p-name">vehicle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3BCF32FF37EA9F1D</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_REMOVE_VEHICLE_PROP_SETS</code></div>
+</section>
+<section class="fn-block" id="_REQUEST_PROP_SET">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_REQUEST_PROP_SET.html">_REQUEST_PROP_SET</a> <span class="paren">(</span><span class="p-name">hash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF3DE57A46D5585E9</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_REQUEST_PROP_SET</code></div>
+</section>
+<section class="fn-block" id="_REQUEST_PROP_SET_2">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_REQUEST_PROP_SET_2.html">_REQUEST_PROP_SET_2</a> <span class="paren">(</span><span class="p-name">hash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Same as _REQUEST_PROP_SET</div>
+<div class="fn-meta"><code>0xE72F591958F3ACAB</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_REQUEST_PROP_SET_2</code></div>
+</section>
+<section class="fn-block" id="_SET_PROP_SET_AS_NO_LONGER_NEEDED">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_SET_PROP_SET_AS_NO_LONGER_NEEDED.html">_SET_PROP_SET_AS_NO_LONGER_NEEDED</a> <span class="paren">(</span><span class="p-name">propSet</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x909E3C7FAE539FB1</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::propset::_SET_PROP_SET_AS_NO_LONGER_NEEDED</code></div>
+</section>
+<section class="fn-block" id="_SET_PROP_SET_FLAG">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_SET_PROP_SET_FLAG.html">_SET_PROP_SET_FLAG</a> <span class="paren">(</span><span class="p-name">propSet</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">flag</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC1AB7EEFD3E6EE49</code> &middot; 2 args &middot; rust: <code>rrdr_natives::propset::_SET_PROP_SET_FLAG</code></div>
+</section>
+<section class="fn-block" id="_SET_PROP_SET_VISIBLE">
+<h3 class="code-header"><span class="fn-mod">PROPSET::</span><a class="fn-name" href="n/propset/_SET_PROP_SET_VISIBLE.html">_SET_PROP_SET_VISIBLE</a> <span class="paren">(</span><span class="p-name">propSet</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9D096A5BD02F953E</code> &middot; 2 args &middot; rust: <code>rrdr_natives::propset::_SET_PROP_SET_VISIBLE</code></div>
+</section>
+</section>
+</main>
+<script src="search-index.js?v=7501"></script>
+<script src="static/search.js?v=7501" data-root=""></script>
+</body></html>

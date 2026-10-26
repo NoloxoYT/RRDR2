@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rrdr_natives::datafile - RRDR natives</title>
+<link rel="stylesheet" href="static/normalize.css">
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/favicon.svg">
+</head><body>
+
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <img class="brand-mark" src="static/logo.svg" alt="RRDR" width="24" height="24" />
+    <span class="brand-text">rrdr<span class="brand-dim">.natives</span></span>
+  </a>
+
+<div class="live-search">
+  <label for="search-input" class="sr-only">Search natives</label>
+  <span class="hs-icon">&#8902;</span>
+  <input id="search-input" type="text" autocomplete="off" spellcheck="false"
+         placeholder="Search natives - name or description" tabindex="-1" />
+  <span class="hs-hint" title="Press / to focus">/</span>
+  <div class="live-results" id="live-results" hidden></div>
+</div>
+
+</header>
+
+<nav class="sidebar">
+<div class="side-crate"><a href="index.html">rrdr_natives</a></div>
+<h3 class="side-bucket dim">Ped related</h3>
+<a class="side-mod" href="ped.html">ped<span class="count">1051</span></a>
+<a class="side-mod" href="perschar.html">perschar<span class="count">51</span></a>
+<a class="side-mod" href="companion.html">companion<span class="count">25</span></a>
+<a class="side-mod" href="population.html">population<span class="count">32</span></a>
+<a class="side-mod" href="brain.html">brain<span class="count">11</span></a>
+<a class="side-mod" href="ik.html">ik<span class="count">5</span></a>
+<a class="side-mod" href="attribute.html">attribute<span class="count">27</span></a>
+<a class="side-mod" href="task.html">task<span class="count">706</span></a>
+<a class="side-mod" href="animscene.html">animscene<span class="count">100</span></a>
+<a class="side-mod" href="flock.html">flock<span class="count">47</span></a>
+<a class="side-mod" href="interaction.html">interaction<span class="count">6</span></a>
+<h3 class="side-bucket dim">Player related</h3>
+<a class="side-mod" href="player.html">player<span class="count">397</span></a>
+<a class="side-mod" href="stats.html">stats<span class="count">89</span></a>
+<a class="side-mod" href="law.html">law<span class="count">131</span></a>
+<a class="side-mod" href="money.html">money<span class="count">8</span></a>
+<a class="side-mod" href="bounty.html">bounty<span class="count">33</span></a>
+<a class="side-mod" href="posse.html">posse<span class="count">31</span></a>
+<a class="side-mod" href="crew.html">crew<span class="count">18</span></a>
+<h3 class="side-bucket dim">World related</h3>
+<a class="side-mod" href="entity.html">entity<span class="count">295</span></a>
+<a class="side-mod" href="object.html">object<span class="count">166</span></a>
+<a class="side-mod" href="misc.html">misc<span class="count">303</span></a>
+<a class="side-mod" href="fire.html">fire<span class="count">43</span></a>
+<a class="side-mod" href="water.html">water<span class="count">21</span></a>
+<a class="side-mod" href="zone.html">zone<span class="count">4</span></a>
+<a class="side-mod" href="map.html">map<span class="count">94</span></a>
+<a class="side-mod" href="pathfind.html">pathfind<span class="count">92</span></a>
+<a class="side-mod" href="interior.html">interior<span class="count">35</span></a>
+<a class="side-mod" href="volume.html">volume<span class="count">99</span></a>
+<a class="side-mod" href="physics.html">physics<span class="count">78</span></a>
+<a class="side-mod" href="graphics.html">graphics<span class="count">297</span></a>
+<a class="side-mod" href="clock.html">clock<span class="count">19</span></a>
+<a class="side-mod" href="streaming.html">streaming<span class="count">124</span></a>
+<a class="side-mod" href="shapetest.html">shapetest<span class="count">13</span></a>
+<a class="side-mod" href="event.html">event<span class="count">42</span></a>
+<a class="side-mod" href="collection.html">collection<span class="count">31</span></a>
+<h3 class="side-bucket dim">Vehicles</h3>
+<a class="side-mod" href="vehicle.html">vehicle<span class="count">408</span></a>
+<a class="side-mod" href="aitransport.html">aitransport<span class="count">24</span></a>
+<a class="side-mod" href="aicoverpoint.html">aicoverpoint<span class="count">17</span></a>
+<h3 class="side-bucket dim">Camera</h3>
+<a class="side-mod" href="cam.html">cam<span class="count">248</span></a>
+<a class="side-mod" href="txd.html">txd<span class="count">8</span></a>
+<h3 class="side-bucket dim">Audio</h3>
+<a class="side-mod" href="audio.html">audio<span class="count">229</span></a>
+<a class="side-mod" href="voice.html">voice<span class="count">24</span></a>
+<h3 class="side-bucket dim">UI &amp; Input</h3>
+<a class="side-mod" href="hud.html">hud<span class="count">190</span></a>
+<a class="side-mod" href="pad.html">pad<span class="count">40</span></a>
+<a class="side-mod" href="minigame.html">minigame<span class="count">48</span></a>
+<a class="side-mod" href="localization.html">localization<span class="count">4</span></a>
+<a class="side-mod" href="uiapps.html">uiapps<span class="count">19</span></a>
+<a class="side-mod" href="uidebug.html">uidebug<span class="count">3</span></a>
+<a class="side-mod" href="uievents.html">uievents<span class="count">4</span></a>
+<a class="side-mod" href="uifeed.html">uifeed<span class="count">27</span></a>
+<a class="side-mod" href="uilog.html">uilog<span class="count">31</span></a>
+<a class="side-mod" href="uipinning.html">uipinning<span class="count">1</span></a>
+<a class="side-mod" href="uitutorial.html">uitutorial<span class="count">3</span></a>
+<a class="side-mod" href="uistatemachine.html">uistatemachine<span class="count">12</span></a>
+<a class="side-mod" href="uistickyfeed.html">uistickyfeed<span class="count">8</span></a>
+<a class="side-mod" href="compapp.html">compapp<span class="count">5</span></a>
+<h3 class="side-bucket dim">AI &amp; Scripts</h3>
+<a class="side-mod" href="missiondata.html">missiondata<span class="count">18</span></a>
+<a class="side-mod" href="scripts.html">scripts<span class="count">94</span></a>
+<a class="side-mod" href="spactionproxy.html">spactionproxy<span class="count">6</span></a>
+<a class="side-mod" href="recording.html">recording<span class="count">1</span></a>
+<a class="side-mod" href="replay.html">replay<span class="count">5</span></a>
+<h3 class="side-bucket">Data &amp; Storage</h3>
+<a class="side-mod active" href="datafile.html">datafile<span class="count">59</span></a>
+<a class="side-mod" href="decorator.html">decorator<span class="count">15</span></a>
+<a class="side-mod" href="databinding.html">databinding<span class="count">82</span></a>
+<a class="side-mod" href="inventory.html">inventory<span class="count">83</span></a>
+<a class="side-mod" href="itemdatabase.html">itemdatabase<span class="count">84</span></a>
+<a class="side-mod" href="itemset.html">itemset<span class="count">11</span></a>
+<a class="side-mod" href="dlc.html">dlc<span class="count">4</span></a>
+<a class="side-mod" href="save.html">save<span class="count">24</span></a>
+<a class="side-mod" href="persistence.html">persistence<span class="count">26</span></a>
+<a class="side-mod" href="netshopping.html">netshopping<span class="count">24</span></a>
+<a class="side-mod" href="unlock.html">unlock<span class="count">9</span></a>
+<h3 class="side-bucket dim">Online &amp; Telemetry</h3>
+<a class="side-mod" href="network.html">network<span class="count">571</span></a>
+<a class="side-mod" href="socialclub.html">socialclub<span class="count">33</span></a>
+<a class="side-mod" href="socialclubfeed.html">socialclubfeed<span class="count">2</span></a>
+<a class="side-mod" href="telemetry.html">telemetry<span class="count">78</span></a>
+<a class="side-mod" href="google_analytics.html">google_analytics<span class="count">4</span></a>
+<h3 class="side-bucket dim">System &amp; Utility</h3>
+<a class="side-mod" href="builtin.html">builtin<span class="count">26</span></a>
+<a class="side-mod" href="debug.html">debug<span class="count">3</span></a>
+<a class="side-mod" href="crashlog.html">crashlog<span class="count">14</span></a>
+<a class="side-mod" href="queue.html">queue<span class="count">2</span></a>
+<a class="side-mod" href="_namespace4.html">_namespace4<span class="count">1</span></a>
+<a class="side-mod" href="compendium.html">compendium<span class="count">36</span></a>
+<h3 class="side-bucket">Functions</h3>
+<a class="side-fn" href="n/datafile/DATAARRAY_GET_BOOL.html">DATAARRAY_GET_BOOL</a>
+<a class="side-fn" href="n/datafile/DATAARRAY_GET_COUNT.html">DATAARRAY_GET_COUNT</a>
+<a class="side-fn" href="n/datafile/DATAARRAY_GET_DICT.html">DATAARRAY_GET_DICT</a>
+<a class="side-fn" href="n/datafile/DATAARRAY_GET_FLOAT.html">DATAARRAY_GET_FLOAT</a>
+<a class="side-fn" href="n/datafile/DATAARRAY_GET_INT.html">DATAARRAY_GET_INT</a>
+<a class="side-fn" href="n/datafile/DATAARRAY_GET_STRING.html">DATAARRAY_GET_STRING</a>
+<a class="side-fn" href="n/datafile/DATAARRAY_GET_TYPE.html">DATAARRAY_GET_TYPE</a>
+<a class="side-fn" href="n/datafile/DATAARRAY_GET_VECTOR.html">DATAARRAY_GET_VECTOR</a>
+<a class="side-fn" href="n/datafile/DATADICT_GET_ARRAY.html">DATADICT_GET_ARRAY</a>
+<a class="side-fn" href="n/datafile/DATADICT_GET_BOOL.html">DATADICT_GET_BOOL</a>
+<a class="side-fn" href="n/datafile/DATADICT_GET_DICT.html">DATADICT_GET_DICT</a>
+<a class="side-fn" href="n/datafile/DATADICT_GET_FLOAT.html">DATADICT_GET_FLOAT</a>
+<a class="side-fn" href="n/datafile/DATADICT_GET_INT.html">DATADICT_GET_INT</a>
+<a class="side-fn" href="n/datafile/DATADICT_GET_STRING.html">DATADICT_GET_STRING</a>
+<a class="side-fn" href="n/datafile/DATADICT_GET_TYPE.html">DATADICT_GET_TYPE</a>
+<a class="side-fn" href="n/datafile/DATADICT_GET_VECTOR.html">DATADICT_GET_VECTOR</a>
+<a class="side-fn" href="n/datafile/DATADICT_IS_ARRAY_VALID.html">DATADICT_IS_ARRAY_VALID</a>
+<a class="side-fn" href="n/datafile/DATADICT_IS_DICT_VALID.html">DATADICT_IS_DICT_VALID</a>
+<a class="side-fn" href="n/datafile/DATADICT_SET_INT.html">DATADICT_SET_INT</a>
+<a class="side-fn" href="n/datafile/DATAFILE_CREATE.html">DATAFILE_CREATE</a>
+<a class="side-fn" href="n/datafile/DATAFILE_DELETE.html">DATAFILE_DELETE</a>
+<a class="side-fn" href="n/datafile/DATAFILE_DELETE_REQUESTED_FILE.html">DATAFILE_DELETE_REQUESTED_FILE</a>
+<a class="side-fn" href="n/datafile/DATAFILE_GET_FILE_DICT.html">DATAFILE_GET_FILE_DICT</a>
+<a class="side-fn" href="n/datafile/DATAFILE_HAS_LOADED_FILE_DATA.html">DATAFILE_HAS_LOADED_FILE_DATA</a>
+<a class="side-fn" href="n/datafile/DATAFILE_HAS_VALID_FILE_DATA.html">DATAFILE_HAS_VALID_FILE_DATA</a>
+<a class="side-fn" href="n/datafile/DATAFILE_SELECT_ACTIVE_FILE.html">DATAFILE_SELECT_ACTIVE_FILE</a>
+<a class="side-fn" href="n/datafile/DATAFILE_UGC_SELECT_DATA.html">DATAFILE_UGC_SELECT_DATA</a>
+<a class="side-fn" href="n/datafile/DATAFILE_WATCH_REQUEST_ID.html">DATAFILE_WATCH_REQUEST_ID</a>
+<a class="side-fn" href="n/datafile/PARSEDDATA_IS_FILE_LOADED.html">PARSEDDATA_IS_FILE_LOADED</a>
+<a class="side-fn" href="n/datafile/PARSEDDATA_IS_FILE_VALID.html">PARSEDDATA_IS_FILE_VALID</a>
+<a class="side-fn" href="n/datafile/PARSEDDATA_RQ_FILLOUT_HASH.html">PARSEDDATA_RQ_FILLOUT_HASH</a>
+<a class="side-fn" href="n/datafile/PARSEDDATA_RQ_FILLOUT_NODE.html">PARSEDDATA_RQ_FILLOUT_NODE</a>
+<a class="side-fn" href="n/datafile/PARSEDDATA_RQ_FILLOUT_STRING_127.html">PARSEDDATA_RQ_FILLOUT_STRING_127</a>
+<a class="side-fn" href="n/datafile/UGC2_SET_PLAYER_DATA.html">UGC2_SET_PLAYER_DATA</a>
+<a class="side-fn" href="n/datafile/_0x1C65CC931C0F946F.html">_0x1C65CC931C0F946F</a>
+<a class="side-fn" href="n/datafile/_0x277251C161B4C3F4.html">_0x277251C161B4C3F4</a>
+<a class="side-fn" href="n/datafile/_0x3168BA5D6DECE323.html">_0x3168BA5D6DECE323</a>
+<a class="side-fn" href="n/datafile/_0x4F9E3ED7617123AC.html">_0x4F9E3ED7617123AC</a>
+<a class="side-fn" href="n/datafile/_0x7681B677400C7071.html">_0x7681B677400C7071</a>
+<a class="side-fn" href="n/datafile/_0x9F130129EBC31B34.html">_0x9F130129EBC31B34</a>
+<a class="side-fn" href="n/datafile/_0xBC0DF006A4952C68.html">_0xBC0DF006A4952C68</a>
+<a class="side-fn" href="n/datafile/_0xCA56DD6AB7A39F64.html">_0xCA56DD6AB7A39F64</a>
+<a class="side-fn" href="n/datafile/_0xE13634BB6BAF0734.html">_0xE13634BB6BAF0734</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_GET_BOOL.html">_PARSEDDATA_GET_BOOL</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_GET_ENTRIES.html">_PARSEDDATA_GET_ENTRIES</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_GET_FILE.html">_PARSEDDATA_GET_FILE</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_GET_FLOAT.html">_PARSEDDATA_GET_FLOAT</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_GET_INT.html">_PARSEDDATA_GET_INT</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_GET_NUM_CHILDREN.html">_PARSEDDATA_GET_NUM_CHILDREN</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_GET_SECTION.html">_PARSEDDATA_GET_SECTION</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_LOAD_FILE_HASH.html">_PARSEDDATA_LOAD_FILE_HASH</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_REGISTER_QUERY.html">_PARSEDDATA_REGISTER_QUERY</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_RQ_FILLOUT_BOOL.html">_PARSEDDATA_RQ_FILLOUT_BOOL</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_RQ_FILLOUT_FLOAT.html">_PARSEDDATA_RQ_FILLOUT_FLOAT</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_RQ_FILLOUT_INT.html">_PARSEDDATA_RQ_FILLOUT_INT</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_RQ_FILLOUT_STRING_63.html">_PARSEDDATA_RQ_FILLOUT_STRING_63</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_RQ_FILLOUT_VECTOR.html">_PARSEDDATA_RQ_FILLOUT_VECTOR</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_RQ_GET_NUM_NODES.html">_PARSEDDATA_RQ_GET_NUM_NODES</a>
+<a class="side-fn" href="n/datafile/_PARSEDDATA_UNLOAD_FILE.html">_PARSEDDATA_UNLOAD_FILE</a>
+</nav>
+<main class="content">
+<div class="doc-page-head">
+<h1 class="module-title"><span class="ns">rrdr_natives::</span>datafile</h1>
+<div class="crumb"><a href="index.html">Data &amp; Storage</a> <span class="sep">&#8250;</span> <a href="datafile.html">datafile</a></div>
+<div class="mod-stats">59 functions &middot; 59 unique native hashes</div>
+</div>
+<section class="item-list">
+<section class="fn-block" id="DATAARRAY_GET_BOOL">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAARRAY_GET_BOOL.html">DATAARRAY_GET_BOOL</a> <span class="paren">(</span><span class="p-name">arrayData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">arrayIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xAB1231D2DE52F2D3</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATAARRAY_GET_BOOL</code></div>
+</section>
+<section class="fn-block" id="DATAARRAY_GET_COUNT">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAARRAY_GET_COUNT.html">DATAARRAY_GET_COUNT</a> <span class="paren">(</span><span class="p-name">arrayData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x6A885BF69239E539</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::DATAARRAY_GET_COUNT</code></div>
+</section>
+<section class="fn-block" id="DATAARRAY_GET_DICT">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAARRAY_GET_DICT.html">DATAARRAY_GET_DICT</a> <span class="paren">(</span><span class="p-name">arrayData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">arrayIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">IntPtr</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA010655985853485</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATAARRAY_GET_DICT</code></div>
+</section>
+<section class="fn-block" id="DATAARRAY_GET_FLOAT">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAARRAY_GET_FLOAT.html">DATAARRAY_GET_FLOAT</a> <span class="paren">(</span><span class="p-name">arrayData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">arrayIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">float</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA9D003CF419CB81E</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATAARRAY_GET_FLOAT</code></div>
+</section>
+<section class="fn-block" id="DATAARRAY_GET_INT">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAARRAY_GET_INT.html">DATAARRAY_GET_INT</a> <span class="paren">(</span><span class="p-name">arrayData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">arrayIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x96DEA500B6EBBE53</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATAARRAY_GET_INT</code></div>
+</section>
+<section class="fn-block" id="DATAARRAY_GET_STRING">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAARRAY_GET_STRING.html">DATAARRAY_GET_STRING</a> <span class="paren">(</span><span class="p-name">arrayData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">arrayIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">string</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB6790A8FF80F889F</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATAARRAY_GET_STRING</code></div>
+</section>
+<section class="fn-block" id="DATAARRAY_GET_TYPE">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAARRAY_GET_TYPE.html">DATAARRAY_GET_TYPE</a> <span class="paren">(</span><span class="p-name">arrayData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">arrayIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">Types:
+1 = Boolean
+2 = Integer
+3 = Float
+4 = String
+5 = Vector3
+6 = Object
+7 = Array</div>
+<div class="fn-meta"><code>0x151DAFE6B3B9888F</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATAARRAY_GET_TYPE</code></div>
+</section>
+<section class="fn-block" id="DATAARRAY_GET_VECTOR">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAARRAY_GET_VECTOR.html">DATAARRAY_GET_VECTOR</a> <span class="paren">(</span><span class="p-name">arrayData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">arrayIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">Vector3</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x850DA2750DA14E9A</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATAARRAY_GET_VECTOR</code></div>
+</section>
+<section class="fn-block" id="DATADICT_GET_ARRAY">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATADICT_GET_ARRAY.html">DATADICT_GET_ARRAY</a> <span class="paren">(</span><span class="p-name">objectData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">key</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">IntPtr</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1B5447CF18544B18</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATADICT_GET_ARRAY</code></div>
+</section>
+<section class="fn-block" id="DATADICT_GET_BOOL">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATADICT_GET_BOOL.html">DATADICT_GET_BOOL</a> <span class="paren">(</span><span class="p-name">objectData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">key</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x175E915A486EE548</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATADICT_GET_BOOL</code></div>
+</section>
+<section class="fn-block" id="DATADICT_GET_DICT">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATADICT_GET_DICT.html">DATADICT_GET_DICT</a> <span class="paren">(</span><span class="p-name">objectData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">key</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">IntPtr</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4D7A30130F46AC9C</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATADICT_GET_DICT</code></div>
+</section>
+<section class="fn-block" id="DATADICT_GET_FLOAT">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATADICT_GET_FLOAT.html">DATADICT_GET_FLOAT</a> <span class="paren">(</span><span class="p-name">objectData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">key</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">float</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x814643ECA258ADF5</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATADICT_GET_FLOAT</code></div>
+</section>
+<section class="fn-block" id="DATADICT_GET_INT">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATADICT_GET_INT.html">DATADICT_GET_INT</a> <span class="paren">(</span><span class="p-name">objectData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">key</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9D896A3B87D96E2B</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATADICT_GET_INT</code></div>
+</section>
+<section class="fn-block" id="DATADICT_GET_STRING">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATADICT_GET_STRING.html">DATADICT_GET_STRING</a> <span class="paren">(</span><span class="p-name">objectData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">key</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">string</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE37B38C0B4E95DFA</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATADICT_GET_STRING</code></div>
+</section>
+<section class="fn-block" id="DATADICT_GET_TYPE">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATADICT_GET_TYPE.html">DATADICT_GET_TYPE</a> <span class="paren">(</span><span class="p-name">objectData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">key</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">Types:
+1 = Boolean
+2 = Integer
+3 = Float
+4 = String
+5 = Vector3
+6 = Object
+7 = Array</div>
+<div class="fn-meta"><code>0x92E11E3CA4C7CDF0</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATADICT_GET_TYPE</code></div>
+</section>
+<section class="fn-block" id="DATADICT_GET_VECTOR">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATADICT_GET_VECTOR.html">DATADICT_GET_VECTOR</a> <span class="paren">(</span><span class="p-name">objectData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">key</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">Vector3</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE459C941431E0FFA</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATADICT_GET_VECTOR</code></div>
+</section>
+<section class="fn-block" id="DATADICT_IS_ARRAY_VALID">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATADICT_IS_ARRAY_VALID.html">DATADICT_IS_ARRAY_VALID</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB04B69CF277D15C0</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::DATADICT_IS_ARRAY_VALID</code></div>
+</section>
+<section class="fn-block" id="DATADICT_IS_DICT_VALID">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATADICT_IS_DICT_VALID.html">DATADICT_IS_DICT_VALID</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4607D57C5F7D332A</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::DATADICT_IS_DICT_VALID</code></div>
+</section>
+<section class="fn-block" id="DATADICT_SET_INT">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATADICT_SET_INT.html">DATADICT_SET_INT</a> <span class="paren">(</span><span class="p-name">objectData</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">key</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x26FDF5E99AA2F3E9</code> &middot; 3 args &middot; rust: <code>rrdr_natives::datafile::DATADICT_SET_INT</code></div>
+</section>
+<section class="fn-block" id="DATAFILE_CREATE">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAFILE_CREATE.html">DATAFILE_CREATE</a> <span class="paren">(</span><span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x56B7291FB953DD51</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::DATAFILE_CREATE</code></div>
+</section>
+<section class="fn-block" id="DATAFILE_DELETE">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAFILE_DELETE.html">DATAFILE_DELETE</a> <span class="paren">(</span><span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9FB90EEDEA9F2D5C</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::DATAFILE_DELETE</code></div>
+</section>
+<section class="fn-block" id="DATAFILE_DELETE_REQUESTED_FILE">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAFILE_DELETE_REQUESTED_FILE.html">DATAFILE_DELETE_REQUESTED_FILE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x604B8ED1A482F9DF</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::DATAFILE_DELETE_REQUESTED_FILE</code></div>
+</section>
+<section class="fn-block" id="DATAFILE_GET_FILE_DICT">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAFILE_GET_FILE_DICT.html">DATAFILE_GET_FILE_DICT</a> <span class="paren">(</span><span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">string</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xBBD8CF823CAE557C</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::DATAFILE_GET_FILE_DICT</code></div>
+</section>
+<section class="fn-block" id="DATAFILE_HAS_LOADED_FILE_DATA">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAFILE_HAS_LOADED_FILE_DATA.html">DATAFILE_HAS_LOADED_FILE_DATA</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x17279C820464CEE0</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::DATAFILE_HAS_LOADED_FILE_DATA</code></div>
+</section>
+<section class="fn-block" id="DATAFILE_HAS_VALID_FILE_DATA">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAFILE_HAS_VALID_FILE_DATA.html">DATAFILE_HAS_VALID_FILE_DATA</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE60100389E50EADE</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::DATAFILE_HAS_VALID_FILE_DATA</code></div>
+</section>
+<section class="fn-block" id="DATAFILE_SELECT_ACTIVE_FILE">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAFILE_SELECT_ACTIVE_FILE.html">DATAFILE_SELECT_ACTIVE_FILE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x46102A0989AD80B5</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::DATAFILE_SELECT_ACTIVE_FILE</code></div>
+</section>
+<section class="fn-block" id="DATAFILE_UGC_SELECT_DATA">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAFILE_UGC_SELECT_DATA.html">DATAFILE_UGC_SELECT_DATA</a> <span class="paren">(</span><span class="p-name">ugcRequestId</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">index</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock">Reloops value returned by UGC_QUERY_GET_CONTENT_NUM</div>
+<div class="fn-meta"><code>0x790EC421078F5C4E</code> &middot; 3 args &middot; rust: <code>rrdr_natives::datafile::DATAFILE_UGC_SELECT_DATA</code></div>
+</section>
+<section class="fn-block" id="DATAFILE_WATCH_REQUEST_ID">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/DATAFILE_WATCH_REQUEST_ID.html">DATAFILE_WATCH_REQUEST_ID</a> <span class="paren">(</span><span class="p-name">id</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock">Adds the given request ID to the watch list.</div>
+<div class="fn-meta"><code>0xA5834834CA8FD7FC</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::DATAFILE_WATCH_REQUEST_ID</code></div>
+</section>
+<section class="fn-block" id="PARSEDDATA_IS_FILE_LOADED">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/PARSEDDATA_IS_FILE_LOADED.html">PARSEDDATA_IS_FILE_LOADED</a> <span class="paren">(</span><span class="p-name">fileHandle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x603AC35FD4602C76</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::PARSEDDATA_IS_FILE_LOADED</code></div>
+</section>
+<section class="fn-block" id="PARSEDDATA_IS_FILE_VALID">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/PARSEDDATA_IS_FILE_VALID.html">PARSEDDATA_IS_FILE_VALID</a> <span class="paren">(</span><span class="p-name">fileHandle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7907969497EA92F5</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::PARSEDDATA_IS_FILE_VALID</code></div>
+</section>
+<section class="fn-block" id="PARSEDDATA_RQ_FILLOUT_HASH">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/PARSEDDATA_RQ_FILLOUT_HASH.html">PARSEDDATA_RQ_FILLOUT_HASH</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">uint*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Old name: _DATAFILE_GET_HASH</div>
+<div class="fn-meta"><code>0xFBFF3FF2F5E80C0B</code> &middot; old name <code>_DATAFILE_GET_HASH</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::PARSEDDATA_RQ_FILLOUT_HASH</code></div>
+</section>
+<section class="fn-block" id="PARSEDDATA_RQ_FILLOUT_NODE">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/PARSEDDATA_RQ_FILLOUT_NODE.html">PARSEDDATA_RQ_FILLOUT_NODE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">int*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Old name: _DATAFILE_GET_DATA_NODE_INDEX</div>
+<div class="fn-meta"><code>0x83C3ED532B6E5D07</code> &middot; old name <code>_DATAFILE_GET_DATA_NODE_INDEX</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::PARSEDDATA_RQ_FILLOUT_NODE</code></div>
+</section>
+<section class="fn-block" id="PARSEDDATA_RQ_FILLOUT_STRING_127">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/PARSEDDATA_RQ_FILLOUT_STRING_127.html">PARSEDDATA_RQ_FILLOUT_STRING_127</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x951327435DC5164B</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::PARSEDDATA_RQ_FILLOUT_STRING_127</code></div>
+</section>
+<section class="fn-block" id="UGC2_SET_PLAYER_DATA">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/UGC2_SET_PLAYER_DATA.html">UGC2_SET_PLAYER_DATA</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE79C70E77E0973C7</code> &middot; 4 args &middot; rust: <code>rrdr_natives::datafile::UGC2_SET_PLAYER_DATA</code></div>
+</section>
+<section class="fn-block" id="_0x1C65CC931C0F946F">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_0x1C65CC931C0F946F.html">_0x1C65CC931C0F946F</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1C65CC931C0F946F</code> &middot; 3 args &middot; rust: <code>rrdr_natives::datafile::_0x1C65CC931C0F946F</code></div>
+</section>
+<section class="fn-block" id="_0x277251C161B4C3F4">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_0x277251C161B4C3F4.html">_0x277251C161B4C3F4</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x277251C161B4C3F4</code> &middot; 3 args &middot; rust: <code>rrdr_natives::datafile::_0x277251C161B4C3F4</code></div>
+</section>
+<section class="fn-block" id="_0x3168BA5D6DECE323">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_0x3168BA5D6DECE323.html">_0x3168BA5D6DECE323</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock">nullsub, doesn&#x27;t do anything</div>
+<div class="fn-meta"><code>0x3168BA5D6DECE323</code> &middot; 0 args &middot; rust: <code>rrdr_natives::datafile::_0x3168BA5D6DECE323</code></div>
+</section>
+<section class="fn-block" id="_0x4F9E3ED7617123AC">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_0x4F9E3ED7617123AC.html">_0x4F9E3ED7617123AC</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4F9E3ED7617123AC</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::_0x4F9E3ED7617123AC</code></div>
+</section>
+<section class="fn-block" id="_0x7681B677400C7071">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_0x7681B677400C7071.html">_0x7681B677400C7071</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7681B677400C7071</code> &middot; 5 args &middot; rust: <code>rrdr_natives::datafile::_0x7681B677400C7071</code></div>
+</section>
+<section class="fn-block" id="_0x9F130129EBC31B34">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_0x9F130129EBC31B34.html">_0x9F130129EBC31B34</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9F130129EBC31B34</code> &middot; 3 args &middot; rust: <code>rrdr_natives::datafile::_0x9F130129EBC31B34</code></div>
+</section>
+<section class="fn-block" id="_0xBC0DF006A4952C68">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_0xBC0DF006A4952C68.html">_0xBC0DF006A4952C68</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xBC0DF006A4952C68</code> &middot; 3 args &middot; rust: <code>rrdr_natives::datafile::_0xBC0DF006A4952C68</code></div>
+</section>
+<section class="fn-block" id="_0xCA56DD6AB7A39F64">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_0xCA56DD6AB7A39F64.html">_0xCA56DD6AB7A39F64</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCA56DD6AB7A39F64</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::_0xCA56DD6AB7A39F64</code></div>
+</section>
+<section class="fn-block" id="_0xE13634BB6BAF0734">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_0xE13634BB6BAF0734.html">_0xE13634BB6BAF0734</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE13634BB6BAF0734</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::_0xE13634BB6BAF0734</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_GET_BOOL">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_GET_BOOL.html">_PARSEDDATA_GET_BOOL</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">bool*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA63CD20F19B961AB</code> &middot; 3 args &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_GET_BOOL</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_GET_ENTRIES">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_GET_ENTRIES.html">_PARSEDDATA_GET_ENTRIES</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Returns false when there are no entries.</div>
+<div class="fn-meta"><code>0xED4413CEE1BF142C</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_GET_ENTRIES</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_GET_FILE">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_GET_FILE.html">_PARSEDDATA_GET_FILE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span></h3>
+<div class="docblock">Opens file.</div>
+<div class="fn-meta"><code>0x91DED5DD64BB2691</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_GET_FILE</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_GET_FLOAT">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_GET_FLOAT.html">_PARSEDDATA_GET_FLOAT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB2B42607F7867576</code> &middot; 3 args &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_GET_FLOAT</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_GET_INT">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_GET_INT.html">_PARSEDDATA_GET_INT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x52FC26D2D2FC2987</code> &middot; 3 args &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_GET_INT</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_GET_NUM_CHILDREN">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_GET_NUM_CHILDREN.html">_PARSEDDATA_GET_NUM_CHILDREN</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x6BEB168D5195E7AB</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_GET_NUM_CHILDREN</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_GET_SECTION">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_GET_SECTION.html">_PARSEDDATA_GET_SECTION</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">section</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x44B3A36933AC009C</code> &middot; 3 args &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_GET_SECTION</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_LOAD_FILE_HASH">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_LOAD_FILE_HASH.html">_PARSEDDATA_LOAD_FILE_HASH</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">LOAD_PARSEDDATA_FILE_FAILSAFE_HASH
+Returns parseddata script fileHandle</div>
+<div class="fn-meta"><code>0xD97D8D905F1562F2</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_LOAD_FILE_HASH</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_REGISTER_QUERY">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_REGISTER_QUERY.html">_PARSEDDATA_REGISTER_QUERY</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xAE156A747C39A741</code> &middot; 3 args &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_REGISTER_QUERY</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_RQ_FILLOUT_BOOL">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_RQ_FILLOUT_BOOL.html">_PARSEDDATA_RQ_FILLOUT_BOOL</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">bool*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Old name: _DATAFILE_GET_BOOL</div>
+<div class="fn-meta"><code>0x0D9138F3F8261DF7</code> &middot; old name <code>_DATAFILE_GET_BOOL</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_RQ_FILLOUT_BOOL</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_RQ_FILLOUT_FLOAT">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_RQ_FILLOUT_FLOAT.html">_PARSEDDATA_RQ_FILLOUT_FLOAT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">float*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Old name: _DATAFILE_GET_FLOAT</div>
+<div class="fn-meta"><code>0x7F034FC3E891B57A</code> &middot; old name <code>_DATAFILE_GET_FLOAT</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_RQ_FILLOUT_FLOAT</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_RQ_FILLOUT_INT">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_RQ_FILLOUT_INT.html">_PARSEDDATA_RQ_FILLOUT_INT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">int*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Old name: _DATAFILE_GET_INT</div>
+<div class="fn-meta"><code>0xEF44ACC657352A35</code> &middot; old name <code>_DATAFILE_GET_INT</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_RQ_FILLOUT_INT</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_RQ_FILLOUT_STRING_63">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_RQ_FILLOUT_STRING_63.html">_PARSEDDATA_RQ_FILLOUT_STRING_63</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Old name: _DATAFILE_GET_STRING</div>
+<div class="fn-meta"><code>0x08EAF8E9F2EB7B2E</code> &middot; old name <code>_DATAFILE_GET_STRING</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_RQ_FILLOUT_STRING_63</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_RQ_FILLOUT_VECTOR">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_RQ_FILLOUT_VECTOR.html">_PARSEDDATA_RQ_FILLOUT_VECTOR</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Old name: _DATAFILE_GET_VECTOR</div>
+<div class="fn-meta"><code>0x06FBF89B12DA279C</code> &middot; old name <code>_DATAFILE_GET_VECTOR</code> &middot; 2 args &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_RQ_FILLOUT_VECTOR</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_RQ_GET_NUM_NODES">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_RQ_GET_NUM_NODES.html">_PARSEDDATA_RQ_GET_NUM_NODES</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xDF01B1F7A886B42D</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_RQ_GET_NUM_NODES</code></div>
+</section>
+<section class="fn-block" id="_PARSEDDATA_UNLOAD_FILE">
+<h3 class="code-header"><span class="fn-mod">DATAFILE::</span><a class="fn-name" href="n/datafile/_PARSEDDATA_UNLOAD_FILE.html">_PARSEDDATA_UNLOAD_FILE</a> <span class="paren">(</span><span class="p-name">fileHandle</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x129567F0C05F81B9</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::datafile::_PARSEDDATA_UNLOAD_FILE</code></div>
+</section>
+</section>
+</main>
+<script src="search-index.js?v=7501"></script>
+<script src="static/search.js?v=7501" data-root=""></script>
+</body></html>
