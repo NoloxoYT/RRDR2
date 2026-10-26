@@ -281,9 +281,8 @@ use rrdr_bridge::{export_mod, GameApi, LogLevel, Mod};
 use rrdr_game::prelude::*;
 use std::path::Path;
 
-// `rrdr_game::prelude::Result` is the game error type; `Mod::init` returns a String error.
-
-
+// `Mod::init` returns `std::result::Result<_, String>`, while the prelude's
+// `Result` is the game error type.
 
 struct MyMod {
     elapsed: f32,
