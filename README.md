@@ -27,8 +27,23 @@ The checkout is found from `--root`, then `$RRDR_ROOT`, then the current directo
 parents. The game folder is found from `--game-dir`, then `$RDR2_DIR`, then the usual install
 locations.
 
+## New mod
+
+`rrdr init` works like `cargo init` and creates a ready-to-build mod crate:
+
+```bash
+rrdr init hunt              # rust/crates/hunt, DLL HuntCore.dll, added to the workspace
+rrdr init hunt --force      # rewrite the template in an existing folder
+rrdr init my-mod --path .   # crate in ./my-mod, outside a checkout
+```
+
+Inside a checkout the crate goes to `rust/crates/<name>` and is registered in
+`rust/Cargo.toml`. The template ships a `Mod` implementation, a config file and a
+`.gitignore`; the next `rrdr` run builds and packages it.
+
 | Step | Command it runs |
 | --- | --- |
+| New mod | `rrdr init <name>` writes a crate and a workspace entry |
 | Rust tests | `cargo test --workspace` |
 | Debug cores | `cargo build` |
 | Simulator | `dotnet run` on `RRDR.Sim` |
