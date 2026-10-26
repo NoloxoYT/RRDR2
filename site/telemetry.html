@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rrdr_natives::telemetry - RRDR natives</title>
+<link rel="stylesheet" href="static/normalize.css">
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/favicon.svg">
+</head><body>
+
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <img class="brand-mark" src="static/logo.svg" alt="RRDR" width="24" height="24" />
+    <span class="brand-text">rrdr<span class="brand-dim">.natives</span></span>
+  </a>
+
+<div class="live-search">
+  <label for="search-input" class="sr-only">Search natives</label>
+  <span class="hs-icon">&#8902;</span>
+  <input id="search-input" type="text" autocomplete="off" spellcheck="false"
+         placeholder="Search natives - name or description" tabindex="-1" />
+  <span class="hs-hint" title="Press / to focus">/</span>
+  <div class="live-results" id="live-results" hidden></div>
+</div>
+
+</header>
+
+<nav class="sidebar">
+<div class="side-crate"><a href="index.html">rrdr_natives</a></div>
+<h3 class="side-bucket dim">Ped related</h3>
+<a class="side-mod" href="ped.html">ped<span class="count">1051</span></a>
+<a class="side-mod" href="perschar.html">perschar<span class="count">51</span></a>
+<a class="side-mod" href="companion.html">companion<span class="count">25</span></a>
+<a class="side-mod" href="population.html">population<span class="count">32</span></a>
+<a class="side-mod" href="brain.html">brain<span class="count">11</span></a>
+<a class="side-mod" href="ik.html">ik<span class="count">5</span></a>
+<a class="side-mod" href="attribute.html">attribute<span class="count">27</span></a>
+<a class="side-mod" href="task.html">task<span class="count">706</span></a>
+<a class="side-mod" href="animscene.html">animscene<span class="count">100</span></a>
+<a class="side-mod" href="flock.html">flock<span class="count">47</span></a>
+<a class="side-mod" href="interaction.html">interaction<span class="count">6</span></a>
+<h3 class="side-bucket dim">Player related</h3>
+<a class="side-mod" href="player.html">player<span class="count">397</span></a>
+<a class="side-mod" href="stats.html">stats<span class="count">89</span></a>
+<a class="side-mod" href="law.html">law<span class="count">131</span></a>
+<a class="side-mod" href="money.html">money<span class="count">8</span></a>
+<a class="side-mod" href="bounty.html">bounty<span class="count">33</span></a>
+<a class="side-mod" href="posse.html">posse<span class="count">31</span></a>
+<a class="side-mod" href="crew.html">crew<span class="count">18</span></a>
+<h3 class="side-bucket dim">World related</h3>
+<a class="side-mod" href="entity.html">entity<span class="count">295</span></a>
+<a class="side-mod" href="object.html">object<span class="count">166</span></a>
+<a class="side-mod" href="misc.html">misc<span class="count">303</span></a>
+<a class="side-mod" href="fire.html">fire<span class="count">43</span></a>
+<a class="side-mod" href="water.html">water<span class="count">21</span></a>
+<a class="side-mod" href="zone.html">zone<span class="count">4</span></a>
+<a class="side-mod" href="map.html">map<span class="count">94</span></a>
+<a class="side-mod" href="pathfind.html">pathfind<span class="count">92</span></a>
+<a class="side-mod" href="interior.html">interior<span class="count">35</span></a>
+<a class="side-mod" href="volume.html">volume<span class="count">99</span></a>
+<a class="side-mod" href="physics.html">physics<span class="count">78</span></a>
+<a class="side-mod" href="graphics.html">graphics<span class="count">297</span></a>
+<a class="side-mod" href="clock.html">clock<span class="count">19</span></a>
+<a class="side-mod" href="streaming.html">streaming<span class="count">124</span></a>
+<a class="side-mod" href="shapetest.html">shapetest<span class="count">13</span></a>
+<a class="side-mod" href="event.html">event<span class="count">42</span></a>
+<a class="side-mod" href="collection.html">collection<span class="count">31</span></a>
+<h3 class="side-bucket dim">Vehicles</h3>
+<a class="side-mod" href="vehicle.html">vehicle<span class="count">408</span></a>
+<a class="side-mod" href="aitransport.html">aitransport<span class="count">24</span></a>
+<a class="side-mod" href="aicoverpoint.html">aicoverpoint<span class="count">17</span></a>
+<h3 class="side-bucket dim">Camera</h3>
+<a class="side-mod" href="cam.html">cam<span class="count">248</span></a>
+<a class="side-mod" href="txd.html">txd<span class="count">8</span></a>
+<h3 class="side-bucket dim">Audio</h3>
+<a class="side-mod" href="audio.html">audio<span class="count">229</span></a>
+<a class="side-mod" href="voice.html">voice<span class="count">24</span></a>
+<h3 class="side-bucket dim">UI &amp; Input</h3>
+<a class="side-mod" href="hud.html">hud<span class="count">190</span></a>
+<a class="side-mod" href="pad.html">pad<span class="count">40</span></a>
+<a class="side-mod" href="minigame.html">minigame<span class="count">48</span></a>
+<a class="side-mod" href="localization.html">localization<span class="count">4</span></a>
+<a class="side-mod" href="uiapps.html">uiapps<span class="count">19</span></a>
+<a class="side-mod" href="uidebug.html">uidebug<span class="count">3</span></a>
+<a class="side-mod" href="uievents.html">uievents<span class="count">4</span></a>
+<a class="side-mod" href="uifeed.html">uifeed<span class="count">27</span></a>
+<a class="side-mod" href="uilog.html">uilog<span class="count">31</span></a>
+<a class="side-mod" href="uipinning.html">uipinning<span class="count">1</span></a>
+<a class="side-mod" href="uitutorial.html">uitutorial<span class="count">3</span></a>
+<a class="side-mod" href="uistatemachine.html">uistatemachine<span class="count">12</span></a>
+<a class="side-mod" href="uistickyfeed.html">uistickyfeed<span class="count">8</span></a>
+<a class="side-mod" href="compapp.html">compapp<span class="count">5</span></a>
+<h3 class="side-bucket dim">AI &amp; Scripts</h3>
+<a class="side-mod" href="missiondata.html">missiondata<span class="count">18</span></a>
+<a class="side-mod" href="scripts.html">scripts<span class="count">94</span></a>
+<a class="side-mod" href="spactionproxy.html">spactionproxy<span class="count">6</span></a>
+<a class="side-mod" href="recording.html">recording<span class="count">1</span></a>
+<a class="side-mod" href="replay.html">replay<span class="count">5</span></a>
+<h3 class="side-bucket dim">Data &amp; Storage</h3>
+<a class="side-mod" href="datafile.html">datafile<span class="count">59</span></a>
+<a class="side-mod" href="decorator.html">decorator<span class="count">15</span></a>
+<a class="side-mod" href="databinding.html">databinding<span class="count">82</span></a>
+<a class="side-mod" href="inventory.html">inventory<span class="count">83</span></a>
+<a class="side-mod" href="itemdatabase.html">itemdatabase<span class="count">84</span></a>
+<a class="side-mod" href="itemset.html">itemset<span class="count">11</span></a>
+<a class="side-mod" href="dlc.html">dlc<span class="count">4</span></a>
+<a class="side-mod" href="save.html">save<span class="count">24</span></a>
+<a class="side-mod" href="persistence.html">persistence<span class="count">26</span></a>
+<a class="side-mod" href="netshopping.html">netshopping<span class="count">24</span></a>
+<a class="side-mod" href="unlock.html">unlock<span class="count">9</span></a>
+<h3 class="side-bucket">Online &amp; Telemetry</h3>
+<a class="side-mod" href="network.html">network<span class="count">571</span></a>
+<a class="side-mod" href="socialclub.html">socialclub<span class="count">33</span></a>
+<a class="side-mod" href="socialclubfeed.html">socialclubfeed<span class="count">2</span></a>
+<a class="side-mod active" href="telemetry.html">telemetry<span class="count">78</span></a>
+<a class="side-mod" href="google_analytics.html">google_analytics<span class="count">4</span></a>
+<h3 class="side-bucket dim">System &amp; Utility</h3>
+<a class="side-mod" href="builtin.html">builtin<span class="count">26</span></a>
+<a class="side-mod" href="debug.html">debug<span class="count">3</span></a>
+<a class="side-mod" href="crashlog.html">crashlog<span class="count">14</span></a>
+<a class="side-mod" href="queue.html">queue<span class="count">2</span></a>
+<a class="side-mod" href="_namespace4.html">_namespace4<span class="count">1</span></a>
+<a class="side-mod" href="compendium.html">compendium<span class="count">36</span></a>
+<h3 class="side-bucket">Functions</h3>
+<a class="side-fn" href="n/telemetry/ANALYTICS_PLAYTIME_FREEMODE_END.html">ANALYTICS_PLAYTIME_FREEMODE_END</a>
+<a class="side-fn" href="n/telemetry/ANALYTICS_PLAYTIME_FREEMODE_START.html">ANALYTICS_PLAYTIME_FREEMODE_START</a>
+<a class="side-fn" href="n/telemetry/TELEMETRY_CAMP_DONATE.html">TELEMETRY_CAMP_DONATE</a>
+<a class="side-fn" href="n/telemetry/TELEMETRY_PERSONAL_VEHICLE_MOUNT.html">TELEMETRY_PERSONAL_VEHICLE_MOUNT</a>
+<a class="side-fn" href="n/telemetry/TELEMETRY_PLAYER_MENU_PIN.html">TELEMETRY_PLAYER_MENU_PIN</a>
+<a class="side-fn" href="n/telemetry/_0xEC0BD8736DCAF841.html">_0xEC0BD8736DCAF841</a>
+<a class="side-fn" href="n/telemetry/_CLEAR_TELEMETRY_SHOP_UI.html">_CLEAR_TELEMETRY_SHOP_UI</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_AMBIENT_VIGNETTE.html">_TELEMETRY_AMBIENT_VIGNETTE</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_ANIMAL_SKINNED.html">_TELEMETRY_ANIMAL_SKINNED</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_BOUNTY_TARGET.html">_TELEMETRY_BOUNTY_TARGET</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_CAMP_CREATED.html">_TELEMETRY_CAMP_CREATED</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_CAMP_SUPPLIES.html">_TELEMETRY_CAMP_SUPPLIES</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_CHAR_CREATOR.html">_TELEMETRY_CHAR_CREATOR</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_COLLECT.html">_TELEMETRY_COLLECT</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_COUPON.html">_TELEMETRY_COUPON</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_CRAFT_ITEM.html">_TELEMETRY_CRAFT_ITEM</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_CREATE_UUID.html">_TELEMETRY_CREATE_UUID</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_CUSTOM.html">_TELEMETRY_CUSTOM</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_DEFENSIVE.html">_TELEMETRY_DEFENSIVE</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_DISCOVERABLE.html">_TELEMETRY_DISCOVERABLE</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_EMOTE_ADD_CATEGORY_TO_SAVE.html">_TELEMETRY_EMOTE_ADD_CATEGORY_TO_SAVE</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_FAST_TRAVEL.html">_TELEMETRY_FAST_TRAVEL</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_FAVOR_EMOTE.html">_TELEMETRY_FAVOR_EMOTE</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_GAME_PROGRESS.html">_TELEMETRY_GAME_PROGRESS</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_GANG_SHARES.html">_TELEMETRY_GANG_SHARES</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_GOLD_STORE.html">_TELEMETRY_GOLD_STORE</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_GUN_LOCKER.html">_TELEMETRY_GUN_LOCKER</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_GUN_LOCKER_WEAPON_REMOVED.html">_TELEMETRY_GUN_LOCKER_WEAPON_REMOVED</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_GUN_LOCKER_WEAPON_STORED.html">_TELEMETRY_GUN_LOCKER_WEAPON_STORED</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_HERB_PICKED.html">_TELEMETRY_HERB_PICKED</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_HONOR.html">_TELEMETRY_HONOR</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_HUB_NAVIGATION.html">_TELEMETRY_HUB_NAVIGATION</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_HUB_OFFERS.html">_TELEMETRY_HUB_OFFERS</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_INTRO_SKIP.html">_TELEMETRY_INTRO_SKIP</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_LOBBY_PROGRESSION.html">_TELEMETRY_LOBBY_PROGRESSION</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_LOOT.html">_TELEMETRY_LOOT</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_MATCH_NOMINATION.html">_TELEMETRY_MATCH_NOMINATION</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_MATCH_OVER.html">_TELEMETRY_MATCH_OVER</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_MATCH_QUEUE.html">_TELEMETRY_MATCH_QUEUE</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_MATCH_STARTED.html">_TELEMETRY_MATCH_STARTED</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_MATCH_VOTE.html">_TELEMETRY_MATCH_VOTE</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_MENU_NAVIGATION.html">_TELEMETRY_MENU_NAVIGATION</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_MISSION_CHECKPOINT.html">_TELEMETRY_MISSION_CHECKPOINT</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_MISSION_FAILED_TO_LAUNCH.html">_TELEMETRY_MISSION_FAILED_TO_LAUNCH</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_MISSION_FAILED_TO_LAUNCH_VEC3.html">_TELEMETRY_MISSION_FAILED_TO_LAUNCH</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_MISSION_ILO_OPTION.html">_TELEMETRY_MISSION_ILO_OPTION</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_MISSION_OVER.html">_TELEMETRY_MISSION_OVER</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_MISSION_STARTED.html">_TELEMETRY_MISSION_STARTED</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_MOONSHINE_BREW.html">_TELEMETRY_MOONSHINE_BREW</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_NET_CAMP.html">_TELEMETRY_NET_CAMP</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_NOTORIETY.html">_TELEMETRY_NOTORIETY</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_PARLEY_FEUD.html">_TELEMETRY_PARLEY_FEUD</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_PERSONAL_VEHICLE_WAGON.html">_TELEMETRY_PERSONAL_VEHICLE_WAGON</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_PHOTO.html">_TELEMETRY_PHOTO</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_PHOTO_CAM.html">_TELEMETRY_PHOTO_CAM</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_PLAYER_SPAWNED.html">_TELEMETRY_PLAYER_SPAWNED</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_POKER_OVER.html">_TELEMETRY_POKER_OVER</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_PRISON.html">_TELEMETRY_PRISON</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_REGION.html">_TELEMETRY_REGION</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_ROLE_BOUNTY.html">_TELEMETRY_ROLE_BOUNTY</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_ROLE_COLLECTOR.html">_TELEMETRY_ROLE_COLLECTOR</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_ROLE_MOONSHINER.html">_TELEMETRY_ROLE_MOONSHINER</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_ROLE_NATURALIST.html">_TELEMETRY_ROLE_NATURALIST</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_ROLE_TOKEN_TRANSACTION.html">_TELEMETRY_ROLE_TOKEN_TRANSACTION</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_ROLE_TRADER.html">_TELEMETRY_ROLE_TRADER</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_RPG_GLOBAL_CALCULATE_ATTRIBUTE_CORE_DELTA.html">_TELEMETRY_RPG_GLOBAL_CALCULATE_ATTRIBUTE_CORE_DELTA</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_SAMPLE.html">_TELEMETRY_SAMPLE</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_SET_IS_FLOW.html">_TELEMETRY_SET_IS_FLOW</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_SET_SHOP_FOR_TRANSACTION.html">_TELEMETRY_SET_SHOP_FOR_TRANSACTION</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_SHOP_CUTSCENE.html">_TELEMETRY_SHOP_CUTSCENE</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_SHOP_ENTRY.html">_TELEMETRY_SHOP_ENTRY</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_SHOP_EXIT.html">_TELEMETRY_SHOP_EXIT</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_SHOP_PURCHASE.html">_TELEMETRY_SHOP_PURCHASE</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_SHOP_SELL.html">_TELEMETRY_SHOP_SELL</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_SLEEP.html">_TELEMETRY_SLEEP</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_START_GUN_LOCKER_INTERACTION.html">_TELEMETRY_START_GUN_LOCKER_INTERACTION</a>
+<a class="side-fn" href="n/telemetry/_TELEMETRY_TRIGGER_TRANSACTION_REQUEST.html">_TELEMETRY_TRIGGER_TRANSACTION_REQUEST</a>
+<a class="side-fn" href="n/telemetry/_TRY_GET_TELEMETRY_ID_FROM_TRANSACTION_ID.html">_TRY_GET_TELEMETRY_ID_FROM_TRANSACTION_ID</a>
+</nav>
+<main class="content">
+<div class="doc-page-head">
+<h1 class="module-title"><span class="ns">rrdr_natives::</span>telemetry</h1>
+<div class="crumb"><a href="index.html">Online &amp; Telemetry</a> <span class="sep">&#8250;</span> <a href="telemetry.html">telemetry</a></div>
+<div class="mod-stats">78 functions &middot; 77 unique native hashes</div>
+</div>
+<section class="item-list">
+<section class="fn-block" id="ANALYTICS_PLAYTIME_FREEMODE_END">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/ANALYTICS_PLAYTIME_FREEMODE_END.html">ANALYTICS_PLAYTIME_FREEMODE_END</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3180E991D4B8F248</code> &middot; 0 args &middot; rust: <code>rrdr_natives::telemetry::ANALYTICS_PLAYTIME_FREEMODE_END</code></div>
+</section>
+<section class="fn-block" id="ANALYTICS_PLAYTIME_FREEMODE_START">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/ANALYTICS_PLAYTIME_FREEMODE_START.html">ANALYTICS_PLAYTIME_FREEMODE_START</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE9F24081D84931B8</code> &middot; 0 args &middot; rust: <code>rrdr_natives::telemetry::ANALYTICS_PLAYTIME_FREEMODE_START</code></div>
+</section>
+<section class="fn-block" id="TELEMETRY_CAMP_DONATE">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/TELEMETRY_CAMP_DONATE.html">TELEMETRY_CAMP_DONATE</a> <span class="paren">(</span><span class="p-name">transactionId</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">slotId</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xDF516E598D966D06</code> &middot; 9 args &middot; rust: <code>rrdr_natives::telemetry::TELEMETRY_CAMP_DONATE</code></div>
+</section>
+<section class="fn-block" id="TELEMETRY_PERSONAL_VEHICLE_MOUNT">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/TELEMETRY_PERSONAL_VEHICLE_MOUNT.html">TELEMETRY_PERSONAL_VEHICLE_MOUNT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFF9052BC7A3B7D33</code> &middot; 4 args &middot; rust: <code>rrdr_natives::telemetry::TELEMETRY_PERSONAL_VEHICLE_MOUNT</code></div>
+</section>
+<section class="fn-block" id="TELEMETRY_PLAYER_MENU_PIN">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/TELEMETRY_PLAYER_MENU_PIN.html">TELEMETRY_PLAYER_MENU_PIN</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x076C5843371EB889</code> &middot; 4 args &middot; rust: <code>rrdr_natives::telemetry::TELEMETRY_PLAYER_MENU_PIN</code></div>
+</section>
+<section class="fn-block" id="_0xEC0BD8736DCAF841">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_0xEC0BD8736DCAF841.html">_0xEC0BD8736DCAF841</a> <span class="paren">(</span><span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xEC0BD8736DCAF841</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_0xEC0BD8736DCAF841</code></div>
+</section>
+<section class="fn-block" id="_CLEAR_TELEMETRY_SHOP_UI">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_CLEAR_TELEMETRY_SHOP_UI.html">_CLEAR_TELEMETRY_SHOP_UI</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x32D5898C4898CD95</code> &middot; 0 args &middot; rust: <code>rrdr_natives::telemetry::_CLEAR_TELEMETRY_SHOP_UI</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_AMBIENT_VIGNETTE">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_AMBIENT_VIGNETTE.html">_TELEMETRY_AMBIENT_VIGNETTE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3145044F3990D321</code> &middot; 7 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_AMBIENT_VIGNETTE</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_ANIMAL_SKINNED">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_ANIMAL_SKINNED.html">_TELEMETRY_ANIMAL_SKINNED</a> <span class="paren">(</span><span class="p-name">type</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">items</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7581972ADF5D699A</code> &middot; 2 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_ANIMAL_SKINNED</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_BOUNTY_TARGET">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_BOUNTY_TARGET.html">_TELEMETRY_BOUNTY_TARGET</a> <span class="paren">(</span><span class="p-name">data</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x52FA31DB8F3AD25D</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_BOUNTY_TARGET</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_CAMP_CREATED">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_CAMP_CREATED.html">_TELEMETRY_CAMP_CREATED</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x565EAA726B2CE3B7</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_CAMP_CREATED</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_CAMP_SUPPLIES">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_CAMP_SUPPLIES.html">_TELEMETRY_CAMP_SUPPLIES</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x217F47761376E16E</code> &middot; 5 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_CAMP_SUPPLIES</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_CHAR_CREATOR">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_CHAR_CREATOR.html">_TELEMETRY_CHAR_CREATOR</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7207AD471BC9278C</code> &middot; 7 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_CHAR_CREATOR</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_COLLECT">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_COLLECT.html">_TELEMETRY_COLLECT</a> <span class="paren">(</span><span class="p-name">transactionId</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD6CB05DDAEE43AFD</code> &middot; 7 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_COLLECT</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_COUPON">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_COUPON.html">_TELEMETRY_COUPON</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x621D719C4836292B</code> &middot; 6 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_COUPON</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_CRAFT_ITEM">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_CRAFT_ITEM.html">_TELEMETRY_CRAFT_ITEM</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">quantity</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x78C2E029DB205A3A</code> &middot; 4 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_CRAFT_ITEM</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_CREATE_UUID">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_CREATE_UUID.html">_TELEMETRY_CREATE_UUID</a> <span class="paren">(</span><span class="p-name">uuid</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Works in MP only.</div>
+<div class="fn-meta"><code>0xE692D336F8A2A97F</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_CREATE_UUID</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_CUSTOM">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_CUSTOM.html">_TELEMETRY_CUSTOM</a> <span class="paren">(</span><span class="p-name">args</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x40914CCF2A1AB531</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_CUSTOM</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_DEFENSIVE">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_DEFENSIVE.html">_TELEMETRY_DEFENSIVE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE57529D23541D2DD</code> &middot; 3 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_DEFENSIVE</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_DISCOVERABLE">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_DISCOVERABLE.html">_TELEMETRY_DISCOVERABLE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF5EAD898EF387E73</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_DISCOVERABLE</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_EMOTE_ADD_CATEGORY_TO_SAVE">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_EMOTE_ADD_CATEGORY_TO_SAVE.html">_TELEMETRY_EMOTE_ADD_CATEGORY_TO_SAVE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">emote</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2C24AF8EEEEF8A55</code> &middot; 3 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_EMOTE_ADD_CATEGORY_TO_SAVE</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_FAST_TRAVEL">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_FAST_TRAVEL.html">_TELEMETRY_FAST_TRAVEL</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7CEF4AC79F7E7FAD</code> &middot; 5 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_FAST_TRAVEL</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_FAVOR_EMOTE">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_FAVOR_EMOTE.html">_TELEMETRY_FAVOR_EMOTE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x16B23D4F7A1F50D9</code> &middot; 3 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_FAVOR_EMOTE</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_GAME_PROGRESS">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_GAME_PROGRESS.html">_TELEMETRY_GAME_PROGRESS</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x51EC204A6E5B5A1A</code> &middot; 2 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_GAME_PROGRESS</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_GANG_SHARES">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_GANG_SHARES.html">_TELEMETRY_GANG_SHARES</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE6DC9B21AC7A8729</code> &middot; 4 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_GANG_SHARES</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_GOLD_STORE">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_GOLD_STORE.html">_TELEMETRY_GOLD_STORE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x536B6025E94AC48F</code> &middot; 4 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_GOLD_STORE</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_GUN_LOCKER">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_GUN_LOCKER.html">_TELEMETRY_GUN_LOCKER</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x415FE28ED44BFF14</code> &middot; 0 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_GUN_LOCKER</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_GUN_LOCKER_WEAPON_REMOVED">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_GUN_LOCKER_WEAPON_REMOVED.html">_TELEMETRY_GUN_LOCKER_WEAPON_REMOVED</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x317D9C9560529CC2</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_GUN_LOCKER_WEAPON_REMOVED</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_GUN_LOCKER_WEAPON_STORED">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_GUN_LOCKER_WEAPON_STORED.html">_TELEMETRY_GUN_LOCKER_WEAPON_STORED</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC3ADF4880784FA9C</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_GUN_LOCKER_WEAPON_STORED</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_HERB_PICKED">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_HERB_PICKED.html">_TELEMETRY_HERB_PICKED</a> <span class="paren">(</span><span class="p-name">herbType</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xAE693EC3A178F6C2</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_HERB_PICKED</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_HONOR">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_HONOR.html">_TELEMETRY_HONOR</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE6B763C7F4902201</code> &middot; 2 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_HONOR</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_HUB_NAVIGATION">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_HUB_NAVIGATION.html">_TELEMETRY_HUB_NAVIGATION</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x25CC50EC1A6F3A96</code> &middot; 4 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_HUB_NAVIGATION</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_HUB_OFFERS">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_HUB_OFFERS.html">_TELEMETRY_HUB_OFFERS</a> <span class="paren">(</span><span class="p-name">couponItem</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x37AA282163B0D2C4</code> &middot; 2 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_HUB_OFFERS</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_INTRO_SKIP">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_INTRO_SKIP.html">_TELEMETRY_INTRO_SKIP</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1B554723799245F4</code> &middot; 3 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_INTRO_SKIP</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_LOBBY_PROGRESSION">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_LOBBY_PROGRESSION.html">_TELEMETRY_LOBBY_PROGRESSION</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xECD67E9FA677CCCF</code> &middot; 4 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_LOBBY_PROGRESSION</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_LOOT">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_LOOT.html">_TELEMETRY_LOOT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCF63EF77B0DF0397</code> &middot; 4 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_LOOT</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_MATCH_NOMINATION">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_MATCH_NOMINATION.html">_TELEMETRY_MATCH_NOMINATION</a> <span class="paren">(</span><span class="p-name">args</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x330029E121380CEB</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_MATCH_NOMINATION</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_MATCH_OVER">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_MATCH_OVER.html">_TELEMETRY_MATCH_OVER</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA2058154357726BB</code> &middot; 5 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_MATCH_OVER</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_MATCH_QUEUE">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_MATCH_QUEUE.html">_TELEMETRY_MATCH_QUEUE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4C08D2B6D8BE17E4</code> &middot; 7 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_MATCH_QUEUE</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_MATCH_STARTED">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_MATCH_STARTED.html">_TELEMETRY_MATCH_STARTED</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF620F47B4F4A78C4</code> &middot; 2 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_MATCH_STARTED</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_MATCH_VOTE">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_MATCH_VOTE.html">_TELEMETRY_MATCH_VOTE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xEF3C68F56BAD7B69</code> &middot; 2 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_MATCH_VOTE</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_MENU_NAVIGATION">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_MENU_NAVIGATION.html">_TELEMETRY_MENU_NAVIGATION</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3255D4D2082C6339</code> &middot; 4 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_MENU_NAVIGATION</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_MISSION_CHECKPOINT">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_MISSION_CHECKPOINT.html">_TELEMETRY_MISSION_CHECKPOINT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8EC7890D446BD9C1</code> &middot; 3 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_MISSION_CHECKPOINT</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_MISSION_FAILED_TO_LAUNCH">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_MISSION_FAILED_TO_LAUNCH.html">_TELEMETRY_MISSION_FAILED_TO_LAUNCH</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">reason</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock">_TELEMETRY_C* - _TELEMETRY_G*</div>
+<div class="fn-meta"><code>0x6571E4327390EC0B</code> &middot; 6 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_MISSION_FAILED_TO_LAUNCH</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_MISSION_FAILED_TO_LAUNCH_VEC3">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_MISSION_FAILED_TO_LAUNCH_VEC3.html">_TELEMETRY_MISSION_FAILED_TO_LAUNCH</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">reason</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x6571E4327390EC0B</code> &middot; 4 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_MISSION_FAILED_TO_LAUNCH_VEC3</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_MISSION_ILO_OPTION">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_MISSION_ILO_OPTION.html">_TELEMETRY_MISSION_ILO_OPTION</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xEA323F5E1A4DA2F1</code> &middot; 2 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_MISSION_ILO_OPTION</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_MISSION_OVER">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_MISSION_OVER.html">_TELEMETRY_MISSION_OVER</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD894437E12C17AEC</code> &middot; 2 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_MISSION_OVER</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_MISSION_STARTED">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_MISSION_STARTED.html">_TELEMETRY_MISSION_STARTED</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x15B0CC1B36F1DE29</code> &middot; 4 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_MISSION_STARTED</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_MOONSHINE_BREW">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_MOONSHINE_BREW.html">_TELEMETRY_MOONSHINE_BREW</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB5013EFBB5516867</code> &middot; 11 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_MOONSHINE_BREW</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_NET_CAMP">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_NET_CAMP.html">_TELEMETRY_NET_CAMP</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA72773C3134F9A57</code> &middot; 7 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_NET_CAMP</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_NOTORIETY">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_NOTORIETY.html">_TELEMETRY_NOTORIETY</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE26970A7AE0F28E9</code> &middot; 4 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_NOTORIETY</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_PARLEY_FEUD">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_PARLEY_FEUD.html">_TELEMETRY_PARLEY_FEUD</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF37A2149BC9A8A27</code> &middot; 5 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_PARLEY_FEUD</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_PERSONAL_VEHICLE_WAGON">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_PERSONAL_VEHICLE_WAGON.html">_TELEMETRY_PERSONAL_VEHICLE_WAGON</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE67AF24C5A3B6058</code> &middot; 3 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_PERSONAL_VEHICLE_WAGON</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_PHOTO">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_PHOTO.html">_TELEMETRY_PHOTO</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xED22BE4C5A399E63</code> &middot; 4 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_PHOTO</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_PHOTO_CAM">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_PHOTO_CAM.html">_TELEMETRY_PHOTO_CAM</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0777D65EE8A17517</code> &middot; 9 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_PHOTO_CAM</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_PLAYER_SPAWNED">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_PLAYER_SPAWNED.html">_TELEMETRY_PLAYER_SPAWNED</a> <span class="paren">(</span><span class="p-name">ped</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5DA4718DF897EB25</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_PLAYER_SPAWNED</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_POKER_OVER">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_POKER_OVER.html">_TELEMETRY_POKER_OVER</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8127C5AA05C5A210</code> &middot; 10 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_POKER_OVER</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_PRISON">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_PRISON.html">_TELEMETRY_PRISON</a> <span class="paren">(</span><span class="p-name">transactionId</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">bountyAmount</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">ped</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">completionType</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">jailTimeServed</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">jailTimeLeft</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">posseRole</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB204BF9F30298D77</code> &middot; 7 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_PRISON</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_REGION">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_REGION.html">_TELEMETRY_REGION</a> <span class="paren">(</span><span class="p-name">regionHash</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCD6F8A0335D821F9</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_REGION</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_ROLE_BOUNTY">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_ROLE_BOUNTY.html">_TELEMETRY_ROLE_BOUNTY</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xAB43D1C80B5E9500</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_ROLE_BOUNTY</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_ROLE_COLLECTOR">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_ROLE_COLLECTOR.html">_TELEMETRY_ROLE_COLLECTOR</a> <span class="paren">(</span><span class="p-name">transactionId</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">collectible</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">category</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4AC38DFD286DAD14</code> &middot; 7 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_ROLE_COLLECTOR</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_ROLE_MOONSHINER">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_ROLE_MOONSHINER.html">_TELEMETRY_ROLE_MOONSHINER</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">transactionId</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x99D40C5D74BC88E9</code> &middot; 2 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_ROLE_MOONSHINER</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_ROLE_NATURALIST">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_ROLE_NATURALIST.html">_TELEMETRY_ROLE_NATURALIST</a> <span class="paren">(</span><span class="p-name">transactionId</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x6FB9EA308F302922</code> &middot; 10 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_ROLE_NATURALIST</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_ROLE_TOKEN_TRANSACTION">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_ROLE_TOKEN_TRANSACTION.html">_TELEMETRY_ROLE_TOKEN_TRANSACTION</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x32C2939564D74BFF</code> &middot; 6 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_ROLE_TOKEN_TRANSACTION</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_ROLE_TRADER">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_ROLE_TRADER.html">_TELEMETRY_ROLE_TRADER</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">transactionId</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x476038B5A0734C10</code> &middot; 2 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_ROLE_TRADER</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_RPG_GLOBAL_CALCULATE_ATTRIBUTE_CORE_DELTA">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_RPG_GLOBAL_CALCULATE_ATTRIBUTE_CORE_DELTA.html">_TELEMETRY_RPG_GLOBAL_CALCULATE_ATTRIBUTE_CORE_DELTA</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock">Creation of the metric is related to attribute filling, i. e. at camp fires, when the ped is resting.
+_TELEMETRY_C* - _TELEMETRY_P*</div>
+<div class="fn-meta"><code>0x7E002A36AEFCFB55</code> &middot; 0 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_RPG_GLOBAL_CALCULATE_ATTRIBUTE_CORE_DELTA</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_SAMPLE">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_SAMPLE.html">_TELEMETRY_SAMPLE</a> <span class="paren">(</span><span class="p-name">transactionId</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">animal</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">bSampled</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">bTranq</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x61559675D23D8BD1</code> &middot; 5 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_SAMPLE</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_SET_IS_FLOW">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_SET_IS_FLOW.html">_TELEMETRY_SET_IS_FLOW</a> <span class="paren">(</span><span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9BEE018A63FFFAD9</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_SET_IS_FLOW</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_SET_SHOP_FOR_TRANSACTION">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_SET_SHOP_FOR_TRANSACTION.html">_TELEMETRY_SET_SHOP_FOR_TRANSACTION</a> <span class="paren">(</span><span class="p-name">transactionId</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCA9E42F437625A85</code> &middot; 3 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_SET_SHOP_FOR_TRANSACTION</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_SHOP_CUTSCENE">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_SHOP_CUTSCENE.html">_TELEMETRY_SHOP_CUTSCENE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB0B19B56697836F5</code> &middot; 4 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_SHOP_CUTSCENE</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_SHOP_ENTRY">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_SHOP_ENTRY.html">_TELEMETRY_SHOP_ENTRY</a> <span class="paren">(</span><span class="p-name">shopType</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">shopRegion</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">region</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x775B2ED944E44973</code> &middot; 6 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_SHOP_ENTRY</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_SHOP_EXIT">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_SHOP_EXIT.html">_TELEMETRY_SHOP_EXIT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF78E669FDC202E73</code> &middot; 2 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_SHOP_EXIT</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_SHOP_PURCHASE">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_SHOP_PURCHASE.html">_TELEMETRY_SHOP_PURCHASE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2A374E6F0075EE81</code> &middot; 5 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_SHOP_PURCHASE</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_SHOP_SELL">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_SHOP_SELL.html">_TELEMETRY_SHOP_SELL</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">centSalePrice</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9BD8A9D0A774A6F8</code> &middot; 5 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_SHOP_SELL</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_SLEEP">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_SLEEP.html">_TELEMETRY_SLEEP</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF9F14080D80937BD</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_SLEEP</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_START_GUN_LOCKER_INTERACTION">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_START_GUN_LOCKER_INTERACTION.html">_TELEMETRY_START_GUN_LOCKER_INTERACTION</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF0D54E0651DD7E07</code> &middot; 0 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_START_GUN_LOCKER_INTERACTION</code></div>
+</section>
+<section class="fn-block" id="_TELEMETRY_TRIGGER_TRANSACTION_REQUEST">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TELEMETRY_TRIGGER_TRANSACTION_REQUEST.html">_TELEMETRY_TRIGGER_TRANSACTION_REQUEST</a> <span class="paren">(</span><span class="p-name">requestId</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">transactionId</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Returns false when transaction request is failing</div>
+<div class="fn-meta"><code>0x80A02D9F948A8BCA</code> &middot; 2 args &middot; rust: <code>rrdr_natives::telemetry::_TELEMETRY_TRIGGER_TRANSACTION_REQUEST</code></div>
+</section>
+<section class="fn-block" id="_TRY_GET_TELEMETRY_ID_FROM_TRANSACTION_ID">
+<h3 class="code-header"><span class="fn-mod">TELEMETRY::</span><a class="fn-name" href="n/telemetry/_TRY_GET_TELEMETRY_ID_FROM_TRANSACTION_ID.html">_TRY_GET_TELEMETRY_ID_FROM_TRANSACTION_ID</a> <span class="paren">(</span><span class="p-name">transactionId</span><span class="p-sep">:</span> <span class="p-type">ulong*</span>, <span class="p-name">requestId</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF184B3ECE36219CF</code> &middot; 2 args &middot; rust: <code>rrdr_natives::telemetry::_TRY_GET_TELEMETRY_ID_FROM_TRANSACTION_ID</code></div>
+</section>
+</section>
+</main>
+<script src="search-index.js?v=7501"></script>
+<script src="static/search.js?v=7501" data-root=""></script>
+</body></html>

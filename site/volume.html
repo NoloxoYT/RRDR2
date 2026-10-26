@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rrdr_natives::volume - RRDR natives</title>
+<link rel="stylesheet" href="static/normalize.css">
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/favicon.svg">
+</head><body>
+
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <img class="brand-mark" src="static/logo.svg" alt="RRDR" width="24" height="24" />
+    <span class="brand-text">rrdr<span class="brand-dim">.natives</span></span>
+  </a>
+
+<div class="live-search">
+  <label for="search-input" class="sr-only">Search natives</label>
+  <span class="hs-icon">&#8902;</span>
+  <input id="search-input" type="text" autocomplete="off" spellcheck="false"
+         placeholder="Search natives - name or description" tabindex="-1" />
+  <span class="hs-hint" title="Press / to focus">/</span>
+  <div class="live-results" id="live-results" hidden></div>
+</div>
+
+</header>
+
+<nav class="sidebar">
+<div class="side-crate"><a href="index.html">rrdr_natives</a></div>
+<h3 class="side-bucket dim">Ped related</h3>
+<a class="side-mod" href="ped.html">ped<span class="count">1051</span></a>
+<a class="side-mod" href="perschar.html">perschar<span class="count">51</span></a>
+<a class="side-mod" href="companion.html">companion<span class="count">25</span></a>
+<a class="side-mod" href="population.html">population<span class="count">32</span></a>
+<a class="side-mod" href="brain.html">brain<span class="count">11</span></a>
+<a class="side-mod" href="ik.html">ik<span class="count">5</span></a>
+<a class="side-mod" href="attribute.html">attribute<span class="count">27</span></a>
+<a class="side-mod" href="task.html">task<span class="count">706</span></a>
+<a class="side-mod" href="animscene.html">animscene<span class="count">100</span></a>
+<a class="side-mod" href="flock.html">flock<span class="count">47</span></a>
+<a class="side-mod" href="interaction.html">interaction<span class="count">6</span></a>
+<h3 class="side-bucket dim">Player related</h3>
+<a class="side-mod" href="player.html">player<span class="count">397</span></a>
+<a class="side-mod" href="stats.html">stats<span class="count">89</span></a>
+<a class="side-mod" href="law.html">law<span class="count">131</span></a>
+<a class="side-mod" href="money.html">money<span class="count">8</span></a>
+<a class="side-mod" href="bounty.html">bounty<span class="count">33</span></a>
+<a class="side-mod" href="posse.html">posse<span class="count">31</span></a>
+<a class="side-mod" href="crew.html">crew<span class="count">18</span></a>
+<h3 class="side-bucket">World related</h3>
+<a class="side-mod" href="entity.html">entity<span class="count">295</span></a>
+<a class="side-mod" href="object.html">object<span class="count">166</span></a>
+<a class="side-mod" href="misc.html">misc<span class="count">303</span></a>
+<a class="side-mod" href="fire.html">fire<span class="count">43</span></a>
+<a class="side-mod" href="water.html">water<span class="count">21</span></a>
+<a class="side-mod" href="zone.html">zone<span class="count">4</span></a>
+<a class="side-mod" href="map.html">map<span class="count">94</span></a>
+<a class="side-mod" href="pathfind.html">pathfind<span class="count">92</span></a>
+<a class="side-mod" href="interior.html">interior<span class="count">35</span></a>
+<a class="side-mod active" href="volume.html">volume<span class="count">99</span></a>
+<a class="side-mod" href="physics.html">physics<span class="count">78</span></a>
+<a class="side-mod" href="graphics.html">graphics<span class="count">297</span></a>
+<a class="side-mod" href="clock.html">clock<span class="count">19</span></a>
+<a class="side-mod" href="streaming.html">streaming<span class="count">124</span></a>
+<a class="side-mod" href="shapetest.html">shapetest<span class="count">13</span></a>
+<a class="side-mod" href="event.html">event<span class="count">42</span></a>
+<a class="side-mod" href="collection.html">collection<span class="count">31</span></a>
+<h3 class="side-bucket dim">Vehicles</h3>
+<a class="side-mod" href="vehicle.html">vehicle<span class="count">408</span></a>
+<a class="side-mod" href="aitransport.html">aitransport<span class="count">24</span></a>
+<a class="side-mod" href="aicoverpoint.html">aicoverpoint<span class="count">17</span></a>
+<h3 class="side-bucket dim">Camera</h3>
+<a class="side-mod" href="cam.html">cam<span class="count">248</span></a>
+<a class="side-mod" href="txd.html">txd<span class="count">8</span></a>
+<h3 class="side-bucket dim">Audio</h3>
+<a class="side-mod" href="audio.html">audio<span class="count">229</span></a>
+<a class="side-mod" href="voice.html">voice<span class="count">24</span></a>
+<h3 class="side-bucket dim">UI &amp; Input</h3>
+<a class="side-mod" href="hud.html">hud<span class="count">190</span></a>
+<a class="side-mod" href="pad.html">pad<span class="count">40</span></a>
+<a class="side-mod" href="minigame.html">minigame<span class="count">48</span></a>
+<a class="side-mod" href="localization.html">localization<span class="count">4</span></a>
+<a class="side-mod" href="uiapps.html">uiapps<span class="count">19</span></a>
+<a class="side-mod" href="uidebug.html">uidebug<span class="count">3</span></a>
+<a class="side-mod" href="uievents.html">uievents<span class="count">4</span></a>
+<a class="side-mod" href="uifeed.html">uifeed<span class="count">27</span></a>
+<a class="side-mod" href="uilog.html">uilog<span class="count">31</span></a>
+<a class="side-mod" href="uipinning.html">uipinning<span class="count">1</span></a>
+<a class="side-mod" href="uitutorial.html">uitutorial<span class="count">3</span></a>
+<a class="side-mod" href="uistatemachine.html">uistatemachine<span class="count">12</span></a>
+<a class="side-mod" href="uistickyfeed.html">uistickyfeed<span class="count">8</span></a>
+<a class="side-mod" href="compapp.html">compapp<span class="count">5</span></a>
+<h3 class="side-bucket dim">AI &amp; Scripts</h3>
+<a class="side-mod" href="missiondata.html">missiondata<span class="count">18</span></a>
+<a class="side-mod" href="scripts.html">scripts<span class="count">94</span></a>
+<a class="side-mod" href="spactionproxy.html">spactionproxy<span class="count">6</span></a>
+<a class="side-mod" href="recording.html">recording<span class="count">1</span></a>
+<a class="side-mod" href="replay.html">replay<span class="count">5</span></a>
+<h3 class="side-bucket dim">Data &amp; Storage</h3>
+<a class="side-mod" href="datafile.html">datafile<span class="count">59</span></a>
+<a class="side-mod" href="decorator.html">decorator<span class="count">15</span></a>
+<a class="side-mod" href="databinding.html">databinding<span class="count">82</span></a>
+<a class="side-mod" href="inventory.html">inventory<span class="count">83</span></a>
+<a class="side-mod" href="itemdatabase.html">itemdatabase<span class="count">84</span></a>
+<a class="side-mod" href="itemset.html">itemset<span class="count">11</span></a>
+<a class="side-mod" href="dlc.html">dlc<span class="count">4</span></a>
+<a class="side-mod" href="save.html">save<span class="count">24</span></a>
+<a class="side-mod" href="persistence.html">persistence<span class="count">26</span></a>
+<a class="side-mod" href="netshopping.html">netshopping<span class="count">24</span></a>
+<a class="side-mod" href="unlock.html">unlock<span class="count">9</span></a>
+<h3 class="side-bucket dim">Online &amp; Telemetry</h3>
+<a class="side-mod" href="network.html">network<span class="count">571</span></a>
+<a class="side-mod" href="socialclub.html">socialclub<span class="count">33</span></a>
+<a class="side-mod" href="socialclubfeed.html">socialclubfeed<span class="count">2</span></a>
+<a class="side-mod" href="telemetry.html">telemetry<span class="count">78</span></a>
+<a class="side-mod" href="google_analytics.html">google_analytics<span class="count">4</span></a>
+<h3 class="side-bucket dim">System &amp; Utility</h3>
+<a class="side-mod" href="builtin.html">builtin<span class="count">26</span></a>
+<a class="side-mod" href="debug.html">debug<span class="count">3</span></a>
+<a class="side-mod" href="crashlog.html">crashlog<span class="count">14</span></a>
+<a class="side-mod" href="queue.html">queue<span class="count">2</span></a>
+<a class="side-mod" href="_namespace4.html">_namespace4<span class="count">1</span></a>
+<a class="side-mod" href="compendium.html">compendium<span class="count">36</span></a>
+<h3 class="side-bucket">Functions</h3>
+<a class="side-fn" href="n/volume/CREATE_VOLUME_AGGREGATE.html">CREATE_VOLUME_AGGREGATE</a>
+<a class="side-fn" href="n/volume/CREATE_VOLUME_BOX.html">CREATE_VOLUME_BOX</a>
+<a class="side-fn" href="n/volume/CREATE_VOLUME_BOX_VEC3.html">CREATE_VOLUME_BOX</a>
+<a class="side-fn" href="n/volume/CREATE_VOLUME_CYLINDER.html">CREATE_VOLUME_CYLINDER</a>
+<a class="side-fn" href="n/volume/CREATE_VOLUME_CYLINDER_VEC3.html">CREATE_VOLUME_CYLINDER</a>
+<a class="side-fn" href="n/volume/CREATE_VOLUME_SPHERE.html">CREATE_VOLUME_SPHERE</a>
+<a class="side-fn" href="n/volume/CREATE_VOLUME_SPHERE_VEC3.html">CREATE_VOLUME_SPHERE</a>
+<a class="side-fn" href="n/volume/DELETE_VOLUME.html">DELETE_VOLUME</a>
+<a class="side-fn" href="n/volume/DOES_VOLUME_COLLIDE_WITH_ANY_VOLUME_LOCK.html">DOES_VOLUME_COLLIDE_WITH_ANY_VOLUME_LOCK</a>
+<a class="side-fn" href="n/volume/DOES_VOLUME_COLLIDE_WITH_ANY_VOLUME_LOCK_VEC3.html">DOES_VOLUME_COLLIDE_WITH_ANY_VOLUME_LOCK</a>
+<a class="side-fn" href="n/volume/DOES_VOLUME_EXIST.html">DOES_VOLUME_EXIST</a>
+<a class="side-fn" href="n/volume/GET_VOLUME_COORDS.html">GET_VOLUME_COORDS</a>
+<a class="side-fn" href="n/volume/GET_VOLUME_LOCK_REQUEST_STATUS.html">GET_VOLUME_LOCK_REQUEST_STATUS</a>
+<a class="side-fn" href="n/volume/GET_VOLUME_ROTATION.html">GET_VOLUME_ROTATION</a>
+<a class="side-fn" href="n/volume/GET_VOLUME_SCALE.html">GET_VOLUME_SCALE</a>
+<a class="side-fn" href="n/volume/IS_POINT_IN_VOLUME.html">IS_POINT_IN_VOLUME</a>
+<a class="side-fn" href="n/volume/IS_POINT_IN_VOLUME_VEC3.html">IS_POINT_IN_VOLUME</a>
+<a class="side-fn" href="n/volume/IS_VOLUME_LOCK_REQUEST_VALID.html">IS_VOLUME_LOCK_REQUEST_VALID</a>
+<a class="side-fn" href="n/volume/REQUEST_VOLUME_LOCK.html">REQUEST_VOLUME_LOCK</a>
+<a class="side-fn" href="n/volume/REQUEST_VOLUME_LOCK_VEC3.html">REQUEST_VOLUME_LOCK</a>
+<a class="side-fn" href="n/volume/REQUEST_VOLUME_LOCK_WITH_ARGS.html">REQUEST_VOLUME_LOCK_WITH_ARGS</a>
+<a class="side-fn" href="n/volume/SET_VOLUME_COORDS.html">SET_VOLUME_COORDS</a>
+<a class="side-fn" href="n/volume/SET_VOLUME_COORDS_VEC3.html">SET_VOLUME_COORDS</a>
+<a class="side-fn" href="n/volume/SET_VOLUME_OWNER_PERSISTENT_CHARACTER.html">SET_VOLUME_OWNER_PERSISTENT_CHARACTER</a>
+<a class="side-fn" href="n/volume/SET_VOLUME_ROTATION.html">SET_VOLUME_ROTATION</a>
+<a class="side-fn" href="n/volume/SET_VOLUME_ROTATION_VEC3.html">SET_VOLUME_ROTATION</a>
+<a class="side-fn" href="n/volume/SET_VOLUME_SCALE.html">SET_VOLUME_SCALE</a>
+<a class="side-fn" href="n/volume/SET_VOLUME_SCALE_VEC3.html">SET_VOLUME_SCALE</a>
+<a class="side-fn" href="n/volume/_0x128FC3A893BF853A.html">_0x128FC3A893BF853A</a>
+<a class="side-fn" href="n/volume/_0x2B32B11520626229.html">_0x2B32B11520626229</a>
+<a class="side-fn" href="n/volume/_0x351D71B8B72B858B.html">_0x351D71B8B72B858B</a>
+<a class="side-fn" href="n/volume/_0x3EFABB21E14A6BD1.html">_0x3EFABB21E14A6BD1</a>
+<a class="side-fn" href="n/volume/_0x40F769D31A00D5A0.html">_0x40F769D31A00D5A0</a>
+<a class="side-fn" href="n/volume/_0x4A8FEFC43FD8AC9B.html">_0x4A8FEFC43FD8AC9B</a>
+<a class="side-fn" href="n/volume/_0x51E52C9687FCDEEC.html">_0x51E52C9687FCDEEC</a>
+<a class="side-fn" href="n/volume/_0x52572B331E693AED.html">_0x52572B331E693AED</a>
+<a class="side-fn" href="n/volume/_0x53D05D60E5F5B40C.html">_0x53D05D60E5F5B40C</a>
+<a class="side-fn" href="n/volume/_0x695DAC2DB928F308.html">_0x695DAC2DB928F308</a>
+<a class="side-fn" href="n/volume/_0x6D5F9E69BA1BE783.html">_0x6D5F9E69BA1BE783</a>
+<a class="side-fn" href="n/volume/_0x748C5F51A18CB8F0.html">_0x748C5F51A18CB8F0</a>
+<a class="side-fn" href="n/volume/_0x7FD78DFD0C5D7B9B.html">_0x7FD78DFD0C5D7B9B</a>
+<a class="side-fn" href="n/volume/_0x870E9981ED27C815.html">_0x870E9981ED27C815</a>
+<a class="side-fn" href="n/volume/_0x998202B206872672.html">_0x998202B206872672</a>
+<a class="side-fn" href="n/volume/_0xAA9EE2AAFC717623.html">_0xAA9EE2AAFC717623</a>
+<a class="side-fn" href="n/volume/_0xAC355980681A7F89.html">_0xAC355980681A7F89</a>
+<a class="side-fn" href="n/volume/_0xB440F4E35393FC39.html">_0xB440F4E35393FC39</a>
+<a class="side-fn" href="n/volume/_0xB469CFD9E065EB99.html">_0xB469CFD9E065EB99</a>
+<a class="side-fn" href="n/volume/_0xC4019CF9AE8E931A.html">_0xC4019CF9AE8E931A</a>
+<a class="side-fn" href="n/volume/_0xC61E2FD926DBB406.html">_0xC61E2FD926DBB406</a>
+<a class="side-fn" href="n/volume/_0xCA5C90D40665D5CE.html">_0xCA5C90D40665D5CE</a>
+<a class="side-fn" href="n/volume/_0xD460135C98940274.html">_0xD460135C98940274</a>
+<a class="side-fn" href="n/volume/_0xD4FA73FE628FEC63.html">_0xD4FA73FE628FEC63</a>
+<a class="side-fn" href="n/volume/_0xD52DF30355EA7C8E.html">_0xD52DF30355EA7C8E</a>
+<a class="side-fn" href="n/volume/_0xD882C5B3991575B7.html">_0xD882C5B3991575B7</a>
+<a class="side-fn" href="n/volume/_0xEBA87B9273835CF3.html">_0xEBA87B9273835CF3</a>
+<a class="side-fn" href="n/volume/_0xEE1D6FF54CAF7714.html">_0xEE1D6FF54CAF7714</a>
+<a class="side-fn" href="n/volume/_0xF3A2FBA5985C8CD5.html">_0xF3A2FBA5985C8CD5</a>
+<a class="side-fn" href="n/volume/_0xF6CE6F9C3897804E.html">_0xF6CE6F9C3897804E</a>
+<a class="side-fn" href="n/volume/_0xF6F5447D418DAA82.html">_0xF6F5447D418DAA82</a>
+<a class="side-fn" href="n/volume/_0xFA15C9A320E707B0.html">_0xFA15C9A320E707B0</a>
+<a class="side-fn" href="n/volume/_ADD_BOUNDS_TO_AGGREGATE_VOLUME.html">_ADD_BOUNDS_TO_AGGREGATE_VOLUME</a>
+<a class="side-fn" href="n/volume/_ADD_BOX_VOLUME_TO_VOLUME_AGGREGATE.html">_ADD_BOX_VOLUME_TO_VOLUME_AGGREGATE</a>
+<a class="side-fn" href="n/volume/_ADD_CYLINDER_VOLUME_TO_VOLUME_AGGREGATE.html">_ADD_CYLINDER_VOLUME_TO_VOLUME_AGGREGATE</a>
+<a class="side-fn" href="n/volume/_ADD_ENTRY_VOLUME_LOCK.html">_ADD_ENTRY_VOLUME_LOCK</a>
+<a class="side-fn" href="n/volume/_ADD_SPHERE_VOLUME_TO_VOLUME_AGGREGATE.html">_ADD_SPHERE_VOLUME_TO_VOLUME_AGGREGATE</a>
+<a class="side-fn" href="n/volume/_ADD_VOLUME_TO_VOLUME_AGGREGATE.html">_ADD_VOLUME_TO_VOLUME_AGGREGATE</a>
+<a class="side-fn" href="n/volume/_ADD_VOLUME_TO_VOLUME_AGGREGATE_VEC3.html">_ADD_VOLUME_TO_VOLUME_AGGREGATE</a>
+<a class="side-fn" href="n/volume/_CREATE_ANTI_GRIEF_VOLUME.html">_CREATE_ANTI_GRIEF_VOLUME</a>
+<a class="side-fn" href="n/volume/_CREATE_ANTI_GRIEF_VOLUME_VEC3.html">_CREATE_ANTI_GRIEF_VOLUME</a>
+<a class="side-fn" href="n/volume/_CREATE_SPEED_VOLUME.html">_CREATE_SPEED_VOLUME</a>
+<a class="side-fn" href="n/volume/_CREATE_VOLUME_AGGREGATE_WITH_CUSTOM_NAME.html">_CREATE_VOLUME_AGGREGATE_WITH_CUSTOM_NAME</a>
+<a class="side-fn" href="n/volume/_CREATE_VOLUME_BOX_WITH_CUSTOM_NAME.html">_CREATE_VOLUME_BOX_WITH_CUSTOM_NAME</a>
+<a class="side-fn" href="n/volume/_CREATE_VOLUME_BOX_WITH_CUSTOM_NAME_VEC3.html">_CREATE_VOLUME_BOX_WITH_CUSTOM_NAME</a>
+<a class="side-fn" href="n/volume/_CREATE_VOLUME_BY_HASH.html">_CREATE_VOLUME_BY_HASH</a>
+<a class="side-fn" href="n/volume/_CREATE_VOLUME_BY_HASH_VEC3.html">_CREATE_VOLUME_BY_HASH</a>
+<a class="side-fn" href="n/volume/_CREATE_VOLUME_BY_HASH_WITH_CUSTOM_NAME.html">_CREATE_VOLUME_BY_HASH_WITH_CUSTOM_NAME</a>
+<a class="side-fn" href="n/volume/_CREATE_VOLUME_BY_HASH_WITH_CUSTOM_NAME_VEC3.html">_CREATE_VOLUME_BY_HASH_WITH_CUSTOM_NAME</a>
+<a class="side-fn" href="n/volume/_CREATE_VOLUME_CYLINDER_WITH_CUSTOM_NAME.html">_CREATE_VOLUME_CYLINDER_WITH_CUSTOM_NAME</a>
+<a class="side-fn" href="n/volume/_CREATE_VOLUME_CYLINDER_WITH_CUSTOM_NAME_VEC3.html">_CREATE_VOLUME_CYLINDER_WITH_CUSTOM_NAME</a>
+<a class="side-fn" href="n/volume/_CREATE_VOLUME_LOCK.html">_CREATE_VOLUME_LOCK</a>
+<a class="side-fn" href="n/volume/_CREATE_VOLUME_LOCK_ATTACHED_TO_ENTITY.html">_CREATE_VOLUME_LOCK_ATTACHED_TO_ENTITY</a>
+<a class="side-fn" href="n/volume/_CREATE_VOLUME_LOCK_VEC3.html">_CREATE_VOLUME_LOCK</a>
+<a class="side-fn" href="n/volume/_CREATE_VOLUME_SPHERE_WITH_CUSTOM_NAME.html">_CREATE_VOLUME_SPHERE_WITH_CUSTOM_NAME</a>
+<a class="side-fn" href="n/volume/_CREATE_VOLUME_SPHERE_WITH_CUSTOM_NAME_VEC3.html">_CREATE_VOLUME_SPHERE_WITH_CUSTOM_NAME</a>
+<a class="side-fn" href="n/volume/_CREATE_WALK_AND_TALK_VOLUME.html">_CREATE_WALK_AND_TALK_VOLUME</a>
+<a class="side-fn" href="n/volume/_FIND_VOLUME_LOCK_REQUEST_ID_WITH_ARGS.html">_FIND_VOLUME_LOCK_REQUEST_ID_WITH_ARGS</a>
+<a class="side-fn" href="n/volume/_GET_VOLUME_BOUNDS.html">_GET_VOLUME_BOUNDS</a>
+<a class="side-fn" href="n/volume/_GET_VOLUME_RELATIONSHIP.html">_GET_VOLUME_RELATIONSHIP</a>
+<a class="side-fn" href="n/volume/_IS_AGGREGATE_VOLUME.html">_IS_AGGREGATE_VOLUME</a>
+<a class="side-fn" href="n/volume/_IS_POINT_NEAR_VOLUME_LOCK_CENTER.html">_IS_POINT_NEAR_VOLUME_LOCK_CENTER</a>
+<a class="side-fn" href="n/volume/_IS_POINT_NEAR_VOLUME_LOCK_CENTER_VEC3.html">_IS_POINT_NEAR_VOLUME_LOCK_CENTER</a>
+<a class="side-fn" href="n/volume/_IS_VOLUME_LOCK_REQUEST_VALID_2.html">_IS_VOLUME_LOCK_REQUEST_VALID_2</a>
+<a class="side-fn" href="n/volume/_MODIFY_VOLUME_LOCK_LOCATION.html">_MODIFY_VOLUME_LOCK_LOCATION</a>
+<a class="side-fn" href="n/volume/_MODIFY_VOLUME_LOCK_LOCATION_VEC3.html">_MODIFY_VOLUME_LOCK_LOCATION</a>
+<a class="side-fn" href="n/volume/_RELEASE_LOCK_VOLUME.html">_RELEASE_LOCK_VOLUME</a>
+<a class="side-fn" href="n/volume/_REMOVE_BOUNDS_FROM_AGGREGATE_VOLUME.html">_REMOVE_BOUNDS_FROM_AGGREGATE_VOLUME</a>
+<a class="side-fn" href="n/volume/_SET_ANTI_GRIEF_VOLUME_BLOCKS_HORSE.html">_SET_ANTI_GRIEF_VOLUME_BLOCKS_HORSE</a>
+<a class="side-fn" href="n/volume/_SET_ANTI_GRIEF_VOLUME_BLOCKS_PLAYER.html">_SET_ANTI_GRIEF_VOLUME_BLOCKS_PLAYER</a>
+<a class="side-fn" href="n/volume/_SET_VOLUME_RELATIONSHIP.html">_SET_VOLUME_RELATIONSHIP</a>
+</nav>
+<main class="content">
+<div class="doc-page-head">
+<h1 class="module-title"><span class="ns">rrdr_natives::</span>volume</h1>
+<div class="crumb"><a href="index.html">World related</a> <span class="sep">&#8250;</span> <a href="volume.html">volume</a></div>
+<div class="mod-stats">99 functions &middot; 80 unique native hashes</div>
+</div>
+<section class="item-list">
+<section class="fn-block" id="CREATE_VOLUME_AGGREGATE">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/CREATE_VOLUME_AGGREGATE.html">CREATE_VOLUME_AGGREGATE</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x59F6F5C1D129F106</code> &middot; 0 args &middot; rust: <code>rrdr_natives::volume::CREATE_VOLUME_AGGREGATE</code></div>
+</section>
+<section class="fn-block" id="CREATE_VOLUME_BOX">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/CREATE_VOLUME_BOX.html">CREATE_VOLUME_BOX</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleZ</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xDF85637F22706891</code> &middot; 9 args &middot; rust: <code>rrdr_natives::volume::CREATE_VOLUME_BOX</code></div>
+</section>
+<section class="fn-block" id="CREATE_VOLUME_BOX_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/CREATE_VOLUME_BOX_VEC3.html">CREATE_VOLUME_BOX</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">rot</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">scale</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xDF85637F22706891</code> &middot; 3 args &middot; rust: <code>rrdr_natives::volume::CREATE_VOLUME_BOX_VEC3</code></div>
+</section>
+<section class="fn-block" id="CREATE_VOLUME_CYLINDER">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/CREATE_VOLUME_CYLINDER.html">CREATE_VOLUME_CYLINDER</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleZ</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0522D4774B82E3E6</code> &middot; 9 args &middot; rust: <code>rrdr_natives::volume::CREATE_VOLUME_CYLINDER</code></div>
+</section>
+<section class="fn-block" id="CREATE_VOLUME_CYLINDER_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/CREATE_VOLUME_CYLINDER_VEC3.html">CREATE_VOLUME_CYLINDER</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">rot</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">scale</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0522D4774B82E3E6</code> &middot; 3 args &middot; rust: <code>rrdr_natives::volume::CREATE_VOLUME_CYLINDER_VEC3</code></div>
+</section>
+<section class="fn-block" id="CREATE_VOLUME_SPHERE">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/CREATE_VOLUME_SPHERE.html">CREATE_VOLUME_SPHERE</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleZ</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB3FB80A32BAE3065</code> &middot; 9 args &middot; rust: <code>rrdr_natives::volume::CREATE_VOLUME_SPHERE</code></div>
+</section>
+<section class="fn-block" id="CREATE_VOLUME_SPHERE_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/CREATE_VOLUME_SPHERE_VEC3.html">CREATE_VOLUME_SPHERE</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">rot</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">scale</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB3FB80A32BAE3065</code> &middot; 3 args &middot; rust: <code>rrdr_natives::volume::CREATE_VOLUME_SPHERE_VEC3</code></div>
+</section>
+<section class="fn-block" id="DELETE_VOLUME">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/DELETE_VOLUME.html">DELETE_VOLUME</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x43F867EF5C463A53</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::DELETE_VOLUME</code></div>
+</section>
+<section class="fn-block" id="DOES_VOLUME_COLLIDE_WITH_ANY_VOLUME_LOCK">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/DOES_VOLUME_COLLIDE_WITH_ANY_VOLUME_LOCK.html">DOES_VOLUME_COLLIDE_WITH_ANY_VOLUME_LOCK</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x397769175A7DBB30</code> &middot; 7 args &middot; rust: <code>rrdr_natives::volume::DOES_VOLUME_COLLIDE_WITH_ANY_VOLUME_LOCK</code></div>
+</section>
+<section class="fn-block" id="DOES_VOLUME_COLLIDE_WITH_ANY_VOLUME_LOCK_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/DOES_VOLUME_COLLIDE_WITH_ANY_VOLUME_LOCK_VEC3.html">DOES_VOLUME_COLLIDE_WITH_ANY_VOLUME_LOCK</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">bool</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x397769175A7DBB30</code> &middot; 5 args &middot; rust: <code>rrdr_natives::volume::DOES_VOLUME_COLLIDE_WITH_ANY_VOLUME_LOCK_VEC3</code></div>
+</section>
+<section class="fn-block" id="DOES_VOLUME_EXIST">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/DOES_VOLUME_EXIST.html">DOES_VOLUME_EXIST</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x92A78D0BEDB332A3</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::DOES_VOLUME_EXIST</code></div>
+</section>
+<section class="fn-block" id="GET_VOLUME_COORDS">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/GET_VOLUME_COORDS.html">GET_VOLUME_COORDS</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">Vector3</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF70F00013A62F866</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::GET_VOLUME_COORDS</code></div>
+</section>
+<section class="fn-block" id="GET_VOLUME_LOCK_REQUEST_STATUS">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/GET_VOLUME_LOCK_REQUEST_STATUS.html">GET_VOLUME_LOCK_REQUEST_STATUS</a> <span class="paren">(</span><span class="p-name">volLockRequestId</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">enum eVolumeLockRequestStatus
+{
+VOLUME_LOCK_REQUEST_STATUS_INVALID,
+VOLUME_LOCK_REQUEST_STATUS_READY,
+VOLUME_LOCK_REQUEST_STATUS_IN_PROGRESS,
+VOLUME_LOCK_REQUEST_STATUS_SUCCEEDED,
+VOLUME_LOCK_REQUEST_STATUS_FAILED
+};</div>
+<div class="fn-meta"><code>0xB33A604345F58202</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::GET_VOLUME_LOCK_REQUEST_STATUS</code></div>
+</section>
+<section class="fn-block" id="GET_VOLUME_ROTATION">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/GET_VOLUME_ROTATION.html">GET_VOLUME_ROTATION</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">Vector3</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x18675BC914891122</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::GET_VOLUME_ROTATION</code></div>
+</section>
+<section class="fn-block" id="GET_VOLUME_SCALE">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/GET_VOLUME_SCALE.html">GET_VOLUME_SCALE</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">Vector3</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3E2A25B2416DD67E</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::GET_VOLUME_SCALE</code></div>
+</section>
+<section class="fn-block" id="IS_POINT_IN_VOLUME">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/IS_POINT_IN_VOLUME.html">IS_POINT_IN_VOLUME</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Old name: _IS_POSITION_INSIDE_VOLUME</div>
+<div class="fn-meta"><code>0xF256A75210C5C0EB</code> &middot; old name <code>_IS_POSITION_INSIDE_VOLUME</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::IS_POINT_IN_VOLUME</code></div>
+</section>
+<section class="fn-block" id="IS_POINT_IN_VOLUME_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/IS_POINT_IN_VOLUME_VEC3.html">IS_POINT_IN_VOLUME</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF256A75210C5C0EB</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::IS_POINT_IN_VOLUME_VEC3</code></div>
+</section>
+<section class="fn-block" id="IS_VOLUME_LOCK_REQUEST_VALID">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/IS_VOLUME_LOCK_REQUEST_VALID.html">IS_VOLUME_LOCK_REQUEST_VALID</a> <span class="paren">(</span><span class="p-name">volLockRequestId</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA4A4359320345B34</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::IS_VOLUME_LOCK_REQUEST_VALID</code></div>
+</section>
+<section class="fn-block" id="REQUEST_VOLUME_LOCK">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/REQUEST_VOLUME_LOCK.html">REQUEST_VOLUME_LOCK</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF14BCEF290F869E1</code> &middot; 6 args &middot; rust: <code>rrdr_natives::volume::REQUEST_VOLUME_LOCK</code></div>
+</section>
+<section class="fn-block" id="REQUEST_VOLUME_LOCK_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/REQUEST_VOLUME_LOCK_VEC3.html">REQUEST_VOLUME_LOCK</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF14BCEF290F869E1</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::REQUEST_VOLUME_LOCK_VEC3</code></div>
+</section>
+<section class="fn-block" id="REQUEST_VOLUME_LOCK_WITH_ARGS">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/REQUEST_VOLUME_LOCK_WITH_ARGS.html">REQUEST_VOLUME_LOCK_WITH_ARGS</a> <span class="paren">(</span><span class="p-name">args</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x183C0B6CFEFFCAE4</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::REQUEST_VOLUME_LOCK_WITH_ARGS</code></div>
+</section>
+<section class="fn-block" id="SET_VOLUME_COORDS">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/SET_VOLUME_COORDS.html">SET_VOLUME_COORDS</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">posX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">posY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">posZ</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x541B8576615C33DE</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::SET_VOLUME_COORDS</code></div>
+</section>
+<section class="fn-block" id="SET_VOLUME_COORDS_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/SET_VOLUME_COORDS_VEC3.html">SET_VOLUME_COORDS</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">pos</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x541B8576615C33DE</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::SET_VOLUME_COORDS_VEC3</code></div>
+</section>
+<section class="fn-block" id="SET_VOLUME_OWNER_PERSISTENT_CHARACTER">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/SET_VOLUME_OWNER_PERSISTENT_CHARACTER.html">SET_VOLUME_OWNER_PERSISTENT_CHARACTER</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">persChar</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE2BE6FFA4A13CBB0</code> &middot; 3 args &middot; rust: <code>rrdr_natives::volume::SET_VOLUME_OWNER_PERSISTENT_CHARACTER</code></div>
+</section>
+<section class="fn-block" id="SET_VOLUME_ROTATION">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/SET_VOLUME_ROTATION.html">SET_VOLUME_ROTATION</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">rotX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotZ</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA07CF1B21B56F041</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::SET_VOLUME_ROTATION</code></div>
+</section>
+<section class="fn-block" id="SET_VOLUME_ROTATION_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/SET_VOLUME_ROTATION_VEC3.html">SET_VOLUME_ROTATION</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">rot</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA07CF1B21B56F041</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::SET_VOLUME_ROTATION_VEC3</code></div>
+</section>
+<section class="fn-block" id="SET_VOLUME_SCALE">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/SET_VOLUME_SCALE.html">SET_VOLUME_SCALE</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">scaleX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleZ</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA46E98BDC407E23D</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::SET_VOLUME_SCALE</code></div>
+</section>
+<section class="fn-block" id="SET_VOLUME_SCALE_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/SET_VOLUME_SCALE_VEC3.html">SET_VOLUME_SCALE</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">scale</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA46E98BDC407E23D</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::SET_VOLUME_SCALE_VEC3</code></div>
+</section>
+<section class="fn-block" id="_0x128FC3A893BF853A">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x128FC3A893BF853A.html">_0x128FC3A893BF853A</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock">nullsub, doesn&#x27;t do anything</div>
+<div class="fn-meta"><code>0x128FC3A893BF853A</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_0x128FC3A893BF853A</code></div>
+</section>
+<section class="fn-block" id="_0x2B32B11520626229">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x2B32B11520626229.html">_0x2B32B11520626229</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2B32B11520626229</code> &middot; 5 args &middot; rust: <code>rrdr_natives::volume::_0x2B32B11520626229</code></div>
+</section>
+<section class="fn-block" id="_0x351D71B8B72B858B">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x351D71B8B72B858B.html">_0x351D71B8B72B858B</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x351D71B8B72B858B</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_0x351D71B8B72B858B</code></div>
+</section>
+<section class="fn-block" id="_0x3EFABB21E14A6BD1">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x3EFABB21E14A6BD1.html">_0x3EFABB21E14A6BD1</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3EFABB21E14A6BD1</code> &middot; 3 args &middot; rust: <code>rrdr_natives::volume::_0x3EFABB21E14A6BD1</code></div>
+</section>
+<section class="fn-block" id="_0x40F769D31A00D5A0">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x40F769D31A00D5A0.html">_0x40F769D31A00D5A0</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x40F769D31A00D5A0</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_0x40F769D31A00D5A0</code></div>
+</section>
+<section class="fn-block" id="_0x4A8FEFC43FD8AC9B">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x4A8FEFC43FD8AC9B.html">_0x4A8FEFC43FD8AC9B</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x4A8FEFC43FD8AC9B</code> &middot; 3 args &middot; rust: <code>rrdr_natives::volume::_0x4A8FEFC43FD8AC9B</code></div>
+</section>
+<section class="fn-block" id="_0x51E52C9687FCDEEC">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x51E52C9687FCDEEC.html">_0x51E52C9687FCDEEC</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x51E52C9687FCDEEC</code> &middot; 7 args &middot; rust: <code>rrdr_natives::volume::_0x51E52C9687FCDEEC</code></div>
+</section>
+<section class="fn-block" id="_0x52572B331E693AED">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x52572B331E693AED.html">_0x52572B331E693AED</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x52572B331E693AED</code> &middot; 3 args &middot; rust: <code>rrdr_natives::volume::_0x52572B331E693AED</code></div>
+</section>
+<section class="fn-block" id="_0x53D05D60E5F5B40C">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x53D05D60E5F5B40C.html">_0x53D05D60E5F5B40C</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x53D05D60E5F5B40C</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::_0x53D05D60E5F5B40C</code></div>
+</section>
+<section class="fn-block" id="_0x695DAC2DB928F308">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x695DAC2DB928F308.html">_0x695DAC2DB928F308</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x695DAC2DB928F308</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_0x695DAC2DB928F308</code></div>
+</section>
+<section class="fn-block" id="_0x6D5F9E69BA1BE783">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x6D5F9E69BA1BE783.html">_0x6D5F9E69BA1BE783</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x6D5F9E69BA1BE783</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_0x6D5F9E69BA1BE783</code></div>
+</section>
+<section class="fn-block" id="_0x748C5F51A18CB8F0">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x748C5F51A18CB8F0.html">_0x748C5F51A18CB8F0</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock">nullsub, doesn&#x27;t do anything</div>
+<div class="fn-meta"><code>0x748C5F51A18CB8F0</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_0x748C5F51A18CB8F0</code></div>
+</section>
+<section class="fn-block" id="_0x7FD78DFD0C5D7B9B">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x7FD78DFD0C5D7B9B.html">_0x7FD78DFD0C5D7B9B</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7FD78DFD0C5D7B9B</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_0x7FD78DFD0C5D7B9B</code></div>
+</section>
+<section class="fn-block" id="_0x870E9981ED27C815">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x870E9981ED27C815.html">_0x870E9981ED27C815</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x870E9981ED27C815</code> &middot; 6 args &middot; rust: <code>rrdr_natives::volume::_0x870E9981ED27C815</code></div>
+</section>
+<section class="fn-block" id="_0x998202B206872672">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0x998202B206872672.html">_0x998202B206872672</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x998202B206872672</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_0x998202B206872672</code></div>
+</section>
+<section class="fn-block" id="_0xAA9EE2AAFC717623">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xAA9EE2AAFC717623.html">_0xAA9EE2AAFC717623</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xAA9EE2AAFC717623</code> &middot; 6 args &middot; rust: <code>rrdr_natives::volume::_0xAA9EE2AAFC717623</code></div>
+</section>
+<section class="fn-block" id="_0xAC355980681A7F89">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xAC355980681A7F89.html">_0xAC355980681A7F89</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xAC355980681A7F89</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_0xAC355980681A7F89</code></div>
+</section>
+<section class="fn-block" id="_0xB440F4E35393FC39">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xB440F4E35393FC39.html">_0xB440F4E35393FC39</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB440F4E35393FC39</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_0xB440F4E35393FC39</code></div>
+</section>
+<section class="fn-block" id="_0xB469CFD9E065EB99">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xB469CFD9E065EB99.html">_0xB469CFD9E065EB99</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB469CFD9E065EB99</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_0xB469CFD9E065EB99</code></div>
+</section>
+<section class="fn-block" id="_0xC4019CF9AE8E931A">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xC4019CF9AE8E931A.html">_0xC4019CF9AE8E931A</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">Vector3</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC4019CF9AE8E931A</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_0xC4019CF9AE8E931A</code></div>
+</section>
+<section class="fn-block" id="_0xC61E2FD926DBB406">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xC61E2FD926DBB406.html">_0xC61E2FD926DBB406</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC61E2FD926DBB406</code> &middot; 0 args &middot; rust: <code>rrdr_natives::volume::_0xC61E2FD926DBB406</code></div>
+</section>
+<section class="fn-block" id="_0xCA5C90D40665D5CE">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xCA5C90D40665D5CE.html">_0xCA5C90D40665D5CE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCA5C90D40665D5CE</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_0xCA5C90D40665D5CE</code></div>
+</section>
+<section class="fn-block" id="_0xD460135C98940274">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xD460135C98940274.html">_0xD460135C98940274</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD460135C98940274</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_0xD460135C98940274</code></div>
+</section>
+<section class="fn-block" id="_0xD4FA73FE628FEC63">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xD4FA73FE628FEC63.html">_0xD4FA73FE628FEC63</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD4FA73FE628FEC63</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_0xD4FA73FE628FEC63</code></div>
+</section>
+<section class="fn-block" id="_0xD52DF30355EA7C8E">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xD52DF30355EA7C8E.html">_0xD52DF30355EA7C8E</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD52DF30355EA7C8E</code> &middot; 3 args &middot; rust: <code>rrdr_natives::volume::_0xD52DF30355EA7C8E</code></div>
+</section>
+<section class="fn-block" id="_0xD882C5B3991575B7">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xD882C5B3991575B7.html">_0xD882C5B3991575B7</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">Vector3</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD882C5B3991575B7</code> &middot; 5 args &middot; rust: <code>rrdr_natives::volume::_0xD882C5B3991575B7</code></div>
+</section>
+<section class="fn-block" id="_0xEBA87B9273835CF3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xEBA87B9273835CF3.html">_0xEBA87B9273835CF3</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xEBA87B9273835CF3</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_0xEBA87B9273835CF3</code></div>
+</section>
+<section class="fn-block" id="_0xEE1D6FF54CAF7714">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xEE1D6FF54CAF7714.html">_0xEE1D6FF54CAF7714</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xEE1D6FF54CAF7714</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_0xEE1D6FF54CAF7714</code></div>
+</section>
+<section class="fn-block" id="_0xF3A2FBA5985C8CD5">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xF3A2FBA5985C8CD5.html">_0xF3A2FBA5985C8CD5</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF3A2FBA5985C8CD5</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::_0xF3A2FBA5985C8CD5</code></div>
+</section>
+<section class="fn-block" id="_0xF6CE6F9C3897804E">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xF6CE6F9C3897804E.html">_0xF6CE6F9C3897804E</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF6CE6F9C3897804E</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_0xF6CE6F9C3897804E</code></div>
+</section>
+<section class="fn-block" id="_0xF6F5447D418DAA82">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xF6F5447D418DAA82.html">_0xF6F5447D418DAA82</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF6F5447D418DAA82</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_0xF6F5447D418DAA82</code></div>
+</section>
+<section class="fn-block" id="_0xFA15C9A320E707B0">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_0xFA15C9A320E707B0.html">_0xFA15C9A320E707B0</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock">nullsub, doesn&#x27;t do anything</div>
+<div class="fn-meta"><code>0xFA15C9A320E707B0</code> &middot; 0 args &middot; rust: <code>rrdr_natives::volume::_0xFA15C9A320E707B0</code></div>
+</section>
+<section class="fn-block" id="_ADD_BOUNDS_TO_AGGREGATE_VOLUME">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_ADD_BOUNDS_TO_AGGREGATE_VOLUME.html">_ADD_BOUNDS_TO_AGGREGATE_VOLUME</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">aggregate</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock">_ADD_R* - _ADD_V(OLUME?)*</div>
+<div class="fn-meta"><code>0x6E0D3C3F828DA773</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_ADD_BOUNDS_TO_AGGREGATE_VOLUME</code></div>
+</section>
+<section class="fn-block" id="_ADD_BOX_VOLUME_TO_VOLUME_AGGREGATE">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_ADD_BOX_VOLUME_TO_VOLUME_AGGREGATE.html">_ADD_BOX_VOLUME_TO_VOLUME_AGGREGATE</a> <span class="paren">(</span><span class="p-name">aggregate</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x39816F6F94F385AD</code> &middot; 10 args &middot; rust: <code>rrdr_natives::volume::_ADD_BOX_VOLUME_TO_VOLUME_AGGREGATE</code></div>
+</section>
+<section class="fn-block" id="_ADD_CYLINDER_VOLUME_TO_VOLUME_AGGREGATE">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_ADD_CYLINDER_VOLUME_TO_VOLUME_AGGREGATE.html">_ADD_CYLINDER_VOLUME_TO_VOLUME_AGGREGATE</a> <span class="paren">(</span><span class="p-name">aggregate</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xBCE668AAF83608BE</code> &middot; 10 args &middot; rust: <code>rrdr_natives::volume::_ADD_CYLINDER_VOLUME_TO_VOLUME_AGGREGATE</code></div>
+</section>
+<section class="fn-block" id="_ADD_ENTRY_VOLUME_LOCK">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_ADD_ENTRY_VOLUME_LOCK.html">_ADD_ENTRY_VOLUME_LOCK</a> <span class="paren">(</span><span class="p-name">args</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x58D3803FA639A3BB</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_ADD_ENTRY_VOLUME_LOCK</code></div>
+</section>
+<section class="fn-block" id="_ADD_SPHERE_VOLUME_TO_VOLUME_AGGREGATE">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_ADD_SPHERE_VOLUME_TO_VOLUME_AGGREGATE.html">_ADD_SPHERE_VOLUME_TO_VOLUME_AGGREGATE</a> <span class="paren">(</span><span class="p-name">aggregate</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5B7D7BF36D2DE18B</code> &middot; 10 args &middot; rust: <code>rrdr_natives::volume::_ADD_SPHERE_VOLUME_TO_VOLUME_AGGREGATE</code></div>
+</section>
+<section class="fn-block" id="_ADD_VOLUME_TO_VOLUME_AGGREGATE">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_ADD_VOLUME_TO_VOLUME_AGGREGATE.html">_ADD_VOLUME_TO_VOLUME_AGGREGATE</a> <span class="paren">(</span><span class="p-name">aggregate</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">typeHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleZ</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x12FCAA23F2320422</code> &middot; 11 args &middot; rust: <code>rrdr_natives::volume::_ADD_VOLUME_TO_VOLUME_AGGREGATE</code></div>
+</section>
+<section class="fn-block" id="_ADD_VOLUME_TO_VOLUME_AGGREGATE_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_ADD_VOLUME_TO_VOLUME_AGGREGATE_VEC3.html">_ADD_VOLUME_TO_VOLUME_AGGREGATE</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">aggregate</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">typeHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">rot</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">scale</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x12FCAA23F2320422</code> &middot; 5 args &middot; rust: <code>rrdr_natives::volume::_ADD_VOLUME_TO_VOLUME_AGGREGATE_VEC3</code></div>
+</section>
+<section class="fn-block" id="_CREATE_ANTI_GRIEF_VOLUME">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_ANTI_GRIEF_VOLUME.html">_CREATE_ANTI_GRIEF_VOLUME</a> <span class="paren">(</span><span class="p-name">volumeType</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleZ</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0EB78C2B156635B1</code> &middot; 10 args &middot; rust: <code>rrdr_natives::volume::_CREATE_ANTI_GRIEF_VOLUME</code></div>
+</section>
+<section class="fn-block" id="_CREATE_ANTI_GRIEF_VOLUME_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_ANTI_GRIEF_VOLUME_VEC3.html">_CREATE_ANTI_GRIEF_VOLUME</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">volumeType</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">rot</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">scale</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0EB78C2B156635B1</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::_CREATE_ANTI_GRIEF_VOLUME_VEC3</code></div>
+</section>
+<section class="fn-block" id="_CREATE_SPEED_VOLUME">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_SPEED_VOLUME.html">_CREATE_SPEED_VOLUME</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p11</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p12</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p13</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p14</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xBBE768E3AE76E07C</code> &middot; 15 args &middot; rust: <code>rrdr_natives::volume::_CREATE_SPEED_VOLUME</code></div>
+</section>
+<section class="fn-block" id="_CREATE_VOLUME_AGGREGATE_WITH_CUSTOM_NAME">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_VOLUME_AGGREGATE_WITH_CUSTOM_NAME.html">_CREATE_VOLUME_AGGREGATE_WITH_CUSTOM_NAME</a> <span class="paren">(</span><span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5D580DE6398BB162</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_CREATE_VOLUME_AGGREGATE_WITH_CUSTOM_NAME</code></div>
+</section>
+<section class="fn-block" id="_CREATE_VOLUME_BOX_WITH_CUSTOM_NAME">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_VOLUME_BOX_WITH_CUSTOM_NAME.html">_CREATE_VOLUME_BOX_WITH_CUSTOM_NAME</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF68485C7495D848E</code> &middot; 10 args &middot; rust: <code>rrdr_natives::volume::_CREATE_VOLUME_BOX_WITH_CUSTOM_NAME</code></div>
+</section>
+<section class="fn-block" id="_CREATE_VOLUME_BOX_WITH_CUSTOM_NAME_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_VOLUME_BOX_WITH_CUSTOM_NAME_VEC3.html">_CREATE_VOLUME_BOX_WITH_CUSTOM_NAME</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">rot</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">scale</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF68485C7495D848E</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::_CREATE_VOLUME_BOX_WITH_CUSTOM_NAME_VEC3</code></div>
+</section>
+<section class="fn-block" id="_CREATE_VOLUME_BY_HASH">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_VOLUME_BY_HASH.html">_CREATE_VOLUME_BY_HASH</a> <span class="paren">(</span><span class="p-name">volumeType</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleZ</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x502022FA1AF9DC86</code> &middot; 10 args &middot; rust: <code>rrdr_natives::volume::_CREATE_VOLUME_BY_HASH</code></div>
+</section>
+<section class="fn-block" id="_CREATE_VOLUME_BY_HASH_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_VOLUME_BY_HASH_VEC3.html">_CREATE_VOLUME_BY_HASH</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">volumeType</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">rot</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">scale</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x502022FA1AF9DC86</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::_CREATE_VOLUME_BY_HASH_VEC3</code></div>
+</section>
+<section class="fn-block" id="_CREATE_VOLUME_BY_HASH_WITH_CUSTOM_NAME">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_VOLUME_BY_HASH_WITH_CUSTOM_NAME.html">_CREATE_VOLUME_BY_HASH_WITH_CUSTOM_NAME</a> <span class="paren">(</span><span class="p-name">volumeType</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1F85E4AC774A201E</code> &middot; 11 args &middot; rust: <code>rrdr_natives::volume::_CREATE_VOLUME_BY_HASH_WITH_CUSTOM_NAME</code></div>
+</section>
+<section class="fn-block" id="_CREATE_VOLUME_BY_HASH_WITH_CUSTOM_NAME_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_VOLUME_BY_HASH_WITH_CUSTOM_NAME_VEC3.html">_CREATE_VOLUME_BY_HASH_WITH_CUSTOM_NAME</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">volumeType</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">rot</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">scale</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1F85E4AC774A201E</code> &middot; 5 args &middot; rust: <code>rrdr_natives::volume::_CREATE_VOLUME_BY_HASH_WITH_CUSTOM_NAME_VEC3</code></div>
+</section>
+<section class="fn-block" id="_CREATE_VOLUME_CYLINDER_WITH_CUSTOM_NAME">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_VOLUME_CYLINDER_WITH_CUSTOM_NAME.html">_CREATE_VOLUME_CYLINDER_WITH_CUSTOM_NAME</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xDF1E350EDDF06E59</code> &middot; 10 args &middot; rust: <code>rrdr_natives::volume::_CREATE_VOLUME_CYLINDER_WITH_CUSTOM_NAME</code></div>
+</section>
+<section class="fn-block" id="_CREATE_VOLUME_CYLINDER_WITH_CUSTOM_NAME_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_VOLUME_CYLINDER_WITH_CUSTOM_NAME_VEC3.html">_CREATE_VOLUME_CYLINDER_WITH_CUSTOM_NAME</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">rot</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">scale</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xDF1E350EDDF06E59</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::_CREATE_VOLUME_CYLINDER_WITH_CUSTOM_NAME_VEC3</code></div>
+</section>
+<section class="fn-block" id="_CREATE_VOLUME_LOCK">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_VOLUME_LOCK.html">_CREATE_VOLUME_LOCK</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">flag</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">Params: p5 is always 0</div>
+<div class="fn-meta"><code>0x00BBF7CEAE8C666A</code> &middot; 6 args &middot; rust: <code>rrdr_natives::volume::_CREATE_VOLUME_LOCK</code></div>
+</section>
+<section class="fn-block" id="_CREATE_VOLUME_LOCK_ATTACHED_TO_ENTITY">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_VOLUME_LOCK_ATTACHED_TO_ENTITY.html">_CREATE_VOLUME_LOCK_ATTACHED_TO_ENTITY</a> <span class="paren">(</span><span class="p-name">entity</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">flag</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock">Params: p3 is always 0</div>
+<div class="fn-meta"><code>0xF383E96C4904DF0C</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::_CREATE_VOLUME_LOCK_ATTACHED_TO_ENTITY</code></div>
+</section>
+<section class="fn-block" id="_CREATE_VOLUME_LOCK_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_VOLUME_LOCK_VEC3.html">_CREATE_VOLUME_LOCK</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">flag</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x00BBF7CEAE8C666A</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::_CREATE_VOLUME_LOCK_VEC3</code></div>
+</section>
+<section class="fn-block" id="_CREATE_VOLUME_SPHERE_WITH_CUSTOM_NAME">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_VOLUME_SPHERE_WITH_CUSTOM_NAME.html">_CREATE_VOLUME_SPHERE_WITH_CUSTOM_NAME</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">rotZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleX</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleY</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">scaleZ</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x10157BC3247FF3BA</code> &middot; 10 args &middot; rust: <code>rrdr_natives::volume::_CREATE_VOLUME_SPHERE_WITH_CUSTOM_NAME</code></div>
+</section>
+<section class="fn-block" id="_CREATE_VOLUME_SPHERE_WITH_CUSTOM_NAME_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_VOLUME_SPHERE_WITH_CUSTOM_NAME_VEC3.html">_CREATE_VOLUME_SPHERE_WITH_CUSTOM_NAME</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">rot</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">scale</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">name</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x10157BC3247FF3BA</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::_CREATE_VOLUME_SPHERE_WITH_CUSTOM_NAME_VEC3</code></div>
+</section>
+<section class="fn-block" id="_CREATE_WALK_AND_TALK_VOLUME">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_CREATE_WALK_AND_TALK_VOLUME.html">_CREATE_WALK_AND_TALK_VOLUME</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p8</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p9</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p10</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p11</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p12</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFD0E389CD44434B6</code> &middot; 13 args &middot; rust: <code>rrdr_natives::volume::_CREATE_WALK_AND_TALK_VOLUME</code></div>
+</section>
+<section class="fn-block" id="_FIND_VOLUME_LOCK_REQUEST_ID_WITH_ARGS">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_FIND_VOLUME_LOCK_REQUEST_ID_WITH_ARGS.html">_FIND_VOLUME_LOCK_REQUEST_ID_WITH_ARGS</a> <span class="paren">(</span><span class="p-name">args</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x77A6E4AD0C496F81</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_FIND_VOLUME_LOCK_REQUEST_ID_WITH_ARGS</code></div>
+</section>
+<section class="fn-block" id="_GET_VOLUME_BOUNDS">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_GET_VOLUME_BOUNDS.html">_GET_VOLUME_BOUNDS</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">min</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span>, <span class="p-name">max</span><span class="p-sep">:</span> <span class="p-type">Vector3*</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5737199AF2DC609F</code> &middot; 3 args &middot; rust: <code>rrdr_natives::volume::_GET_VOLUME_BOUNDS</code></div>
+</section>
+<section class="fn-block" id="_GET_VOLUME_RELATIONSHIP">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_GET_VOLUME_RELATIONSHIP.html">_GET_VOLUME_RELATIONSHIP</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">uint</span></h3>
+<div class="docblock">Returns relationshipGroup Hash</div>
+<div class="fn-meta"><code>0x666C2F53ABEFC952</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_GET_VOLUME_RELATIONSHIP</code></div>
+</section>
+<section class="fn-block" id="_IS_AGGREGATE_VOLUME">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_IS_AGGREGATE_VOLUME.html">_IS_AGGREGATE_VOLUME</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFEFF01B5725BCD22</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_IS_AGGREGATE_VOLUME</code></div>
+</section>
+<section class="fn-block" id="_IS_POINT_NEAR_VOLUME_LOCK_CENTER">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_IS_POINT_NEAR_VOLUME_LOCK_CENTER.html">_IS_POINT_NEAR_VOLUME_LOCK_CENTER</a> <span class="paren">(</span><span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">flags</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x769BB7626B8CDB06</code> &middot; 7 args &middot; rust: <code>rrdr_natives::volume::_IS_POINT_NEAR_VOLUME_LOCK_CENTER</code></div>
+</section>
+<section class="fn-block" id="_IS_POINT_NEAR_VOLUME_LOCK_CENTER_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_IS_POINT_NEAR_VOLUME_LOCK_CENTER_VEC3.html">_IS_POINT_NEAR_VOLUME_LOCK_CENTER</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span>, <span class="p-name">radius</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">flags</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x769BB7626B8CDB06</code> &middot; 5 args &middot; rust: <code>rrdr_natives::volume::_IS_POINT_NEAR_VOLUME_LOCK_CENTER_VEC3</code></div>
+</section>
+<section class="fn-block" id="_IS_VOLUME_LOCK_REQUEST_VALID_2">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_IS_VOLUME_LOCK_REQUEST_VALID_2.html">_IS_VOLUME_LOCK_REQUEST_VALID_2</a> <span class="paren">(</span><span class="p-name">volLockRequestId</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF6A8A652A6B186CD</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_IS_VOLUME_LOCK_REQUEST_VALID_2</code></div>
+</section>
+<section class="fn-block" id="_MODIFY_VOLUME_LOCK_LOCATION">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_MODIFY_VOLUME_LOCK_LOCATION.html">_MODIFY_VOLUME_LOCK_LOCATION</a> <span class="paren">(</span><span class="p-name">volLock</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">x</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">y</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">z</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xEC43C2FFB70E3F30</code> &middot; 4 args &middot; rust: <code>rrdr_natives::volume::_MODIFY_VOLUME_LOCK_LOCATION</code></div>
+</section>
+<section class="fn-block" id="_MODIFY_VOLUME_LOCK_LOCATION_VEC3">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_MODIFY_VOLUME_LOCK_LOCATION_VEC3.html">_MODIFY_VOLUME_LOCK_LOCATION</a> <span class="vec-badge">Vector3 overload</span> <span class="paren">(</span><span class="p-name">volLock</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">vec</span><span class="p-sep">:</span> <span class="p-type">Vector3</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xEC43C2FFB70E3F30</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_MODIFY_VOLUME_LOCK_LOCATION_VEC3</code></div>
+</section>
+<section class="fn-block" id="_RELEASE_LOCK_VOLUME">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_RELEASE_LOCK_VOLUME.html">_RELEASE_LOCK_VOLUME</a> <span class="paren">(</span><span class="p-name">volLockRequestId</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFDFECC6EE4491E11</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::volume::_RELEASE_LOCK_VOLUME</code></div>
+</section>
+<section class="fn-block" id="_REMOVE_BOUNDS_FROM_AGGREGATE_VOLUME">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_REMOVE_BOUNDS_FROM_AGGREGATE_VOLUME.html">_REMOVE_BOUNDS_FROM_AGGREGATE_VOLUME</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">aggregate</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span></h3>
+<div class="docblock">_REMOVE_E* - _REMOVE_R*</div>
+<div class="fn-meta"><code>0xF92FA8890DECECF6</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_REMOVE_BOUNDS_FROM_AGGREGATE_VOLUME</code></div>
+</section>
+<section class="fn-block" id="_SET_ANTI_GRIEF_VOLUME_BLOCKS_HORSE">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_SET_ANTI_GRIEF_VOLUME_BLOCKS_HORSE.html">_SET_ANTI_GRIEF_VOLUME_BLOCKS_HORSE</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xBE551C2CC421185D</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_SET_ANTI_GRIEF_VOLUME_BLOCKS_HORSE</code></div>
+</section>
+<section class="fn-block" id="_SET_ANTI_GRIEF_VOLUME_BLOCKS_PLAYER">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_SET_ANTI_GRIEF_VOLUME_BLOCKS_PLAYER.html">_SET_ANTI_GRIEF_VOLUME_BLOCKS_PLAYER</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">toggle</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x5B23DFF8E0948BB2</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_SET_ANTI_GRIEF_VOLUME_BLOCKS_PLAYER</code></div>
+</section>
+<section class="fn-block" id="_SET_VOLUME_RELATIONSHIP">
+<h3 class="code-header"><span class="fn-mod">VOLUME::</span><a class="fn-name" href="n/volume/_SET_VOLUME_RELATIONSHIP.html">_SET_VOLUME_RELATIONSHIP</a> <span class="paren">(</span><span class="p-name">volume</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">relationshipGroup</span><span class="p-sep">:</span> <span class="p-type">uint</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFD010A2154B40676</code> &middot; 2 args &middot; rust: <code>rrdr_natives::volume::_SET_VOLUME_RELATIONSHIP</code></div>
+</section>
+</section>
+</main>
+<script src="search-index.js?v=7501"></script>
+<script src="static/search.js?v=7501" data-root=""></script>
+</body></html>

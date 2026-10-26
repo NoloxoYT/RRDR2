@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rrdr_natives::minigame - RRDR natives</title>
+<link rel="stylesheet" href="static/normalize.css">
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/favicon.svg">
+</head><body>
+
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <img class="brand-mark" src="static/logo.svg" alt="RRDR" width="24" height="24" />
+    <span class="brand-text">rrdr<span class="brand-dim">.natives</span></span>
+  </a>
+
+<div class="live-search">
+  <label for="search-input" class="sr-only">Search natives</label>
+  <span class="hs-icon">&#8902;</span>
+  <input id="search-input" type="text" autocomplete="off" spellcheck="false"
+         placeholder="Search natives - name or description" tabindex="-1" />
+  <span class="hs-hint" title="Press / to focus">/</span>
+  <div class="live-results" id="live-results" hidden></div>
+</div>
+
+</header>
+
+<nav class="sidebar">
+<div class="side-crate"><a href="index.html">rrdr_natives</a></div>
+<h3 class="side-bucket dim">Ped related</h3>
+<a class="side-mod" href="ped.html">ped<span class="count">1051</span></a>
+<a class="side-mod" href="perschar.html">perschar<span class="count">51</span></a>
+<a class="side-mod" href="companion.html">companion<span class="count">25</span></a>
+<a class="side-mod" href="population.html">population<span class="count">32</span></a>
+<a class="side-mod" href="brain.html">brain<span class="count">11</span></a>
+<a class="side-mod" href="ik.html">ik<span class="count">5</span></a>
+<a class="side-mod" href="attribute.html">attribute<span class="count">27</span></a>
+<a class="side-mod" href="task.html">task<span class="count">706</span></a>
+<a class="side-mod" href="animscene.html">animscene<span class="count">100</span></a>
+<a class="side-mod" href="flock.html">flock<span class="count">47</span></a>
+<a class="side-mod" href="interaction.html">interaction<span class="count">6</span></a>
+<h3 class="side-bucket dim">Player related</h3>
+<a class="side-mod" href="player.html">player<span class="count">397</span></a>
+<a class="side-mod" href="stats.html">stats<span class="count">89</span></a>
+<a class="side-mod" href="law.html">law<span class="count">131</span></a>
+<a class="side-mod" href="money.html">money<span class="count">8</span></a>
+<a class="side-mod" href="bounty.html">bounty<span class="count">33</span></a>
+<a class="side-mod" href="posse.html">posse<span class="count">31</span></a>
+<a class="side-mod" href="crew.html">crew<span class="count">18</span></a>
+<h3 class="side-bucket dim">World related</h3>
+<a class="side-mod" href="entity.html">entity<span class="count">295</span></a>
+<a class="side-mod" href="object.html">object<span class="count">166</span></a>
+<a class="side-mod" href="misc.html">misc<span class="count">303</span></a>
+<a class="side-mod" href="fire.html">fire<span class="count">43</span></a>
+<a class="side-mod" href="water.html">water<span class="count">21</span></a>
+<a class="side-mod" href="zone.html">zone<span class="count">4</span></a>
+<a class="side-mod" href="map.html">map<span class="count">94</span></a>
+<a class="side-mod" href="pathfind.html">pathfind<span class="count">92</span></a>
+<a class="side-mod" href="interior.html">interior<span class="count">35</span></a>
+<a class="side-mod" href="volume.html">volume<span class="count">99</span></a>
+<a class="side-mod" href="physics.html">physics<span class="count">78</span></a>
+<a class="side-mod" href="graphics.html">graphics<span class="count">297</span></a>
+<a class="side-mod" href="clock.html">clock<span class="count">19</span></a>
+<a class="side-mod" href="streaming.html">streaming<span class="count">124</span></a>
+<a class="side-mod" href="shapetest.html">shapetest<span class="count">13</span></a>
+<a class="side-mod" href="event.html">event<span class="count">42</span></a>
+<a class="side-mod" href="collection.html">collection<span class="count">31</span></a>
+<h3 class="side-bucket dim">Vehicles</h3>
+<a class="side-mod" href="vehicle.html">vehicle<span class="count">408</span></a>
+<a class="side-mod" href="aitransport.html">aitransport<span class="count">24</span></a>
+<a class="side-mod" href="aicoverpoint.html">aicoverpoint<span class="count">17</span></a>
+<h3 class="side-bucket dim">Camera</h3>
+<a class="side-mod" href="cam.html">cam<span class="count">248</span></a>
+<a class="side-mod" href="txd.html">txd<span class="count">8</span></a>
+<h3 class="side-bucket dim">Audio</h3>
+<a class="side-mod" href="audio.html">audio<span class="count">229</span></a>
+<a class="side-mod" href="voice.html">voice<span class="count">24</span></a>
+<h3 class="side-bucket">UI &amp; Input</h3>
+<a class="side-mod" href="hud.html">hud<span class="count">190</span></a>
+<a class="side-mod" href="pad.html">pad<span class="count">40</span></a>
+<a class="side-mod active" href="minigame.html">minigame<span class="count">48</span></a>
+<a class="side-mod" href="localization.html">localization<span class="count">4</span></a>
+<a class="side-mod" href="uiapps.html">uiapps<span class="count">19</span></a>
+<a class="side-mod" href="uidebug.html">uidebug<span class="count">3</span></a>
+<a class="side-mod" href="uievents.html">uievents<span class="count">4</span></a>
+<a class="side-mod" href="uifeed.html">uifeed<span class="count">27</span></a>
+<a class="side-mod" href="uilog.html">uilog<span class="count">31</span></a>
+<a class="side-mod" href="uipinning.html">uipinning<span class="count">1</span></a>
+<a class="side-mod" href="uitutorial.html">uitutorial<span class="count">3</span></a>
+<a class="side-mod" href="uistatemachine.html">uistatemachine<span class="count">12</span></a>
+<a class="side-mod" href="uistickyfeed.html">uistickyfeed<span class="count">8</span></a>
+<a class="side-mod" href="compapp.html">compapp<span class="count">5</span></a>
+<h3 class="side-bucket dim">AI &amp; Scripts</h3>
+<a class="side-mod" href="missiondata.html">missiondata<span class="count">18</span></a>
+<a class="side-mod" href="scripts.html">scripts<span class="count">94</span></a>
+<a class="side-mod" href="spactionproxy.html">spactionproxy<span class="count">6</span></a>
+<a class="side-mod" href="recording.html">recording<span class="count">1</span></a>
+<a class="side-mod" href="replay.html">replay<span class="count">5</span></a>
+<h3 class="side-bucket dim">Data &amp; Storage</h3>
+<a class="side-mod" href="datafile.html">datafile<span class="count">59</span></a>
+<a class="side-mod" href="decorator.html">decorator<span class="count">15</span></a>
+<a class="side-mod" href="databinding.html">databinding<span class="count">82</span></a>
+<a class="side-mod" href="inventory.html">inventory<span class="count">83</span></a>
+<a class="side-mod" href="itemdatabase.html">itemdatabase<span class="count">84</span></a>
+<a class="side-mod" href="itemset.html">itemset<span class="count">11</span></a>
+<a class="side-mod" href="dlc.html">dlc<span class="count">4</span></a>
+<a class="side-mod" href="save.html">save<span class="count">24</span></a>
+<a class="side-mod" href="persistence.html">persistence<span class="count">26</span></a>
+<a class="side-mod" href="netshopping.html">netshopping<span class="count">24</span></a>
+<a class="side-mod" href="unlock.html">unlock<span class="count">9</span></a>
+<h3 class="side-bucket dim">Online &amp; Telemetry</h3>
+<a class="side-mod" href="network.html">network<span class="count">571</span></a>
+<a class="side-mod" href="socialclub.html">socialclub<span class="count">33</span></a>
+<a class="side-mod" href="socialclubfeed.html">socialclubfeed<span class="count">2</span></a>
+<a class="side-mod" href="telemetry.html">telemetry<span class="count">78</span></a>
+<a class="side-mod" href="google_analytics.html">google_analytics<span class="count">4</span></a>
+<h3 class="side-bucket dim">System &amp; Utility</h3>
+<a class="side-mod" href="builtin.html">builtin<span class="count">26</span></a>
+<a class="side-mod" href="debug.html">debug<span class="count">3</span></a>
+<a class="side-mod" href="crashlog.html">crashlog<span class="count">14</span></a>
+<a class="side-mod" href="queue.html">queue<span class="count">2</span></a>
+<a class="side-mod" href="_namespace4.html">_namespace4<span class="count">1</span></a>
+<a class="side-mod" href="compendium.html">compendium<span class="count">36</span></a>
+<h3 class="side-bucket">Functions</h3>
+<a class="side-fn" href="n/minigame/_0x012027C28F421F46.html">_0x012027C28F421F46</a>
+<a class="side-fn" href="n/minigame/_0x0876326238914A3F.html">_0x0876326238914A3F</a>
+<a class="side-fn" href="n/minigame/_0x10342CC82E8356E9.html">_0x10342CC82E8356E9</a>
+<a class="side-fn" href="n/minigame/_0x15E90B6A993017AA.html">_0x15E90B6A993017AA</a>
+<a class="side-fn" href="n/minigame/_0x18A0D48DF9211C07.html">_0x18A0D48DF9211C07</a>
+<a class="side-fn" href="n/minigame/_0x32A7C216344D623B.html">_0x32A7C216344D623B</a>
+<a class="side-fn" href="n/minigame/_0x39654E1F68B78287.html">_0x39654E1F68B78287</a>
+<a class="side-fn" href="n/minigame/_0x398066F893149856.html">_0x398066F893149856</a>
+<a class="side-fn" href="n/minigame/_0x3AE451860F03CA8A.html">_0x3AE451860F03CA8A</a>
+<a class="side-fn" href="n/minigame/_0x3B31732FADE5BAF3.html">_0x3B31732FADE5BAF3</a>
+<a class="side-fn" href="n/minigame/_0x3DF7EE3A76185108.html">_0x3DF7EE3A76185108</a>
+<a class="side-fn" href="n/minigame/_0x3EECAADAB0D9FE29.html">_0x3EECAADAB0D9FE29</a>
+<a class="side-fn" href="n/minigame/_0x3F4FD4BED07AB8C4.html">_0x3F4FD4BED07AB8C4</a>
+<a class="side-fn" href="n/minigame/_0x3FFE60DD8A936551.html">_0x3FFE60DD8A936551</a>
+<a class="side-fn" href="n/minigame/_0x455ECCA0715C507F.html">_0x455ECCA0715C507F</a>
+<a class="side-fn" href="n/minigame/_0x578907F59BA01B6D.html">_0x578907F59BA01B6D</a>
+<a class="side-fn" href="n/minigame/_0x580F34C726387226.html">_0x580F34C726387226</a>
+<a class="side-fn" href="n/minigame/_0x58521E6DCDE97D74.html">_0x58521E6DCDE97D74</a>
+<a class="side-fn" href="n/minigame/_0x644439B5387EE57E.html">_0x644439B5387EE57E</a>
+<a class="side-fn" href="n/minigame/_0x6480723D3BE535B6.html">_0x6480723D3BE535B6</a>
+<a class="side-fn" href="n/minigame/_0x910B088E51A511AC.html">_0x910B088E51A511AC</a>
+<a class="side-fn" href="n/minigame/_0x9DD95B405AB4983E.html">_0x9DD95B405AB4983E</a>
+<a class="side-fn" href="n/minigame/_0xA2DB3C6270C122E3.html">_0xA2DB3C6270C122E3</a>
+<a class="side-fn" href="n/minigame/_0xBEA7D3CB47E1479C.html">_0xBEA7D3CB47E1479C</a>
+<a class="side-fn" href="n/minigame/_0xD39D32EB3B52DD83.html">_0xD39D32EB3B52DD83</a>
+<a class="side-fn" href="n/minigame/_0xDF728C5AE137FC14.html">_0xDF728C5AE137FC14</a>
+<a class="side-fn" href="n/minigame/_0xE1F365C4C8F259D8.html">_0xE1F365C4C8F259D8</a>
+<a class="side-fn" href="n/minigame/_0xE53A308AC35877A8.html">_0xE53A308AC35877A8</a>
+<a class="side-fn" href="n/minigame/_0xEC819D612038EF4B.html">_0xEC819D612038EF4B</a>
+<a class="side-fn" href="n/minigame/_0xF6DE98516FD3AC9B.html">_0xF6DE98516FD3AC9B</a>
+<a class="side-fn" href="n/minigame/_DOMINOES_BUY_IN.html">_DOMINOES_BUY_IN</a>
+<a class="side-fn" href="n/minigame/_DOMINOES_PLACE_DOMINO.html">_DOMINOES_PLACE_DOMINO</a>
+<a class="side-fn" href="n/minigame/_DOMINOES_REQUEST_VALID_PLACEMENTS.html">_DOMINOES_REQUEST_VALID_PLACEMENTS</a>
+<a class="side-fn" href="n/minigame/_MINIGAME_GET_NEXT_EVENT.html">_MINIGAME_GET_NEXT_EVENT</a>
+<a class="side-fn" href="n/minigame/_MINIGAME_GET_NEXT_EVENT_TYPE.html">_MINIGAME_GET_NEXT_EVENT_TYPE</a>
+<a class="side-fn" href="n/minigame/_MINIGAME_IS_CONNECTED_TO_SERVER.html">_MINIGAME_IS_CONNECTED_TO_SERVER</a>
+<a class="side-fn" href="n/minigame/_MINIGAME_IS_REQUEST_PENDING.html">_MINIGAME_IS_REQUEST_PENDING</a>
+<a class="side-fn" href="n/minigame/_MINIGAME_IS_SEAT_OCCUPIED.html">_MINIGAME_IS_SEAT_OCCUPIED</a>
+<a class="side-fn" href="n/minigame/_MINIGAME_LEAVE_TABLE.html">_MINIGAME_LEAVE_TABLE</a>
+<a class="side-fn" href="n/minigame/_MINIGAME_POP_NEXT_EVENT.html">_MINIGAME_POP_NEXT_EVENT</a>
+<a class="side-fn" href="n/minigame/_MINIGAME_REQUEST_SEAT_AT_TABLE.html">_MINIGAME_REQUEST_SEAT_AT_TABLE</a>
+<a class="side-fn" href="n/minigame/_POKER_BUY_IN.html">_POKER_BUY_IN</a>
+<a class="side-fn" href="n/minigame/_POKER_CALL.html">_POKER_CALL</a>
+<a class="side-fn" href="n/minigame/_POKER_CHECK.html">_POKER_CHECK</a>
+<a class="side-fn" href="n/minigame/_POKER_FOLD.html">_POKER_FOLD</a>
+<a class="side-fn" href="n/minigame/_POKER_GET_GAME_SETTINGS_FOR_ID.html">_POKER_GET_GAME_SETTINGS_FOR_ID</a>
+<a class="side-fn" href="n/minigame/_POKER_RAISE.html">_POKER_RAISE</a>
+<a class="side-fn" href="n/minigame/_POKER_REVEAL.html">_POKER_REVEAL</a>
+</nav>
+<main class="content">
+<div class="doc-page-head">
+<h1 class="module-title"><span class="ns">rrdr_natives::</span>minigame</h1>
+<div class="crumb"><a href="index.html">UI &amp; Input</a> <span class="sep">&#8250;</span> <a href="minigame.html">minigame</a></div>
+<div class="mod-stats">48 functions &middot; 48 unique native hashes</div>
+</div>
+<section class="item-list">
+<section class="fn-block" id="_0x012027C28F421F46">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x012027C28F421F46.html">_0x012027C28F421F46</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x012027C28F421F46</code> &middot; 2 args &middot; rust: <code>rrdr_natives::minigame::_0x012027C28F421F46</code></div>
+</section>
+<section class="fn-block" id="_0x0876326238914A3F">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x0876326238914A3F.html">_0x0876326238914A3F</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0876326238914A3F</code> &middot; 0 args &middot; rust: <code>rrdr_natives::minigame::_0x0876326238914A3F</code></div>
+</section>
+<section class="fn-block" id="_0x10342CC82E8356E9">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x10342CC82E8356E9.html">_0x10342CC82E8356E9</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x10342CC82E8356E9</code> &middot; 2 args &middot; rust: <code>rrdr_natives::minigame::_0x10342CC82E8356E9</code></div>
+</section>
+<section class="fn-block" id="_0x15E90B6A993017AA">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x15E90B6A993017AA.html">_0x15E90B6A993017AA</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x15E90B6A993017AA</code> &middot; 0 args &middot; rust: <code>rrdr_natives::minigame::_0x15E90B6A993017AA</code></div>
+</section>
+<section class="fn-block" id="_0x18A0D48DF9211C07">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x18A0D48DF9211C07.html">_0x18A0D48DF9211C07</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x18A0D48DF9211C07</code> &middot; 0 args &middot; rust: <code>rrdr_natives::minigame::_0x18A0D48DF9211C07</code></div>
+</section>
+<section class="fn-block" id="_0x32A7C216344D623B">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x32A7C216344D623B.html">_0x32A7C216344D623B</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x32A7C216344D623B</code> &middot; 3 args &middot; rust: <code>rrdr_natives::minigame::_0x32A7C216344D623B</code></div>
+</section>
+<section class="fn-block" id="_0x39654E1F68B78287">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x39654E1F68B78287.html">_0x39654E1F68B78287</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x39654E1F68B78287</code> &middot; 0 args &middot; rust: <code>rrdr_natives::minigame::_0x39654E1F68B78287</code></div>
+</section>
+<section class="fn-block" id="_0x398066F893149856">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x398066F893149856.html">_0x398066F893149856</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x398066F893149856</code> &middot; 3 args &middot; rust: <code>rrdr_natives::minigame::_0x398066F893149856</code></div>
+</section>
+<section class="fn-block" id="_0x3AE451860F03CA8A">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x3AE451860F03CA8A.html">_0x3AE451860F03CA8A</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3AE451860F03CA8A</code> &middot; 2 args &middot; rust: <code>rrdr_natives::minigame::_0x3AE451860F03CA8A</code></div>
+</section>
+<section class="fn-block" id="_0x3B31732FADE5BAF3">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x3B31732FADE5BAF3.html">_0x3B31732FADE5BAF3</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3B31732FADE5BAF3</code> &middot; 0 args &middot; rust: <code>rrdr_natives::minigame::_0x3B31732FADE5BAF3</code></div>
+</section>
+<section class="fn-block" id="_0x3DF7EE3A76185108">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x3DF7EE3A76185108.html">_0x3DF7EE3A76185108</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3DF7EE3A76185108</code> &middot; 0 args &middot; rust: <code>rrdr_natives::minigame::_0x3DF7EE3A76185108</code></div>
+</section>
+<section class="fn-block" id="_0x3EECAADAB0D9FE29">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x3EECAADAB0D9FE29.html">_0x3EECAADAB0D9FE29</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3EECAADAB0D9FE29</code> &middot; 0 args &middot; rust: <code>rrdr_natives::minigame::_0x3EECAADAB0D9FE29</code></div>
+</section>
+<section class="fn-block" id="_0x3F4FD4BED07AB8C4">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x3F4FD4BED07AB8C4.html">_0x3F4FD4BED07AB8C4</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3F4FD4BED07AB8C4</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::minigame::_0x3F4FD4BED07AB8C4</code></div>
+</section>
+<section class="fn-block" id="_0x3FFE60DD8A936551">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x3FFE60DD8A936551.html">_0x3FFE60DD8A936551</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3FFE60DD8A936551</code> &middot; 2 args &middot; rust: <code>rrdr_natives::minigame::_0x3FFE60DD8A936551</code></div>
+</section>
+<section class="fn-block" id="_0x455ECCA0715C507F">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x455ECCA0715C507F.html">_0x455ECCA0715C507F</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x455ECCA0715C507F</code> &middot; 0 args &middot; rust: <code>rrdr_natives::minigame::_0x455ECCA0715C507F</code></div>
+</section>
+<section class="fn-block" id="_0x578907F59BA01B6D">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x578907F59BA01B6D.html">_0x578907F59BA01B6D</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x578907F59BA01B6D</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::minigame::_0x578907F59BA01B6D</code></div>
+</section>
+<section class="fn-block" id="_0x580F34C726387226">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x580F34C726387226.html">_0x580F34C726387226</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x580F34C726387226</code> &middot; 2 args &middot; rust: <code>rrdr_natives::minigame::_0x580F34C726387226</code></div>
+</section>
+<section class="fn-block" id="_0x58521E6DCDE97D74">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x58521E6DCDE97D74.html">_0x58521E6DCDE97D74</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x58521E6DCDE97D74</code> &middot; 3 args &middot; rust: <code>rrdr_natives::minigame::_0x58521E6DCDE97D74</code></div>
+</section>
+<section class="fn-block" id="_0x644439B5387EE57E">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x644439B5387EE57E.html">_0x644439B5387EE57E</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x644439B5387EE57E</code> &middot; 2 args &middot; rust: <code>rrdr_natives::minigame::_0x644439B5387EE57E</code></div>
+</section>
+<section class="fn-block" id="_0x6480723D3BE535B6">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x6480723D3BE535B6.html">_0x6480723D3BE535B6</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x6480723D3BE535B6</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::minigame::_0x6480723D3BE535B6</code></div>
+</section>
+<section class="fn-block" id="_0x910B088E51A511AC">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x910B088E51A511AC.html">_0x910B088E51A511AC</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x910B088E51A511AC</code> &middot; 0 args &middot; rust: <code>rrdr_natives::minigame::_0x910B088E51A511AC</code></div>
+</section>
+<section class="fn-block" id="_0x9DD95B405AB4983E">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0x9DD95B405AB4983E.html">_0x9DD95B405AB4983E</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9DD95B405AB4983E</code> &middot; 2 args &middot; rust: <code>rrdr_natives::minigame::_0x9DD95B405AB4983E</code></div>
+</section>
+<section class="fn-block" id="_0xA2DB3C6270C122E3">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0xA2DB3C6270C122E3.html">_0xA2DB3C6270C122E3</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA2DB3C6270C122E3</code> &middot; 2 args &middot; rust: <code>rrdr_natives::minigame::_0xA2DB3C6270C122E3</code></div>
+</section>
+<section class="fn-block" id="_0xBEA7D3CB47E1479C">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0xBEA7D3CB47E1479C.html">_0xBEA7D3CB47E1479C</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xBEA7D3CB47E1479C</code> &middot; 0 args &middot; rust: <code>rrdr_natives::minigame::_0xBEA7D3CB47E1479C</code></div>
+</section>
+<section class="fn-block" id="_0xD39D32EB3B52DD83">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0xD39D32EB3B52DD83.html">_0xD39D32EB3B52DD83</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD39D32EB3B52DD83</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::minigame::_0xD39D32EB3B52DD83</code></div>
+</section>
+<section class="fn-block" id="_0xDF728C5AE137FC14">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0xDF728C5AE137FC14.html">_0xDF728C5AE137FC14</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xDF728C5AE137FC14</code> &middot; 3 args &middot; rust: <code>rrdr_natives::minigame::_0xDF728C5AE137FC14</code></div>
+</section>
+<section class="fn-block" id="_0xE1F365C4C8F259D8">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0xE1F365C4C8F259D8.html">_0xE1F365C4C8F259D8</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE1F365C4C8F259D8</code> &middot; 3 args &middot; rust: <code>rrdr_natives::minigame::_0xE1F365C4C8F259D8</code></div>
+</section>
+<section class="fn-block" id="_0xE53A308AC35877A8">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0xE53A308AC35877A8.html">_0xE53A308AC35877A8</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xE53A308AC35877A8</code> &middot; 0 args &middot; rust: <code>rrdr_natives::minigame::_0xE53A308AC35877A8</code></div>
+</section>
+<section class="fn-block" id="_0xEC819D612038EF4B">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0xEC819D612038EF4B.html">_0xEC819D612038EF4B</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p3</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p4</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p5</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p6</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p7</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xEC819D612038EF4B</code> &middot; 8 args &middot; rust: <code>rrdr_natives::minigame::_0xEC819D612038EF4B</code></div>
+</section>
+<section class="fn-block" id="_0xF6DE98516FD3AC9B">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_0xF6DE98516FD3AC9B.html">_0xF6DE98516FD3AC9B</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF6DE98516FD3AC9B</code> &middot; 0 args &middot; rust: <code>rrdr_natives::minigame::_0xF6DE98516FD3AC9B</code></div>
+</section>
+<section class="fn-block" id="_DOMINOES_BUY_IN">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_DOMINOES_BUY_IN.html">_DOMINOES_BUY_IN</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock">Hardcoded to return zero/false.</div>
+<div class="fn-meta"><code>0x399E6CD12FC8CA89</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::minigame::_DOMINOES_BUY_IN</code></div>
+</section>
+<section class="fn-block" id="_DOMINOES_PLACE_DOMINO">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_DOMINOES_PLACE_DOMINO.html">_DOMINOES_PLACE_DOMINO</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock">Hardcoded to return zero/false.</div>
+<div class="fn-meta"><code>0xB79A29B33BF29BA5</code> &middot; 2 args &middot; rust: <code>rrdr_natives::minigame::_DOMINOES_PLACE_DOMINO</code></div>
+</section>
+<section class="fn-block" id="_DOMINOES_REQUEST_VALID_PLACEMENTS">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_DOMINOES_REQUEST_VALID_PLACEMENTS.html">_DOMINOES_REQUEST_VALID_PLACEMENTS</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock">Hardcoded to return zero/false.</div>
+<div class="fn-meta"><code>0xE26AEE7E67D9E21D</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::minigame::_DOMINOES_REQUEST_VALID_PLACEMENTS</code></div>
+</section>
+<section class="fn-block" id="_MINIGAME_GET_NEXT_EVENT">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_MINIGAME_GET_NEXT_EVENT.html">_MINIGAME_GET_NEXT_EVENT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xDF728C5AE137FC13</code> &middot; 2 args &middot; rust: <code>rrdr_natives::minigame::_MINIGAME_GET_NEXT_EVENT</code></div>
+</section>
+<section class="fn-block" id="_MINIGAME_GET_NEXT_EVENT_TYPE">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_MINIGAME_GET_NEXT_EVENT_TYPE.html">_MINIGAME_GET_NEXT_EVENT_TYPE</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x578907F59BA01B6C</code> &middot; 0 args &middot; rust: <code>rrdr_natives::minigame::_MINIGAME_GET_NEXT_EVENT_TYPE</code></div>
+</section>
+<section class="fn-block" id="_MINIGAME_IS_CONNECTED_TO_SERVER">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_MINIGAME_IS_CONNECTED_TO_SERVER.html">_MINIGAME_IS_CONNECTED_TO_SERVER</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2A0C4736AC5AF0CE</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::minigame::_MINIGAME_IS_CONNECTED_TO_SERVER</code></div>
+</section>
+<section class="fn-block" id="_MINIGAME_IS_REQUEST_PENDING">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_MINIGAME_IS_REQUEST_PENDING.html">_MINIGAME_IS_REQUEST_PENDING</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9105A4A2556FA937</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::minigame::_MINIGAME_IS_REQUEST_PENDING</code></div>
+</section>
+<section class="fn-block" id="_MINIGAME_IS_SEAT_OCCUPIED">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_MINIGAME_IS_SEAT_OCCUPIED.html">_MINIGAME_IS_SEAT_OCCUPIED</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8593A8CB0ED2C3B4</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::minigame::_MINIGAME_IS_SEAT_OCCUPIED</code></div>
+</section>
+<section class="fn-block" id="_MINIGAME_LEAVE_TABLE">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_MINIGAME_LEAVE_TABLE.html">_MINIGAME_LEAVE_TABLE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF5446E47941E654C</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::minigame::_MINIGAME_LEAVE_TABLE</code></div>
+</section>
+<section class="fn-block" id="_MINIGAME_POP_NEXT_EVENT">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_MINIGAME_POP_NEXT_EVENT.html">_MINIGAME_POP_NEXT_EVENT</a> <span class="paren">(</span><span class="paren">)</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x833E03BAEBADC4B0</code> &middot; 0 args &middot; rust: <code>rrdr_natives::minigame::_MINIGAME_POP_NEXT_EVENT</code></div>
+</section>
+<section class="fn-block" id="_MINIGAME_REQUEST_SEAT_AT_TABLE">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_MINIGAME_REQUEST_SEAT_AT_TABLE.html">_MINIGAME_REQUEST_SEAT_AT_TABLE</a> <span class="paren">(</span><span class="p-name">data</span><span class="p-sep">:</span> <span class="p-type">ulong*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF6AC6085D8D6C004</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::minigame::_MINIGAME_REQUEST_SEAT_AT_TABLE</code></div>
+</section>
+<section class="fn-block" id="_POKER_BUY_IN">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_POKER_BUY_IN.html">_POKER_BUY_IN</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB4D610EA5A1FDE74</code> &middot; 2 args &middot; rust: <code>rrdr_natives::minigame::_POKER_BUY_IN</code></div>
+</section>
+<section class="fn-block" id="_POKER_CALL">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_POKER_CALL.html">_POKER_CALL</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8DED681B161EBD78</code> &middot; 2 args &middot; rust: <code>rrdr_natives::minigame::_POKER_CALL</code></div>
+</section>
+<section class="fn-block" id="_POKER_CHECK">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_POKER_CHECK.html">_POKER_CHECK</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x49A045628D9B1B86</code> &middot; 2 args &middot; rust: <code>rrdr_natives::minigame::_POKER_CHECK</code></div>
+</section>
+<section class="fn-block" id="_POKER_FOLD">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_POKER_FOLD.html">_POKER_FOLD</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3DFAB7D9BB45B5BE</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::minigame::_POKER_FOLD</code></div>
+</section>
+<section class="fn-block" id="_POKER_GET_GAME_SETTINGS_FOR_ID">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_POKER_GET_GAME_SETTINGS_FOR_ID.html">_POKER_GET_GAME_SETTINGS_FOR_ID</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2D20E12E1990D584</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::minigame::_POKER_GET_GAME_SETTINGS_FOR_ID</code></div>
+</section>
+<section class="fn-block" id="_POKER_RAISE">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_POKER_RAISE.html">_POKER_RAISE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xECCF45A79A17BB96</code> &middot; 2 args &middot; rust: <code>rrdr_natives::minigame::_POKER_RAISE</code></div>
+</section>
+<section class="fn-block" id="_POKER_REVEAL">
+<h3 class="code-header"><span class="fn-mod">MINIGAME::</span><a class="fn-name" href="n/minigame/_POKER_REVEAL.html">_POKER_REVEAL</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">ulong</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">ulong</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x2F2131DB0A8B02DC</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::minigame::_POKER_REVEAL</code></div>
+</section>
+</section>
+</main>
+<script src="search-index.js?v=7501"></script>
+<script src="static/search.js?v=7501" data-root=""></script>
+</body></html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rrdr_natives::socialclub - RRDR natives</title>
+<link rel="stylesheet" href="static/normalize.css">
+<link rel="stylesheet" href="static/style.css">
+<link rel="icon" href="static/favicon.svg">
+</head><body>
+
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <img class="brand-mark" src="static/logo.svg" alt="RRDR" width="24" height="24" />
+    <span class="brand-text">rrdr<span class="brand-dim">.natives</span></span>
+  </a>
+
+<div class="live-search">
+  <label for="search-input" class="sr-only">Search natives</label>
+  <span class="hs-icon">&#8902;</span>
+  <input id="search-input" type="text" autocomplete="off" spellcheck="false"
+         placeholder="Search natives - name or description" tabindex="-1" />
+  <span class="hs-hint" title="Press / to focus">/</span>
+  <div class="live-results" id="live-results" hidden></div>
+</div>
+
+</header>
+
+<nav class="sidebar">
+<div class="side-crate"><a href="index.html">rrdr_natives</a></div>
+<h3 class="side-bucket dim">Ped related</h3>
+<a class="side-mod" href="ped.html">ped<span class="count">1051</span></a>
+<a class="side-mod" href="perschar.html">perschar<span class="count">51</span></a>
+<a class="side-mod" href="companion.html">companion<span class="count">25</span></a>
+<a class="side-mod" href="population.html">population<span class="count">32</span></a>
+<a class="side-mod" href="brain.html">brain<span class="count">11</span></a>
+<a class="side-mod" href="ik.html">ik<span class="count">5</span></a>
+<a class="side-mod" href="attribute.html">attribute<span class="count">27</span></a>
+<a class="side-mod" href="task.html">task<span class="count">706</span></a>
+<a class="side-mod" href="animscene.html">animscene<span class="count">100</span></a>
+<a class="side-mod" href="flock.html">flock<span class="count">47</span></a>
+<a class="side-mod" href="interaction.html">interaction<span class="count">6</span></a>
+<h3 class="side-bucket dim">Player related</h3>
+<a class="side-mod" href="player.html">player<span class="count">397</span></a>
+<a class="side-mod" href="stats.html">stats<span class="count">89</span></a>
+<a class="side-mod" href="law.html">law<span class="count">131</span></a>
+<a class="side-mod" href="money.html">money<span class="count">8</span></a>
+<a class="side-mod" href="bounty.html">bounty<span class="count">33</span></a>
+<a class="side-mod" href="posse.html">posse<span class="count">31</span></a>
+<a class="side-mod" href="crew.html">crew<span class="count">18</span></a>
+<h3 class="side-bucket dim">World related</h3>
+<a class="side-mod" href="entity.html">entity<span class="count">295</span></a>
+<a class="side-mod" href="object.html">object<span class="count">166</span></a>
+<a class="side-mod" href="misc.html">misc<span class="count">303</span></a>
+<a class="side-mod" href="fire.html">fire<span class="count">43</span></a>
+<a class="side-mod" href="water.html">water<span class="count">21</span></a>
+<a class="side-mod" href="zone.html">zone<span class="count">4</span></a>
+<a class="side-mod" href="map.html">map<span class="count">94</span></a>
+<a class="side-mod" href="pathfind.html">pathfind<span class="count">92</span></a>
+<a class="side-mod" href="interior.html">interior<span class="count">35</span></a>
+<a class="side-mod" href="volume.html">volume<span class="count">99</span></a>
+<a class="side-mod" href="physics.html">physics<span class="count">78</span></a>
+<a class="side-mod" href="graphics.html">graphics<span class="count">297</span></a>
+<a class="side-mod" href="clock.html">clock<span class="count">19</span></a>
+<a class="side-mod" href="streaming.html">streaming<span class="count">124</span></a>
+<a class="side-mod" href="shapetest.html">shapetest<span class="count">13</span></a>
+<a class="side-mod" href="event.html">event<span class="count">42</span></a>
+<a class="side-mod" href="collection.html">collection<span class="count">31</span></a>
+<h3 class="side-bucket dim">Vehicles</h3>
+<a class="side-mod" href="vehicle.html">vehicle<span class="count">408</span></a>
+<a class="side-mod" href="aitransport.html">aitransport<span class="count">24</span></a>
+<a class="side-mod" href="aicoverpoint.html">aicoverpoint<span class="count">17</span></a>
+<h3 class="side-bucket dim">Camera</h3>
+<a class="side-mod" href="cam.html">cam<span class="count">248</span></a>
+<a class="side-mod" href="txd.html">txd<span class="count">8</span></a>
+<h3 class="side-bucket dim">Audio</h3>
+<a class="side-mod" href="audio.html">audio<span class="count">229</span></a>
+<a class="side-mod" href="voice.html">voice<span class="count">24</span></a>
+<h3 class="side-bucket dim">UI &amp; Input</h3>
+<a class="side-mod" href="hud.html">hud<span class="count">190</span></a>
+<a class="side-mod" href="pad.html">pad<span class="count">40</span></a>
+<a class="side-mod" href="minigame.html">minigame<span class="count">48</span></a>
+<a class="side-mod" href="localization.html">localization<span class="count">4</span></a>
+<a class="side-mod" href="uiapps.html">uiapps<span class="count">19</span></a>
+<a class="side-mod" href="uidebug.html">uidebug<span class="count">3</span></a>
+<a class="side-mod" href="uievents.html">uievents<span class="count">4</span></a>
+<a class="side-mod" href="uifeed.html">uifeed<span class="count">27</span></a>
+<a class="side-mod" href="uilog.html">uilog<span class="count">31</span></a>
+<a class="side-mod" href="uipinning.html">uipinning<span class="count">1</span></a>
+<a class="side-mod" href="uitutorial.html">uitutorial<span class="count">3</span></a>
+<a class="side-mod" href="uistatemachine.html">uistatemachine<span class="count">12</span></a>
+<a class="side-mod" href="uistickyfeed.html">uistickyfeed<span class="count">8</span></a>
+<a class="side-mod" href="compapp.html">compapp<span class="count">5</span></a>
+<h3 class="side-bucket dim">AI &amp; Scripts</h3>
+<a class="side-mod" href="missiondata.html">missiondata<span class="count">18</span></a>
+<a class="side-mod" href="scripts.html">scripts<span class="count">94</span></a>
+<a class="side-mod" href="spactionproxy.html">spactionproxy<span class="count">6</span></a>
+<a class="side-mod" href="recording.html">recording<span class="count">1</span></a>
+<a class="side-mod" href="replay.html">replay<span class="count">5</span></a>
+<h3 class="side-bucket dim">Data &amp; Storage</h3>
+<a class="side-mod" href="datafile.html">datafile<span class="count">59</span></a>
+<a class="side-mod" href="decorator.html">decorator<span class="count">15</span></a>
+<a class="side-mod" href="databinding.html">databinding<span class="count">82</span></a>
+<a class="side-mod" href="inventory.html">inventory<span class="count">83</span></a>
+<a class="side-mod" href="itemdatabase.html">itemdatabase<span class="count">84</span></a>
+<a class="side-mod" href="itemset.html">itemset<span class="count">11</span></a>
+<a class="side-mod" href="dlc.html">dlc<span class="count">4</span></a>
+<a class="side-mod" href="save.html">save<span class="count">24</span></a>
+<a class="side-mod" href="persistence.html">persistence<span class="count">26</span></a>
+<a class="side-mod" href="netshopping.html">netshopping<span class="count">24</span></a>
+<a class="side-mod" href="unlock.html">unlock<span class="count">9</span></a>
+<h3 class="side-bucket">Online &amp; Telemetry</h3>
+<a class="side-mod" href="network.html">network<span class="count">571</span></a>
+<a class="side-mod active" href="socialclub.html">socialclub<span class="count">33</span></a>
+<a class="side-mod" href="socialclubfeed.html">socialclubfeed<span class="count">2</span></a>
+<a class="side-mod" href="telemetry.html">telemetry<span class="count">78</span></a>
+<a class="side-mod" href="google_analytics.html">google_analytics<span class="count">4</span></a>
+<h3 class="side-bucket dim">System &amp; Utility</h3>
+<a class="side-mod" href="builtin.html">builtin<span class="count">26</span></a>
+<a class="side-mod" href="debug.html">debug<span class="count">3</span></a>
+<a class="side-mod" href="crashlog.html">crashlog<span class="count">14</span></a>
+<a class="side-mod" href="queue.html">queue<span class="count">2</span></a>
+<a class="side-mod" href="_namespace4.html">_namespace4<span class="count">1</span></a>
+<a class="side-mod" href="compendium.html">compendium<span class="count">36</span></a>
+<h3 class="side-bucket">Functions</h3>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_GET_DISPLAY_NAME.html">SC_COMMUNITY_EVENT_GET_DISPLAY_NAME</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_BY_ID.html">SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_BY_ID</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_FOR_TYPE.html">SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_FOR_TYPE</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EVENT_ID.html">SC_COMMUNITY_EVENT_GET_EVENT_ID</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EVENT_ID_FOR_TYPE.html">SC_COMMUNITY_EVENT_GET_EVENT_ID_FOR_TYPE</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_BY_ID.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_BY_ID</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_FOR_TYPE.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_FOR_TYPE</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_BY_ID.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_BY_ID</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_FOR_TYPE.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_FOR_TYPE</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_BY_ID.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_BY_ID</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_FOR_TYPE.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_FOR_TYPE</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_IS_ACTIVE.html">SC_COMMUNITY_EVENT_IS_ACTIVE</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_IS_ACTIVE_BY_ID.html">SC_COMMUNITY_EVENT_IS_ACTIVE_BY_ID</a>
+<a class="side-fn" href="n/socialclub/SC_COMMUNITY_EVENT_IS_ACTIVE_FOR_TYPE.html">SC_COMMUNITY_EVENT_IS_ACTIVE_FOR_TYPE</a>
+<a class="side-fn" href="n/socialclub/SC_INBOX_GET_MESSAGE_IS_READ_AT_INDEX.html">SC_INBOX_GET_MESSAGE_IS_READ_AT_INDEX</a>
+<a class="side-fn" href="n/socialclub/SC_INBOX_GET_MESSAGE_TYPE_AT_INDEX.html">SC_INBOX_GET_MESSAGE_TYPE_AT_INDEX</a>
+<a class="side-fn" href="n/socialclub/SC_INBOX_GET_TOTAL_NUM_MESSAGES.html">SC_INBOX_GET_TOTAL_NUM_MESSAGES</a>
+<a class="side-fn" href="n/socialclub/SC_INBOX_MESSAGE_GET_DATA_INT.html">SC_INBOX_MESSAGE_GET_DATA_INT</a>
+<a class="side-fn" href="n/socialclub/SC_INBOX_MESSAGE_GET_DATA_STRING.html">SC_INBOX_MESSAGE_GET_DATA_STRING</a>
+<a class="side-fn" href="n/socialclub/SC_INBOX_MESSAGE_GET_RAW_TYPE_AT_INDEX.html">SC_INBOX_MESSAGE_GET_RAW_TYPE_AT_INDEX</a>
+<a class="side-fn" href="n/socialclub/SC_INBOX_SET_MESSAGE_AS_READ_AT_INDEX.html">SC_INBOX_SET_MESSAGE_AS_READ_AT_INDEX</a>
+<a class="side-fn" href="n/socialclub/SC_PRESENCE_ATTR_SET_FLOAT.html">SC_PRESENCE_ATTR_SET_FLOAT</a>
+<a class="side-fn" href="n/socialclub/SC_PRESENCE_ATTR_SET_FLOAT_EX.html">SC_PRESENCE_ATTR_SET_FLOAT_EX</a>
+<a class="side-fn" href="n/socialclub/SC_PRESENCE_ATTR_SET_INT_EX.html">SC_PRESENCE_ATTR_SET_INT_EX</a>
+<a class="side-fn" href="n/socialclub/SC_PRESENCE_ATTR_SET_STRING_EX.html">SC_PRESENCE_ATTR_SET_STRING_EX</a>
+<a class="side-fn" href="n/socialclub/SC_PROFANITY_CHECK_STRING.html">SC_PROFANITY_CHECK_STRING</a>
+<a class="side-fn" href="n/socialclub/SC_PROFANITY_GET_CHECK_IS_PENDING.html">SC_PROFANITY_GET_CHECK_IS_PENDING</a>
+<a class="side-fn" href="n/socialclub/SC_PROFANITY_GET_CHECK_IS_VALID.html">SC_PROFANITY_GET_CHECK_IS_VALID</a>
+<a class="side-fn" href="n/socialclub/SC_PROFANITY_GET_STRING_PASSED.html">SC_PROFANITY_GET_STRING_PASSED</a>
+<a class="side-fn" href="n/socialclub/SC_PROFANITY_GET_STRING_STATUS.html">SC_PROFANITY_GET_STRING_STATUS</a>
+</nav>
+<main class="content">
+<div class="doc-page-head">
+<h1 class="module-title"><span class="ns">rrdr_natives::</span>socialclub</h1>
+<div class="crumb"><a href="index.html">Online &amp; Telemetry</a> <span class="sep">&#8250;</span> <a href="socialclub.html">socialclub</a></div>
+<div class="mod-stats">33 functions &middot; 33 unique native hashes</div>
+</div>
+<section class="item-list">
+<section class="fn-block" id="SC_COMMUNITY_EVENT_GET_DISPLAY_NAME">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_GET_DISPLAY_NAME.html">SC_COMMUNITY_EVENT_GET_DISPLAY_NAME</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x89D9BDE7334B110F</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_GET_DISPLAY_NAME</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_BY_ID">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_BY_ID.html">SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_BY_ID</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x11EA52CAD1B55910</code> &middot; 2 args &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_BY_ID</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_FOR_TYPE">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_FOR_TYPE.html">SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_FOR_TYPE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x85EA0BEC7B1F7622</code> &middot; 2 args &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_FOR_TYPE</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_GET_EVENT_ID">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EVENT_ID.html">SC_COMMUNITY_EVENT_GET_EVENT_ID</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xD635DF6BAA5A6017</code> &middot; 0 args &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_GET_EVENT_ID</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_GET_EVENT_ID_FOR_TYPE">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EVENT_ID_FOR_TYPE.html">SC_COMMUNITY_EVENT_GET_EVENT_ID_FOR_TYPE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x03C03ABBABBEF752</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_GET_EVENT_ID_FOR_TYPE</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">float*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x060BBAD634C2B44B</code> &middot; 2 args &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_BY_ID">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_BY_ID.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_BY_ID</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">float*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x91C9E2A0F9DD6DD4</code> &middot; 3 args &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_BY_ID</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_FOR_TYPE">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_FOR_TYPE.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_FOR_TYPE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">float*</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x1BDB56DB258F052D</code> &middot; 3 args &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_FOR_TYPE</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">int*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xB4411D4D6B81438E</code> &middot; 2 args &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_BY_ID">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_BY_ID.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_BY_ID</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">int*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x7C981DE05A7403A0</code> &middot; 3 args &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_BY_ID</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_FOR_TYPE">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_FOR_TYPE.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_FOR_TYPE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">int*</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3519CC3525319A96</code> &middot; 3 args &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_FOR_TYPE</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x9F6DCD0C939C71E9</code> &middot; 2 args &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_BY_ID">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_BY_ID.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_BY_ID</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x049D2196D9D11184</code> &middot; 3 args &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_BY_ID</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_FOR_TYPE">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_FOR_TYPE.html">SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_FOR_TYPE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p1</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xC8FC3B2432E8229D</code> &middot; 3 args &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_FOR_TYPE</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_IS_ACTIVE">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_IS_ACTIVE.html">SC_COMMUNITY_EVENT_IS_ACTIVE</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xCBF743C984695CF3</code> &middot; 0 args &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_IS_ACTIVE</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_IS_ACTIVE_BY_ID">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_IS_ACTIVE_BY_ID.html">SC_COMMUNITY_EVENT_IS_ACTIVE_BY_ID</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x62B384FEFDE06817</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_IS_ACTIVE_BY_ID</code></div>
+</section>
+<section class="fn-block" id="SC_COMMUNITY_EVENT_IS_ACTIVE_FOR_TYPE">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_COMMUNITY_EVENT_IS_ACTIVE_FOR_TYPE.html">SC_COMMUNITY_EVENT_IS_ACTIVE_FOR_TYPE</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x09937EB0CEBC2F9F</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::socialclub::SC_COMMUNITY_EVENT_IS_ACTIVE_FOR_TYPE</code></div>
+</section>
+<section class="fn-block" id="SC_INBOX_GET_MESSAGE_IS_READ_AT_INDEX">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_INBOX_GET_MESSAGE_IS_READ_AT_INDEX.html">SC_INBOX_GET_MESSAGE_IS_READ_AT_INDEX</a> <span class="paren">(</span><span class="p-name">msgIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x74CF39E030A382C4</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::socialclub::SC_INBOX_GET_MESSAGE_IS_READ_AT_INDEX</code></div>
+</section>
+<section class="fn-block" id="SC_INBOX_GET_MESSAGE_TYPE_AT_INDEX">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_INBOX_GET_MESSAGE_TYPE_AT_INDEX.html">SC_INBOX_GET_MESSAGE_TYPE_AT_INDEX</a> <span class="paren">(</span><span class="p-name">msgIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">uint</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xFF92537C4DDC1241</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::socialclub::SC_INBOX_GET_MESSAGE_TYPE_AT_INDEX</code></div>
+</section>
+<section class="fn-block" id="SC_INBOX_GET_TOTAL_NUM_MESSAGES">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_INBOX_GET_TOTAL_NUM_MESSAGES.html">SC_INBOX_GET_TOTAL_NUM_MESSAGES</a> <span class="paren">(</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x8EF0F633280C0663</code> &middot; 0 args &middot; rust: <code>rrdr_natives::socialclub::SC_INBOX_GET_TOTAL_NUM_MESSAGES</code></div>
+</section>
+<section class="fn-block" id="SC_INBOX_MESSAGE_GET_DATA_INT">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_INBOX_MESSAGE_GET_DATA_INT.html">SC_INBOX_MESSAGE_GET_DATA_INT</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">context</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">_out</span><span class="p-sep">:</span> <span class="p-type">int*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x95BB39C4DA99F348</code> &middot; 3 args &middot; rust: <code>rrdr_natives::socialclub::SC_INBOX_MESSAGE_GET_DATA_INT</code></div>
+</section>
+<section class="fn-block" id="SC_INBOX_MESSAGE_GET_DATA_STRING">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_INBOX_MESSAGE_GET_DATA_STRING.html">SC_INBOX_MESSAGE_GET_DATA_STRING</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">context</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">_out</span><span class="p-sep">:</span> <span class="p-type">string</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x66F77FD58506FF6B</code> &middot; 3 args &middot; rust: <code>rrdr_natives::socialclub::SC_INBOX_MESSAGE_GET_DATA_STRING</code></div>
+</section>
+<section class="fn-block" id="SC_INBOX_MESSAGE_GET_RAW_TYPE_AT_INDEX">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_INBOX_MESSAGE_GET_RAW_TYPE_AT_INDEX.html">SC_INBOX_MESSAGE_GET_RAW_TYPE_AT_INDEX</a> <span class="paren">(</span><span class="p-name">p0</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">string</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x176D077685CD83E4</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::socialclub::SC_INBOX_MESSAGE_GET_RAW_TYPE_AT_INDEX</code></div>
+</section>
+<section class="fn-block" id="SC_INBOX_SET_MESSAGE_AS_READ_AT_INDEX">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_INBOX_SET_MESSAGE_AS_READ_AT_INDEX.html">SC_INBOX_SET_MESSAGE_AS_READ_AT_INDEX</a> <span class="paren">(</span><span class="p-name">msgIndex</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x63CAC501FFF66DC4</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::socialclub::SC_INBOX_SET_MESSAGE_AS_READ_AT_INDEX</code></div>
+</section>
+<section class="fn-block" id="SC_PRESENCE_ATTR_SET_FLOAT">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_PRESENCE_ATTR_SET_FLOAT.html">SC_PRESENCE_ATTR_SET_FLOAT</a> <span class="paren">(</span><span class="p-name">attrHash</span><span class="p-sep">:</span> <span class="p-type">uint</span>, <span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">float</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xA31DAFCDC33775E9</code> &middot; 2 args &middot; rust: <code>rrdr_natives::socialclub::SC_PRESENCE_ATTR_SET_FLOAT</code></div>
+</section>
+<section class="fn-block" id="SC_PRESENCE_ATTR_SET_FLOAT_EX">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_PRESENCE_ATTR_SET_FLOAT_EX.html">SC_PRESENCE_ATTR_SET_FLOAT_EX</a> <span class="paren">(</span><span class="p-name">attrName</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">float</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x00000000467F4CAA</code> &middot; 3 args &middot; rust: <code>rrdr_natives::socialclub::SC_PRESENCE_ATTR_SET_FLOAT_EX</code></div>
+</section>
+<section class="fn-block" id="SC_PRESENCE_ATTR_SET_INT_EX">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_PRESENCE_ATTR_SET_INT_EX.html">SC_PRESENCE_ATTR_SET_INT_EX</a> <span class="paren">(</span><span class="p-name">attrName</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">int</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0000000085488C49</code> &middot; 3 args &middot; rust: <code>rrdr_natives::socialclub::SC_PRESENCE_ATTR_SET_INT_EX</code></div>
+</section>
+<section class="fn-block" id="SC_PRESENCE_ATTR_SET_STRING_EX">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_PRESENCE_ATTR_SET_STRING_EX.html">SC_PRESENCE_ATTR_SET_STRING_EX</a> <span class="paren">(</span><span class="p-name">attrName</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">value</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">p2</span><span class="p-sep">:</span> <span class="p-type">bool</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x00000000EB2D93B3</code> &middot; 3 args &middot; rust: <code>rrdr_natives::socialclub::SC_PRESENCE_ATTR_SET_STRING_EX</code></div>
+</section>
+<section class="fn-block" id="SC_PROFANITY_CHECK_STRING">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_PROFANITY_CHECK_STRING.html">SC_PROFANITY_CHECK_STRING</a> <span class="paren">(</span><span class="p-name">_string</span><span class="p-sep">:</span> <span class="p-type">string</span>, <span class="p-name">token</span><span class="p-sep">:</span> <span class="p-type">int*</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock">Starts a task to check an entered string for profanity on the ROS/Social Club services.</div>
+<div class="fn-meta"><code>0x9C74AC9D87B3FFF4</code> &middot; 2 args &middot; rust: <code>rrdr_natives::socialclub::SC_PROFANITY_CHECK_STRING</code></div>
+</section>
+<section class="fn-block" id="SC_PROFANITY_GET_CHECK_IS_PENDING">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_PROFANITY_GET_CHECK_IS_PENDING.html">SC_PROFANITY_GET_CHECK_IS_PENDING</a> <span class="paren">(</span><span class="p-name">token</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x3A10BCD0C8AA0B82</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::socialclub::SC_PROFANITY_GET_CHECK_IS_PENDING</code></div>
+</section>
+<section class="fn-block" id="SC_PROFANITY_GET_CHECK_IS_VALID">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_PROFANITY_GET_CHECK_IS_VALID.html">SC_PROFANITY_GET_CHECK_IS_VALID</a> <span class="paren">(</span><span class="p-name">token</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x08C8052AF40C4247</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::socialclub::SC_PROFANITY_GET_CHECK_IS_VALID</code></div>
+</section>
+<section class="fn-block" id="SC_PROFANITY_GET_STRING_PASSED">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_PROFANITY_GET_STRING_PASSED.html">SC_PROFANITY_GET_STRING_PASSED</a> <span class="paren">(</span><span class="p-name">token</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">bool</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0xF302973BB8BE70E6</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::socialclub::SC_PROFANITY_GET_STRING_PASSED</code></div>
+</section>
+<section class="fn-block" id="SC_PROFANITY_GET_STRING_STATUS">
+<h3 class="code-header"><span class="fn-mod">SOCIALCLUB::</span><a class="fn-name" href="n/socialclub/SC_PROFANITY_GET_STRING_STATUS.html">SC_PROFANITY_GET_STRING_STATUS</a> <span class="paren">(</span><span class="p-name">token</span><span class="p-sep">:</span> <span class="p-type">int</span><span class="paren">)</span> <span class="arrow">&#8594;</span> <span class="ret-type">int</span></h3>
+<div class="docblock nodoc">No description available.</div>
+<div class="fn-meta"><code>0x0CF3BFB99EBBE5B1</code> &middot; 1 arg &middot; rust: <code>rrdr_natives::socialclub::SC_PROFANITY_GET_STRING_STATUS</code></div>
+</section>
+</section>
+</main>
+<script src="search-index.js?v=7501"></script>
+<script src="static/search.js?v=7501" data-root=""></script>
+</body></html>
