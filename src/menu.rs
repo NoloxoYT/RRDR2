@@ -10,12 +10,12 @@ use std::{
 };
 
 use crate::{
-    cli::{Args, Loader},
+    cli::{BuildArgs, Loader},
     fsutil,
     logger::{LVL, log},
 };
 
-pub fn maybe_install(dist_root: &Path, args: &Args) -> Result<(), String> {
+pub fn maybe_install(dist_root: &Path, args: &BuildArgs) -> Result<(), String> {
     if !args.yes && !io::stdin().is_terminal() {
         log(
             LVL::Info,

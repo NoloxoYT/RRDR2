@@ -23,6 +23,16 @@ pub fn copy(from: &Path, to: &Path) -> Result<(), String> {
     Ok(())
 }
 
+/// Writes bytes to a file, creating parent directories as needed.
+pub fn copy_bytes(to: &Path, contents: &[u8]) -> Result<(), String> {
+    if let Some(parent) = to.parent() {
+        fs::create_dir_all(parent)
+            .map_err(|error| format!("Failed to create {}: {error}", parent.display()))?;
+    }
+
+    fs::write(to, contents).map_err(|error| format!("Failed to write {}: {error}", to.display()))
+}
+
 /// Removes a path if it exists; missing paths are not an error.
 pub fn remove(path: &Path) -> Result<(), String> {
     if !path.exists() {

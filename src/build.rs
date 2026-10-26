@@ -4,7 +4,7 @@ use std::{fs, path::Path};
 
 use crate::{
     asi,
-    cli::Args,
+    cli::BuildArgs,
     dist, fsutil,
     logger::{LVL, Mtype, log},
     menu, process,
@@ -46,7 +46,7 @@ fn content(message: impl std::fmt::Display) {
 }
 
 /// Runs every step, then offers to install.
-pub fn run(root: &Path, args: &Args) -> Result<(), String> {
+pub fn run(root: &Path, args: &BuildArgs) -> Result<(), String> {
     let mods = discover_mods(root)?;
 
     header("Mod crates");

@@ -1,14 +1,17 @@
-//! `rrdr`: build and install RRDR.
+//! `rrdr`: build and install RRDR, and create mods.
 //!
-//! Run it from a checkout of the repository (`rrdr`, or `--root <dir>`).
+//! `rrdr` (no subcommand) runs from a checkout of the repository (`--root <dir>`).
 //! It runs the tests, the simulator, the Windows cores, the managed host and the
 //! native ASI loader, then offers to install the result.
+//!
+//! `rrdr init <name>` creates a new mod crate, like `cargo init`.
 
 mod asi;
 mod build;
 mod cli;
 mod dist;
 mod fsutil;
+mod init;
 mod logger;
 mod menu;
 mod process;
@@ -22,14 +25,62 @@ use std::{
 use clap::Parser;
 
 use crate::{
-    cli::Args,
+    cli::{Cli, Command},
     logger::{LVL, log},
 };
 
 fn main() -> ExitCode {
-    let args = Args::parse();
+    let cli = Cli::parse();
 
-    let root = match resolve_root(args.root.as_deref()) {
+    match cli.command {
+        Some(Command::Init {
+            name,
+            path,
+            force,
+            root,
+        }) => run_init(root.as_deref(), name.as_deref(), path.as_deref(), force),
+        None => run_build(&cli),
+    }
+}
+
+fn run_init(root: Option<&Path>, name: Option<&str>, path: Option<&Path>, force: bool) -> ExitCode {
+    // A checkout is optional for `init`; outside one, `--path` drives the location.
+    let root = match root {
+        Some(root) => match resolve_root(Some(root)) {
+            Ok(root) => Some(root),
+            Err(error) => {
+                log(LVL::Error, error);
+                return ExitCode::FAILURE;
+            }
+        },
+        None => resolve_root(None).ok(),
+    };
+
+    let name = match name {
+        Some(name) => name.to_string(),
+        None => match init::ask_name() {
+            Ok(name) => name,
+            Err(error) => {
+                log(LVL::Error, error);
+                return ExitCode::FAILURE;
+            }
+        },
+    };
+
+    match init::run(root.as_deref(), &name, path, force) {
+        Ok(created) => {
+            init::report(&created);
+            ExitCode::SUCCESS
+        }
+        Err(error) => {
+            log(LVL::Error, error);
+            ExitCode::FAILURE
+        }
+    }
+}
+
+fn run_build(cli: &Cli) -> ExitCode {
+    let root = match resolve_root(cli.build.root.as_deref()) {
         Ok(root) => root,
         Err(error) => {
             log(LVL::Error, error);
@@ -37,7 +88,7 @@ fn main() -> ExitCode {
         }
     };
 
-    match build::run(&root, &args) {
+    match build::run(&root, &cli.build) {
         Ok(()) => ExitCode::SUCCESS,
         Err(error) => {
             log(LVL::Error, error);
