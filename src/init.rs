@@ -56,7 +56,7 @@ pub fn run(
         ));
     }
 
-    create_crate(&directory, name, force, dir.is_some())?;
+    create_crate(&directory, name, force, dir.is_some(), in_checkout)?;
 
     if in_checkout {
         let manifest = root.expect("checked").join("rust/Cargo.toml");
@@ -64,7 +64,7 @@ pub fn run(
     } else {
         log(
             LVL::Info,
-            "Not inside an RRDR checkout: the crate is standalone and not registered in a workspace.",
+            "Not inside an RRDR checkout: the crate is standalone and pulls the framework from crates.io.",
         );
     }
 
@@ -245,7 +245,7 @@ pub fn report(created: &Created) {
     } else {
         log(
             LVL::Info,
-            "Move it under rust/crates/ of a checkout and add it to the workspace members, or run rrdr init again from the checkout.",
+            "Build it for Windows with `cargo xwin build --release --target x86_64-pc-windows-msvc`, then copy <Core>.dll and its .ini into <RDR2>/scripts/Rscripts/.",
         );
     }
 }
@@ -368,7 +368,13 @@ pub fn library_name(name: &str) -> String {
     }
 }
 
-fn create_crate(directory: &Path, name: &str, force: bool, strict: bool) -> Result<(), String> {
+fn create_crate(
+    directory: &Path,
+    name: &str,
+    force: bool,
+    strict: bool,
+    in_checkout: bool,
+) -> Result<(), String> {
     if strict && !force && directory.exists() && !is_init_target(directory) {
         let has_manifest = directory.join("Cargo.toml").is_file();
         return Err(format!(
@@ -387,7 +393,7 @@ fn create_crate(directory: &Path, name: &str, force: bool, strict: bool) -> Resu
 
     write(
         &directory.join("Cargo.toml"),
-        &cargo_toml(name, &library),
+        &cargo_toml(name, &library, in_checkout),
         force,
     )?;
     write(&directory.join("src/lib.rs"), &lib_rs(), force)?;
@@ -409,14 +415,31 @@ fn write(path: &Path, contents: &str, force: bool) -> Result<(), String> {
     fsutil::copy_bytes(path, contents.as_bytes())
 }
 
-fn cargo_toml(name: &str, library: &str) -> String {
+fn cargo_toml(name: &str, library: &str, in_checkout: bool) -> String {
+    // Inside the RRDR workspace the version/edition/license come from
+    // `[workspace.package]`; standalone the crate carries its own and pulls the
+    // framework from crates.io, so it builds on its own.
+    let meta = if in_checkout {
+        "version.workspace = true\nedition.workspace = true\nlicense.workspace = true"
+    } else {
+        "version = \"0.1.0\"\nedition = \"2021\"\nlicense = \"MIT\""
+    };
+
+    let bridge = if in_checkout {
+        r#"rrdr-bridge = { path = "../rrdr-bridge" }
+rrdr-game = { path = "../rrdr-game" }
+rrdr-natives = { path = "../rrdr-natives" }"#
+    } else {
+        r#"rrdr-bridge = "0.1"
+rrdr-game = "0.1"
+rrdr-natives = "0.1""#
+    };
+
     format!(
         r#"[package]
 name = "{name}"
-version.workspace = true
-edition.workspace = true
-license.workspace = true
-description = "{library} core for the RDR2 Rust bridge"
+{meta}
+description = "{library} core for the RDR2 Rust mod framework"
 
 [lib]
 name = "{library}"
@@ -424,9 +447,7 @@ crate-type = ["cdylib", "rlib"]
 path = "src/lib.rs"
 
 [dependencies]
-rrdr-bridge = {{ path = "../rrdr-bridge" }}
-rrdr-game = {{ path = "../rrdr-game" }}
-rrdr-natives = {{ path = "../rrdr-natives" }}
+{bridge}
 "#
     )
 }
