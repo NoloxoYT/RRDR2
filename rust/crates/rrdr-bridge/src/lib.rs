@@ -8,6 +8,7 @@
 
 pub mod ffi;
 pub mod game;
+pub mod memory;
 
 #[macro_use]
 mod macros;

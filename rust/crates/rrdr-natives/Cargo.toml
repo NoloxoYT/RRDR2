@@ -10,4 +10,4 @@ name = "rrdr_natives"
 path = "src/lib.rs"
 
 [dependencies]
-rrdr-bridge = { version = "0.1.1", path = "../rrdr-bridge" }
+rrdr-bridge = { version = "0.2.0", path = "../rrdr-bridge" }
