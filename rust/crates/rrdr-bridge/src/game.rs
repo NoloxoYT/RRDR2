@@ -71,8 +71,8 @@ pub trait GameApi {
 
     /// Call a native that returns a UTF-8 string.
     ///
-    /// The host copies up to a fixed-size buffer (4 KiB in the current
-    /// implementation); longer strings are truncated.
+    /// The host copies into a fixed-size buffer ([`MAX_STRING_RETURN`] bytes in
+    /// the current implementation); longer strings are truncated.
     fn call_string(&mut self, hash: u64, args: &[Arg<'_>]) -> String;
 
     /// Query a global entity pool from the managed host.

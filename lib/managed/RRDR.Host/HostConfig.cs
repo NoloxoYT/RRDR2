@@ -112,6 +112,13 @@ namespace RRDR.Host
         /// Per-core defaults used by <see cref="CoreHost"/>. The config name is
         /// derived from the DLL name: Foo.dll looks for Foo.ini.
         /// </summary>
+        /// <remarks>
+        /// Only <c>RRDR.Host.ini</c> governs host behaviour: a per-core ini is
+        /// the core's own gameplay config and is passed to the core verbatim
+        /// (the core reloads it itself when <c>reload_config</c> is on). Host
+        /// keys such as <c>disabled_cores</c> or <c>log_file</c> are not read
+        /// from per-core files.
+        /// </remarks>
         public static HostConfig ForCore(string corePath)
         {
             HostConfig config = new HostConfig();

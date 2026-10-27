@@ -65,7 +65,21 @@ namespace RRDR.Sim
                 File.Copy(sourceCore, targetCore, true);
             }
 
-            File.Delete(logPath);
+            // A previous run (or an editor) may still hold the log open;
+            // deleting must never be fatal - the run then appends to it.
+            try
+            {
+                File.Delete(logPath);
+            }
+            catch (IOException)
+            {
+                Console.WriteLine("(could not delete the previous log; appending)");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Console.WriteLine("(could not delete the previous log; appending)");
+            }
+
             File.WriteAllText(configPath, SimConfig(), Encoding.UTF8);
             File.WriteAllText(
                 Path.Combine(baseDirectory, "RRDR.Host.ini"),
@@ -197,6 +211,24 @@ namespace RRDR.Sim
                 Health = Math.Min(MaxHealth, Health + amount);
             }
 
+            /// Writes 12 bytes (three floats) through an out-pointer argument,
+            /// mirroring what the real native does before it returns.
+            private static void WriteVector3(InputArgument[] arguments, int index, float x, float y, float z)
+            {
+                if (arguments == null || arguments.Length <= index)
+                {
+                    return;
+                }
+
+                if (arguments[index].Value is not ulong address || address == 0)
+                {
+                    return;
+                }
+
+                float[] components = { x, y, z };
+                Marshal.Copy(components, 0, new IntPtr(unchecked((long)address)), components.Length);
+            }
+
             public int HandlePool(uint kind, int[] buffer)
             {
                 // One ped in the fake global pool.
@@ -292,7 +324,14 @@ namespace RRDR.Sim
                         return 0;
                     case GetPedLastWeaponImpactCoord:
                         // The native writes the Vector3 through an output
-                        // pointer and returns a BOOL.
+                        // pointer and returns a BOOL. Write through the pointer
+                        // like the game does, so the sim exercises the same
+                        // memory contract: the Rust side reads 12 bytes from
+                        // the address it passed in arguments[1].
+                        if (LastWeaponImpact)
+                        {
+                            WriteVector3(arguments, 1, 1.0f, 2.0f, 3.0f);
+                        }
                         return LastWeaponImpact ? 1UL : 0UL;
                     case GetPedCurrentWeapon:
                         return 0;

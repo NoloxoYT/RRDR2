@@ -223,20 +223,138 @@ pub fn draw_text(
 /// The warm-up is a ScriptHookRDR2DotNet workaround rather than a documented
 /// native requirement. It is harmless if another script already initialized
 /// the pool, but wasteful.
+///
+/// This is the one-shot form: 4096 marshaled native calls in a single tick,
+/// which is a guaranteed multi-hundred-millisecond hitch at init. Prefer
+/// [`TextWarmUp`], which spreads the same loop over several ticks.
 pub fn warm_up_text(api: &mut dyn GameApi) {
-    for step in 0..1024 {
-        let offset = step as f32 * 0.01;
+    let mut warm_up = TextWarmUp::new();
+    while !warm_up.advance(api) {}
+}
 
-        n_uidebug::_BG_SET_TEXT_SCALE(api, 0.1, 0.1);
-        n_uidebug::_BG_SET_TEXT_COLOR(api, 255, 255, 255, 255);
+/// Chunked version of [`warm_up_text`].
+///
+/// Drives the same 1024 blank draws but only `DEFAULT_DRAWS_PER_TICK` (64) of
+/// them per call, so no single frame eats the whole hitch. Call
+/// [`TextWarmUp::advance`] every tick until it returns `true`:
+///
+/// ```ignore
+/// let mut warm_up = TextWarmUp::new();
+/// // in the tick:
+/// if !warm_up.advance(api) {
+///     return; // not warmed up yet, skip drawing this frame
+/// }
+/// ```
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct TextWarmUp {
+    total: u32,
+    per_tick: u32,
+    next: u32,
+}
 
-        let string_id = text_string_id(api, " \r\n\t ");
+/// Blank draws one [`TextWarmUp`] performs per tick by default (16 ticks).
+pub const TEXT_WARM_UP_DRAWS_PER_TICK: u32 = 64;
 
-        api.call(
-            n_uidebug::HASH__BG_DISPLAY_TEXT,
-            &[Arg::U64(string_id), Arg::F32(offset), Arg::F32(offset)],
-        );
+/// Total blank draws one warm-up performs (ScriptHookRDR2DotNet's loop count).
+pub const TEXT_WARM_UP_TOTAL: u32 = 1024;
+
+impl Default for TextWarmUp {
+    fn default() -> Self {
+        Self::new()
     }
+}
+
+impl TextWarmUp {
+    /// A warm-up of the standard 1024 draws, 64 per tick.
+    pub fn new() -> Self {
+        Self {
+            total: TEXT_WARM_UP_TOTAL,
+            per_tick: TEXT_WARM_UP_DRAWS_PER_TICK,
+            next: 0,
+        }
+    }
+
+    /// A warm-up with custom pacing. `per_tick` is clamped to at least 1 so a
+    /// zero cannot turn [`TextWarmUp::advance`] into an infinite loop.
+    pub fn with_pacing(per_tick: u32) -> Self {
+        Self {
+            total: TEXT_WARM_UP_TOTAL,
+            per_tick: per_tick.clamp(1, TEXT_WARM_UP_TOTAL),
+            next: 0,
+        }
+    }
+
+    /// True once every draw has been issued.
+    pub fn finished(&self) -> bool {
+        self.next >= self.total
+    }
+
+    /// Issue the next chunk of blank draws. Returns `true` when the warm-up is
+    /// finished and custom text can be drawn.
+    pub fn advance(&mut self, api: &mut dyn GameApi) -> bool {
+        if self.finished() {
+            return true;
+        }
+
+        let end = self.next.saturating_add(self.per_tick).min(self.total);
+        for step in self.next..end {
+            let offset = step as f32 * 0.01;
+
+            n_uidebug::_BG_SET_TEXT_SCALE(api, 0.1, 0.1);
+            n_uidebug::_BG_SET_TEXT_COLOR(api, 255, 255, 255, 255);
+
+            let string_id = text_string_id(api, " \r\n\t ");
+
+            api.call(
+                n_uidebug::HASH__BG_DISPLAY_TEXT,
+                &[Arg::U64(string_id), Arg::F32(offset), Arg::F32(offset)],
+            );
+        }
+        self.next = end;
+
+        self.finished()
+    }
+}
+
+/// One argument of a variadic `MISC::VAR_STRING` call.
+///
+/// Only the literal-string form (`flags = 10`, label `LITERAL_STRING`) is
+/// verified against ScriptHookRDR2DotNet's behaviour; the localized/format
+/// variants are not exercised by this helper. See [`var_string`].
+#[derive(Debug, Clone, Copy)]
+pub enum VarStringArg<'a> {
+    /// Integer argument.
+    I32(i32),
+    /// Float argument.
+    F32(f32),
+    /// Literal string argument (passed as a `LITERAL_STRING` label).
+    Text(&'a str),
+    /// Raw 64-bit value (hash, string id, ...).
+    Hash(u64),
+}
+
+/// Call variadic `MISC::VAR_STRING` (`0xFA925AC00EB830B9`) with an arbitrary
+/// argument list and return the opaque 64-bit string id.
+///
+/// [`warm_up_text`]/[`draw_text`] use the fixed three-argument literal form;
+/// this helper is the supported path for N-argument forms that the generated
+/// bindings cannot express. The label argument required for literal strings is
+/// inserted automatically.
+pub fn var_string(api: &mut dyn GameApi, args: &[VarStringArg<'_>]) -> u64 {
+    let mut native_args: Vec<Arg<'_>> = Vec::with_capacity(args.len() + 2);
+    native_args.push(Arg::I32(VAR_STRING_LITERAL_FLAGS));
+    native_args.push(Arg::Str(VAR_STRING_LITERAL_LABEL));
+
+    for argument in args {
+        match *argument {
+            VarStringArg::I32(value) => native_args.push(Arg::I32(value)),
+            VarStringArg::F32(value) => native_args.push(Arg::F32(value)),
+            VarStringArg::Text(text) => native_args.push(Arg::Str(text)),
+            VarStringArg::Hash(value) => native_args.push(Arg::U64(value)),
+        }
+    }
+
+    api.call(HASH_VAR_STRING, &native_args)
 }
 
 /// Whether the HUD is currently visible.

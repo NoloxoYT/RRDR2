@@ -44,6 +44,13 @@ PARAM_TYPES = {
     "string": "&str",
     "Vector3": "Vec3",
     "IntPtr": "u64",
+    # Pointer out-params are passed through as raw addresses (Arg::Ptr). The
+    # size the native actually writes is community-documented for most natives
+    # and unvalidated in-game: a 4-byte BOOL through a bool*, or a 24-byte
+    # three-slot vector through a Vector3*, overruns a 1- or 12-byte Rust type.
+    # Callers in rrdr-game wrap these in padded scratch blocks
+    # (rrdr-game/src/scratch.rs) so an over-write corrupts padding, not the
+    # stack. Validate each layout in-game before trusting the values.
     "int*": "*mut i32",
     "uint*": "*mut u32",
     "float*": "*mut f32",
@@ -284,9 +291,17 @@ def main():
             modules[sanitize_module(class_name)].append((rust_name, decl))
 
     os.makedirs(args.out, exist_ok=True)
+    # Only delete files this generator produced (they carry the @generated
+    # header). Hand-written modules placed next to the generated ones survive
+    # a regeneration.
     for filename in os.listdir(args.out):
-        if filename.endswith(".rs"):
-            os.remove(os.path.join(args.out, filename))
+        if not filename.endswith(".rs"):
+            continue
+        path = os.path.join(args.out, filename)
+        with open(path, encoding="utf-8", errors="replace") as handle:
+            head = handle.read(200)
+        if "// @generated" in head:
+            os.remove(path)
 
     function_count = 0
     vec3_count = 0

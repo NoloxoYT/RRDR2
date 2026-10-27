@@ -28,6 +28,9 @@ pub const RD_ERR_NOT_INIT: i32 = -5;
 
 /// Return kinds understood by the managed host.
 pub const RET_U64: u32 = 0;
+/// Vector3 return: the loader writes 12 bytes (three f32) into the caller's
+/// buffer and returns 12. ScriptHookRDR2 hands vectors back as three 64-bit
+/// slots (1.0, 2.0, 3.0 read at offsets 0, 8 and 16), not as packed floats.
 pub const RET_VEC3: u32 = 1;
 pub const RET_STRING: u32 = 2;
 
@@ -78,6 +81,10 @@ pub struct RdHostV3 {
     pub pool_handles: Option<PoolHandlesFn>,
 }
 
+/// Size of the buffer the host copies returned strings into. Shared with
+/// `docs/ABI.md`; change both sides together.
+pub const MAX_STRING_RETURN: usize = 4096;
+
 impl From<RdHost> for RdHostV3 {
     fn from(host: RdHost) -> Self {
         Self {
@@ -92,6 +99,12 @@ impl From<RdHost> for RdHostV3 {
 /// [`GameApi`] implementation that forwards to the managed host.
 pub struct FfiHost {
     host: RdHostV3,
+    // Scratch reused across calls (§: the host is only used from the script
+    // tick thread and always behind `&mut`, so reuse is safe). Keeping them in
+    // the struct avoids one allocation per native call on hot paths.
+    strings: Vec<CString>,
+    raw: Vec<RdArg>,
+    string_buffer: Vec<u8>,
 }
 
 // The host object is only used from the script tick thread. The pointer is
@@ -100,7 +113,12 @@ unsafe impl Send for FfiHost {}
 
 impl FfiHost {
     pub fn new(host: RdHostV3) -> Self {
-        Self { host }
+        Self {
+            host,
+            strings: Vec::new(),
+            raw: Vec::new(),
+            string_buffer: Vec::new(),
+        }
     }
 
     fn invoke(
@@ -115,10 +133,11 @@ impl FfiHost {
             return 0;
         };
 
-        // CString heap buffers stay alive for the whole native call. Moving a
-        // CString inside the Vec does not move its heap allocation.
-        let mut strings = Vec::new();
-        let mut raw = Vec::with_capacity(args.len());
+        // CString heap buffers stay alive for the whole native call. The Vec is
+        // reused across calls; moving a CString inside it does not move its
+        // heap allocation.
+        self.strings.clear();
+        self.raw.clear();
 
         for argument in args {
             let (kind, bits) = match argument {
@@ -129,14 +148,26 @@ impl FfiHost {
                 Arg::U64(value) => (ARG_U64, *value),
                 Arg::Ptr(value) => (ARG_PTR, *value),
                 Arg::Str(value) => {
-                    let string = CString::new(*value).unwrap_or_default();
+                    let string = match CString::new(*value) {
+                        Ok(string) => string,
+                        Err(_) => {
+                            // Interior NUL: the native would see a truncated
+                            // string. Refuse rather than silently sending an
+                            // empty one.
+                            self.log(
+                                LogLevel::Warn,
+                                "string argument contains an interior NUL and was dropped",
+                            );
+                            continue;
+                        }
+                    };
                     let pointer = string.as_ptr() as u64;
-                    strings.push(string);
+                    self.strings.push(string);
                     (ARG_STR, pointer)
                 }
             };
 
-            raw.push(RdArg { kind, pad: 0, bits });
+            self.raw.push(RdArg { kind, pad: 0, bits });
         }
 
         // SAFETY: the function pointer comes from the managed host, and all
@@ -145,8 +176,8 @@ impl FfiHost {
             call_native(
                 self.host.user,
                 hash,
-                raw.as_ptr(),
-                raw.len() as u32,
+                self.raw.as_ptr(),
+                self.raw.len() as u32,
                 return_kind,
                 return_buffer,
                 return_capacity,
@@ -162,12 +193,23 @@ impl GameApi for FfiHost {
 
     fn call_vec3(&mut self, hash: u64, args: &[Arg<'_>]) -> Vec3 {
         let mut value = Vec3::default();
-        self.invoke(hash, args, RET_VEC3, &mut value as *mut Vec3 as *mut u8, 0);
+        self.invoke(
+            hash,
+            args,
+            RET_VEC3,
+            &mut value as *mut Vec3 as *mut u8,
+            std::mem::size_of::<Vec3>() as u32,
+        );
         value
     }
 
     fn call_string(&mut self, hash: u64, args: &[Arg<'_>]) -> String {
-        let mut buffer = vec![0u8; 4096];
+        // Take the buffer out of `self` for the call: `invoke` needs `&mut
+        // self`, and the raw pointer must not alias it while borrowed.
+        let mut buffer = std::mem::take(&mut self.string_buffer);
+        buffer.clear();
+        buffer.resize(MAX_STRING_RETURN, 0);
+
         let length = self.invoke(
             hash,
             args,
@@ -176,7 +218,9 @@ impl GameApi for FfiHost {
             buffer.len() as u32,
         );
         let length = (length as usize).min(buffer.len());
-        String::from_utf8_lossy(&buffer[..length]).into_owned()
+        let text = String::from_utf8_lossy(&buffer[..length]).into_owned();
+        self.string_buffer = buffer;
+        text
     }
 
     fn pool_handles(&mut self, kind: PoolKind, capacity: usize) -> Option<Vec<i32>> {

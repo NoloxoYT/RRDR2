@@ -23,6 +23,12 @@ renvoient `None`).
 
 Codes retour de `rd_init` / `rd_reload_config` :
 
+Les codes sont **négatifs** (côté Rust, `ffi.rs`). Un loader ne doit comparer
+que `status != 0` : ne jamais tester un code précis côté C++/C# sans avoir mis
+à jour cette table en même temps que `rrdr-bridge/src/ffi.rs`. (Les versions
+antérieures de `RRDR.Asi.cpp` utilisaient des valeurs positives ; le chargement
+fonctionnait parce que seul `!= 0` était comparé.)
+
 | Code | Signification |
 |-----:|---------------|
 | 0 | OK |

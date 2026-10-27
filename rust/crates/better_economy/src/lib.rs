@@ -1,34 +1,23 @@
-use rrdr_bridge::{export_mod, Mod};
-use rrdr_natives::*;
+//! Empty starting point for a new mod.
+//!
+//! Everything here is safe to delete: the crate exists so `rrdr` has a
+//! template to copy, and so the workspace builds an example core.
 
-struct BE {
-    p: bool,
-}
+use rrdr_bridge::{export_mod, GameApi, LogLevel, Mod};
+use std::path::Path;
 
-impl Mod for BE {
+struct Template;
+
+impl Mod for Template {
     fn init(
-        api: &mut dyn rrdr_game::prelude::GameApi,
-        config_path: Option<&std::path::Path>,
-    ) -> Result<Self, String> {
-        Ok(BE { p: false })
+        api: &mut dyn GameApi,
+        _config_path: Option<&Path>,
+    ) -> std::result::Result<Self, String> {
+        api.log(LogLevel::Info, "template core loaded");
+        Ok(Self)
     }
-    fn reload(
-        &mut self,
-        api: &mut dyn rrdr_game::prelude::GameApi,
-        config_path: Option<&std::path::Path>,
-    ) {
-    }
-    fn tick(&mut self, api: &mut dyn rrdr_game::prelude::GameApi, dt: f32) {
-        let player = player::PLAYER_ID(api);
-        let player_ped = player::GET_PLAYER_PED(api, player);
-        let player_pos = entity::GET_ENTITY_COORDS(api, player_ped, true, true);
-        let state = zone::_GET_MAP_ZONE_AT_COORDS(api, player_pos.x, player_pos.y, player_pos.z, 0);
-        if !self.p {
-            api.log(rrdr_game::LogLevel::Debug, &format!("{}", state));
-            self.p = true
-        }
-    }
-    fn shutdown(&mut self, api: &mut dyn rrdr_game::prelude::GameApi) {}
+
+    fn tick(&mut self, _api: &mut dyn GameApi, _dt: f32) {}
 }
 
-export_mod!(BE);
+export_mod!(Template);

@@ -22,11 +22,60 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
 
       - name: Test
+        working-directory: build_tools
         run: cargo test --locked --all-targets
 
       - name: Clippy
+        working-directory: build_tools
         run: cargo clippy --locked --all-targets -- -D warnings
 
       - name: Publish
         if: startsWith(github.ref, 'refs/tags/')
+        working-directory: build_tools
         run: cargo publish --locked
+
+  # Builds the two loader pieces on Linux and uploads them as artifacts, so a
+  # release never ships a loader built "somewhere on someone's machine"
+  # (issues §9.3). RRDR.asi uses clang-cl + lld-link with the Windows
+  # SDK/CRT headers cargo-xwin downloads; RRDR.Host.dll (net48, real
+  # ScriptHookRDRNetAPI reference) builds with the plain dotnet SDK thanks to
+  # the Microsoft.NETFramework.ReferenceAssemblies package.
+  loader:
+    if: github.ref == 'refs/heads/build_tools' || startsWith(github.ref, 'refs/tags/rrdr-v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install clang and cargo-xwin
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang lld
+          cargo install cargo-xwin --locked
+
+      - name: Download the Windows SDK/CRT headers (cargo xwin)
+        working-directory: rust
+        run: cargo xwin build --locked -p realistic-damages --release --target x86_64-pc-windows-msvc
+
+      - name: Build RRDR.asi
+        run: bash tools/build_asi.sh dist/RRDR/RRDR.asi
+
+      - name: Build RRDR.Host.dll (net48, real API)
+        working-directory: lib/managed
+        run: dotnet build RRDR.Host/RRDR.Host.csproj -c Release -f net48 -p:UseRealApi=true
+
+      - name: Stage the loader package
+        run: |
+          mkdir -p dist/RRDR
+          cp -v lib/managed/RRDR.Host/bin/Release/net48/RRDR.Host.dll dist/RRDR/
+          cp -v lib/managed/RRDR.Host/RRDR.Host.ini dist/RRDR/
+          cp -v native/RRDR.Asi/RRDR.asi.ini dist/RRDR/
+
+      - name: Upload the loader artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: RRDR-loader
+          path: dist/RRDR/*

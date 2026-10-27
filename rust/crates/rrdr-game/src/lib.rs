@@ -47,6 +47,8 @@ pub mod prelude;
 pub mod prop;
 pub mod raycast;
 pub mod rope;
+// `scratch` is an internal detail; it is deliberately not in the prelude.
+mod scratch;
 pub mod task;
 pub mod traits;
 pub mod ui;

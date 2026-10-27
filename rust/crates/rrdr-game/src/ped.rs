@@ -130,9 +130,16 @@ impl Ped {
     }
 
     /// Last weapon impact position, if available.
+    ///
+    /// The out-vector goes through a padded scratch block
+    /// ([`crate::scratch`]), so an unexpected write size corrupts padding
+    /// rather than the stack (issues §4.1).
     pub fn last_weapon_impact_coords(self, api: &mut dyn GameApi) -> Option<Vec3> {
-        let mut coords = Vec3::default();
-        n_weapon::GET_PED_LAST_WEAPON_IMPACT_COORD(api, self.raw(), &mut coords).then_some(coords)
+        use crate::scratch::Vec3Out;
+
+        let mut coords = Vec3Out::default();
+        n_weapon::GET_PED_LAST_WEAPON_IMPACT_COORD(api, self.raw(), &mut coords.value)
+            .then_some(coords.value)
     }
 
     /// Kill the ped using the ped-specific death path.
@@ -241,6 +248,10 @@ impl Ped {
     }
 
     /// Currently held weapon.
+    ///
+    /// A hash of `0` is treated as "no weapon": the native also uses `0` for
+    /// "unset", so an actual weapon hash of `0` (which does not exist in the
+    /// game's weapon hashes) cannot be distinguished. Documented assumption.
     pub fn current_weapon(self, api: &mut dyn GameApi) -> Option<Weapon> {
         let hash = n_weapon::_GET_PED_CURRENT_HELD_WEAPON(api, self.raw());
         (hash != 0).then_some(Weapon::from_hash(hash))

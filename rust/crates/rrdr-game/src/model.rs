@@ -50,11 +50,18 @@ impl Model {
     }
 
     /// Model dimensions as `(minimum, maximum)`.
+    ///
+    /// The two out-vectors go through padded scratch blocks
+    /// ([`crate::scratch`]): if the native writes the 24-byte three-slot
+    /// vector format instead of packed 12-byte vectors, it corrupts padding,
+    /// not the stack (issues §4.1).
     pub fn dimensions(self, api: &mut dyn GameApi) -> (Vec3, Vec3) {
-        let mut minimum = Vec3::default();
-        let mut maximum = Vec3::default();
-        n_misc::GET_MODEL_DIMENSIONS(api, self.0, &mut minimum, &mut maximum);
-        (minimum, maximum)
+        use crate::scratch::Vec3Out;
+
+        let mut minimum = Vec3Out::default();
+        let mut maximum = Vec3Out::default();
+        n_misc::GET_MODEL_DIMENSIONS(api, self.0, &mut minimum.value, &mut maximum.value);
+        (minimum.value, maximum.value)
     }
 }
 

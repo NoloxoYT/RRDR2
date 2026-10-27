@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -265,14 +266,20 @@ namespace RRDR.Host
                 else
                 {
                     int count = checked((int)argumentCount);
-                    int size = Marshal.SizeOf(typeof(RdArg));
                     inputArguments = new InputArgument[count];
 
-                    for (int index = 0; index < count; index++)
+                    // The args arrive as a contiguous RdArg array; read the two
+                    // fields we need straight out of memory. This replaces a
+                    // Marshal.PtrToStructure per argument (reflection + one
+                    // boxed struct each), which showed up as the dominant cost
+                    // of pool enumeration.
+                    unsafe
                     {
-                        IntPtr address = IntPtr.Add(arguments, checked(index * size));
-                        RdArg raw = (RdArg)Marshal.PtrToStructure(address, typeof(RdArg));
-                        inputArguments[index] = ToInputArgument(raw);
+                        RdArg* raw = (RdArg*)arguments;
+                        for (int index = 0; index < count; index++)
+                        {
+                            inputArguments[index] = ToInputArgument(raw[index]);
+                        }
                     }
                 }
 
@@ -295,7 +302,11 @@ namespace RRDR.Host
                     string value = Function.Call<string>(hash, inputArguments) ?? string.Empty;
                     byte[] bytes = Encoding.UTF8.GetBytes(value);
                     int capacity = checked((int)returnCapacity);
-                    int length = Math.Min(bytes.Length, capacity);
+
+                    // Keep one byte for the NUL terminator: the Rust side is
+                    // length-delimited, but the buffer is pre-zeroed and a
+                    // future C-string consumer must never read stale bytes.
+                    int length = capacity > 0 ? Math.Min(bytes.Length, capacity - 1) : 0;
 
                     if (returnBuffer != IntPtr.Zero && length > 0)
                     {
@@ -309,12 +320,48 @@ namespace RRDR.Host
             }
             catch (Exception exception)
             {
-                _log.Error(string.Format(
-                    "native 0x{0:X16} failed: {1}",
-                    hash,
-                    exception));
+                LogCallFailure(hash, exception);
                 return 0;
             }
+        }
+
+        /// <summary>
+        /// A failing native is indistinguishable from a legitimate 0 result on
+        /// the Rust side, so the failure must at least be visible here - but a
+        /// native that throws every frame must not flood the log either.
+        /// Repeats of the same hash within 2 seconds are counted and summarized.
+        /// </summary>
+        private ulong _lastFailedHash;
+        private long _lastFailureTimestamp;
+        private int _suppressedFailures;
+
+        private void LogCallFailure(ulong hash, Exception exception)
+        {
+            long now = Stopwatch.GetTimestamp();
+            bool repeat = hash == _lastFailedHash
+                && (now - _lastFailureTimestamp) < Stopwatch.Frequency * 2;
+
+            if (repeat)
+            {
+                _suppressedFailures++;
+                return;
+            }
+
+            if (_suppressedFailures > 0)
+            {
+                _log.Error(string.Format(
+                    "native 0x{0:X16}: {1} further failure(s) suppressed",
+                    _lastFailedHash,
+                    _suppressedFailures));
+                _suppressedFailures = 0;
+            }
+
+            _lastFailedHash = hash;
+            _lastFailureTimestamp = now;
+            _log.Error(string.Format(
+                "native 0x{0:X16} failed: {1}",
+                hash,
+                exception));
         }
 
         private uint OnPoolHandles(IntPtr user, uint kind, IntPtr output, uint capacity)
@@ -407,7 +454,7 @@ namespace RRDR.Host
             }
         }
 
-        private static string ReadUtf8(ulong bits)
+        private static unsafe string ReadUtf8(ulong bits)
         {
             IntPtr pointer = new IntPtr(unchecked((long)bits));
             if (pointer == IntPtr.Zero)
@@ -416,8 +463,14 @@ namespace RRDR.Host
             }
 
             const int maximumLength = 1024 * 1024;
+
+            // Scan the terminator by pointer instead of one Marshal.ReadByte
+            // P/Invoke per byte: string arguments on hot paths used to pay a
+            // native transition per character. The scan is still one byte at a
+            // time, so it never reads past the terminator.
+            byte* start = (byte*)pointer;
             int length = 0;
-            while (length < maximumLength && Marshal.ReadByte(pointer, length) != 0)
+            while (length < maximumLength && start[length] != 0)
             {
                 length++;
             }
@@ -520,6 +573,17 @@ namespace RRDR.Host
         /// True when the file exports the RRDR bridge entry point. Used to skip
         /// ordinary native DLLs that happen to sit in the mods folder.
         /// </summary>
+        /// <remarks>
+        /// This loads and unloads the DLL, then <see cref="RustBridge"/> loads
+        /// it again for real: two module init cycles per core at startup. The
+        /// managed-DLL pre-filter in <see cref="CoreHost.IsCoreCandidate"/>
+        /// keeps the number of probed files small, but an unrelated *native*
+        /// DLL in the mods folder still has its DllMain executed during the
+        /// probe (the native ASI loader scans without any pre-filter, so it is
+        /// equally exposed). A full fix would parse export names from the PE
+        /// on disk without loading; not done here because the mods folder is
+        /// user-managed and SHVDN's own Script loading does the same.
+        /// </remarks>
         internal static bool HasBridgeAbi(string path)
         {
             IntPtr module = IntPtr.Zero;

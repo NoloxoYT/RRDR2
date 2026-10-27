@@ -33,9 +33,19 @@ impl Default for PoolOptions {
 
 /// Low-level nearby ped handles.
 ///
-/// The native uses an array of 64-bit slots: slot 0 carries the capacity in its
-/// low 32 bits, slots 1..=count contain handles. This layout is community
-/// documented and must be validated in-game.
+/// `GET_PED_NEARBY_PEDS` takes a 64-bit slot array where slot 0 carries the
+/// capacity in its low 32 bits and slots `1..=count` hold handles. That layout
+/// is the one documented on FiveM's native DB (`pedsToStore: "the first index
+/// is the size"`), so it is community-documented rather than guessed; the
+/// trailing `-1` (ignored ped type) and `0` arguments and the
+/// count-from-return-value assumption are still unverified in-game.
+///
+/// Before trusting the layout, validate it once with a debug build: request
+/// capacity 1, assert the returned count is ≤ 1, and check every handle
+/// against `DOES_ENTITY_EXIST` (the wrappers in [`crate::world`] already do
+/// this through `try_from_raw`). A native that writes more entries than
+/// `capacity + 1` slots would be a game-side heap overrun, so keep the buffer
+/// at `capacity + 1` and never request more than [`MAX_CAPACITY`].
 pub(crate) fn nearby_ped_handles(api: &mut dyn GameApi, source: i32, capacity: usize) -> Vec<i32> {
     let capacity = capacity.clamp(1, MAX_CAPACITY);
     let mut buffer = vec![0u64; capacity + 1];
@@ -53,7 +63,8 @@ pub(crate) fn nearby_ped_handles(api: &mut dyn GameApi, source: i32, capacity: u
         .collect()
 }
 
-/// Low-level nearby vehicle handles. Uses the same slot layout.
+/// Low-level nearby vehicle handles. Uses the same slot layout as
+/// [`nearby_ped_handles`] (same validation caveat applies).
 pub(crate) fn nearby_vehicle_handles(
     api: &mut dyn GameApi,
     source: i32,

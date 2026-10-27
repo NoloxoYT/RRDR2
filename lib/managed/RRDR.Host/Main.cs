@@ -104,9 +104,17 @@ namespace RRDR.Host
             float deltaSeconds = (float)((now - _lastTimestamp) / (double)Stopwatch.Frequency);
             _lastTimestamp = now;
 
+            // Clamp on both ends, like the native ASI loader: negatives mean a
+            // clock glitch, and after a loading screen, pause menu or alt-tab
+            // the first tick would otherwise hand the cores a delta of tens of
+            // seconds - any dt-based logic (bleed timers, smoothing) jumps.
             if (deltaSeconds < 0.0f)
             {
                 deltaSeconds = 0.0f;
+            }
+            else if (deltaSeconds > 0.25f)
+            {
+                deltaSeconds = 0.25f;
             }
 
             TickOnce(deltaSeconds);
@@ -129,6 +137,7 @@ namespace RRDR.Host
         {
             _log.Info("Host aborted");
             _cores?.Dispose();
+            _log.Dispose();
         }
 
     }

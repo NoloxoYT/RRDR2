@@ -31,6 +31,58 @@ jobs:
         working-directory: build_tools
         run: cargo fmt --check
 
+  # The framework itself: bridge ABI, game layer, generated natives, plus the
+  # Vec3/log contract fragments extracted from the ASI source.
+  framework:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install clang
+        run: sudo apt-get update && sudo apt-get install -y clang
+
+      - name: Test the workspace
+        working-directory: rust
+        run: cargo test --workspace --all-targets
+
+      - name: Clippy
+        working-directory: rust
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: ASI contract check
+        run: python3 tools/contract_check.py
+
+  # The managed host, built with the mock ScriptHook API (no Windows SDK
+  # needed) and driven end-to-end by the simulator.
+  managed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build the Rust core (simulator uses the Linux cdylib)
+        working-directory: rust
+        run: cargo build -p realistic-damages
+
+      - name: Build the managed host and simulator
+        working-directory: lib/managed
+        run: dotnet build RRDR.Sim/RRDR.Sim.csproj
+
+      - name: Run the end-to-end simulation
+        working-directory: lib/managed
+        run: dotnet run --project RRDR.Sim --no-build
+
   site:
     runs-on: ubuntu-latest
     steps:

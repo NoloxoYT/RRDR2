@@ -381,6 +381,13 @@ fn render_script_cams(api: &mut dyn GameApi, render: bool, ease: bool, ease_time
 
 /// Convert an Euler rotation in degrees (`x` pitch, `y` roll, `z` yaw) to a
 /// unit direction vector.
+///
+/// `pitch.cos().abs()` mirrors ScriptHookRDR2DotNet's own
+/// `DirectionFromRotation`, where the horizontal component is taken as an
+/// absolute value. Consequence (documented, not a bug to fix blindly): for
+/// |pitch| > 90° the forward vector flips horizontally instead of pointing
+/// backwards. Scripted cameras stay within ±90° pitch, which is why the C#
+/// API gets away with it.
 fn direction_from_rotation(rotation: Vec3) -> Vec3 {
     let pitch = rotation.x.to_radians();
     let yaw = rotation.z.to_radians();

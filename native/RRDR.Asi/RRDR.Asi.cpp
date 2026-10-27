@@ -17,9 +17,9 @@
 
 // The linker is driven without a default entry point and without the CRT. On
 // its own it treats every COMDAT as unused and drops DllMain, which produced a
-// 12 KB DLL with no code and no strings: the loader never ran. These
-// directives pin the parts the ASI actually needs.
-#pragma comment(linker, "/include:?Main@@YAXXZ")
+// 12 KB DLL with no code and no strings: the loader never ran. build_asi.sh
+// pins the real entry with /entry:RustDllEntry /include:RustDllEntry; Main()
+// stays reachable through DllAttach, which passes &Main to scriptRegister.
 
 // ScriptHookRDR2 exports (C++ mangled names).
 //
@@ -34,6 +34,8 @@ typedef uint64_t* (*NativeCallFn)();
 typedef void (*ScriptRegisterFn)(HMODULE module, void (*fn)());
 typedef void (*ScriptUnregisterFn)(void (*fn)());
 typedef void (*ScriptWaitFn)(uint32_t waitTime);
+// World pool exports (see PoolHandles below).
+typedef int32_t (*WorldGetAllFn)(int32_t* output, int32_t capacity);
 
 static NativeInitFn g_native_init = nullptr;
 static NativePush64Fn g_native_push64 = nullptr;
@@ -41,6 +43,9 @@ static NativeCallFn g_native_call = nullptr;
 static ScriptRegisterFn g_script_register = nullptr;
 static ScriptUnregisterFn g_script_unregister = nullptr;
 static ScriptWaitFn g_script_wait = nullptr;
+static WorldGetAllFn g_world_get_all_peds = nullptr;
+static WorldGetAllFn g_world_get_all_vehicles = nullptr;
+static WorldGetAllFn g_world_get_all_objects = nullptr;
 
 static void ResolveScriptHook() {
     HMODULE hook = GetModuleHandleA("ScriptHookRDR2.dll");
@@ -65,6 +70,15 @@ static void ResolveScriptHook() {
     g_script_wait = reinterpret_cast<ScriptWaitFn>(
         GetProcAddress(hook, "?scriptWait@@YAXK@Z"));
 
+    // World pool exports, used by PoolHandles (ABI v3). They are optional:
+    // without them the cores fall back to nearby queries only, like a v2 host.
+    g_world_get_all_peds = reinterpret_cast<WorldGetAllFn>(
+        GetProcAddress(hook, "?worldGetAllPeds@@YAHPEAHH@Z"));
+    g_world_get_all_vehicles = reinterpret_cast<WorldGetAllFn>(
+        GetProcAddress(hook, "?worldGetAllVehicles@@YAHPEAHH@Z"));
+    g_world_get_all_objects = reinterpret_cast<WorldGetAllFn>(
+        GetProcAddress(hook, "?worldGetAllObjects@@YAHPEAHH@Z"));
+
     if (!g_native_init || !g_native_push64 || !g_native_call ||
         !g_script_register || !g_script_wait) {
         LogToFile("ScriptHookRDR2 exports missing");
@@ -73,13 +87,16 @@ static void ResolveScriptHook() {
 
 // ---- Shared ABI with rrdr-bridge -------------------------------------------
 
-enum : uint32_t {
+// Error codes as defined by rrdr-bridge's ffi.rs (docs/ABI.md): negative, so
+// that `status != RD_OK` is the only comparison a loader ever needs. Do not
+// test for a specific code here without updating that table in sync.
+enum : int32_t {
     RD_OK = 0,
-    RD_ERR_HOST = 1,
-    RD_ERR_CALLBACK = 2,
-    RD_ERR_INIT = 3,
-    RD_ERR_NOT_INIT = 4,
-    RD_ERR_PANIC = 5,
+    RD_ERR_HOST = -1,
+    RD_ERR_CALLBACK = -2,
+    RD_ERR_INIT = -3,
+    RD_ERR_NOT_INIT = -4,
+    RD_ERR_PANIC = -5,
 };
 
 enum : uint32_t {
@@ -110,7 +127,7 @@ struct RdHost {
     uint64_t (*call_native)(void* user, uint64_t hash, const RdArg* args,
                             uint32_t arg_count, uint32_t return_kind,
                             void* return_buffer, uint32_t return_capacity);
-    void (*log)(void* user, uint32_t level, const char* message);
+    void (*log)(void* user, uint32_t level, const char* message, uint32_t length);
 };
 
 struct RdHostV3 {
@@ -118,7 +135,7 @@ struct RdHostV3 {
     uint64_t (*call_native)(void* user, uint64_t hash, const RdArg* args,
                             uint32_t arg_count, uint32_t return_kind,
                             void* return_buffer, uint32_t return_capacity);
-    void (*log)(void* user, uint32_t level, const char* message);
+    void (*log)(void* user, uint32_t level, const char* message, uint32_t length);
     uint32_t (*pool_handles)(void* user, uint32_t kind, int32_t* output,
                              uint32_t capacity);
 };
@@ -130,14 +147,6 @@ typedef int32_t (*RdInitV3Fn)(const RdHostV3*, const char*);
 typedef void (*RdTickFn)(float);
 typedef void (*RdShutdownFn)();
 typedef int32_t (*RdReloadFn)(const char*);
-
-// ---- ScriptHookRDR2 native hashes ------------------------------------------
-
-static const uint64_t HASH_PLAYER_ID = 0x217E9DC48139933D;
-static const uint64_t HASH_GET_PLAYER_PED = 0x275F255ED201B937;
-static const uint64_t HASH_WORLD_GET_ALL_PEDS = 0xFB26FB422C21A9A9;
-static const uint64_t HASH_WORLD_GET_ALL_VEHICLES = 0x1C0A4D9C24C3EB93;
-static const uint64_t HASH_WORLD_GET_ALL_OBJECTS = 0x7A1D5A0B1B0C1A0F;
 
 // ---- Loaded core -----------------------------------------------------------
 
@@ -292,7 +301,23 @@ static size_t OwnFormat(char* destination, size_t capacity, const char* format, 
 // Opens a log file next to the cores. Win32 only: the CRT (fopen) pulls
 // api-ms-win-crt-*.dll imports, and on Wine a failed import makes the whole ASI
 // fail to load silently: no log, no script, nothing to debug with.
+//
+// The log is capped: a mod that logs every tick would otherwise grow the file
+// without bound over a long session. When it passes the cap it is deleted and
+// starts fresh (no rename dance: the file is a diagnostic, not a record).
+static const DWORD LOG_MAX_BYTES = 8 * 1024 * 1024;
+
 static void AppendToFile(const char* path, const char* text) {
+    WIN32_FILE_ATTRIBUTE_DATA data;
+    if (GetFileAttributesExA(path, GetFileExInfoStandard, &data)) {
+        ULARGE_INTEGER size;
+        size.HighPart = data.nFileSizeHigh;
+        size.LowPart = data.nFileSizeLow;
+        if (size.QuadPart > LOG_MAX_BYTES) {
+            DeleteFileA(path);
+        }
+    }
+
     HANDLE file = CreateFileA(path, FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE,
                               nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
     if (file == INVALID_HANDLE_VALUE) {
@@ -325,10 +350,24 @@ static void LogToFile(const char* message) {
     AppendToFile(path, line);
 }
 
-static void LogLevel(void* user, uint32_t level, const char* message) {
+// The core passes a slice, not a C string: copying `length` bytes avoids
+// reading past the end of the message (which used to print garbage and could
+// fault on unlucky layouts).
+static void LogLevel(void* user, uint32_t level, const char* message, uint32_t length) {
     (void)user;
     (void)level;
-    LogToFile(message ? message : "(null)");
+
+    if (!message) {
+        LogToFile("(null)");
+        return;
+    }
+
+    char buffer[2048];
+    uint32_t copy = length < sizeof(buffer) - 1 ? length : static_cast<uint32_t>(sizeof(buffer) - 1);
+    OwnCopyBytes(buffer, message, copy);
+    buffer[copy] = '\0';
+
+    LogToFile(buffer);
 }
 
 static void LogMessage(const char* prefix, const char* detail) {
@@ -362,10 +401,22 @@ static uint64_t CallNative(void* user, uint64_t hash, const RdArg* args,
     uint64_t raw = result ? *result : 0;
 
     if (return_kind == RETURN_VEC3 && return_buffer && return_capacity >= 12) {
-        // ScriptHookRDR2 returns Vector3 natives through a pointer argument
-        // that the caller passes. The ABI marks the call as Vec3, but the
-        // value itself is written by the native into that pointer; nothing to
-        // copy here. Keeping the branch explicit documents the contract.
+        // ScriptHookRDR2 stores a Vector3 in three 64-bit slots: x, y and z are
+        // at offsets 0, 8 and 16 (see ScriptHookRDR2DotNet ObjectFromNative).
+        // Copy them as floats into the 12-byte buffer the core allocated.
+        uint64_t slots[3] = {0, 0, 0};
+        if (result) {
+            OwnCopyBytes(slots, result, sizeof(slots));
+        }
+
+        float values[3];
+        for (int axis = 0; axis < 3; ++axis) {
+            // Each slot holds the float in its low 32 bits.
+            uint32_t bits = static_cast<uint32_t>(slots[axis] & 0xFFFFFFFFu);
+            OwnCopyBytes(&values[axis], &bits, sizeof(uint32_t));
+        }
+        OwnCopyBytes(return_buffer, values, sizeof(values));
+        return 12;
     } else if (return_kind == RETURN_STRING && return_buffer && return_capacity > 0) {
         // The native returns a string pointer in the return slot.
         const char* text = reinterpret_cast<const char*>(static_cast<uintptr_t>(raw));
@@ -392,26 +443,45 @@ static uint32_t PoolHandles(void* user, uint32_t kind, int32_t* output,
         return 0;
     }
 
-    // The ScriptHookRDR2 world exports have fixed-size signatures, so cap the
-    // request to a sane pool size.
-    const int limit = capacity > 4096 ? 4096 : static_cast<int>(capacity);
+    // The ScriptHookRDR2 world exports have a fixed-size internal buffer, so
+    // cap the request to a sane pool size.
+    const int32_t limit = capacity > 4096 ? 4096 : static_cast<int32_t>(capacity);
 
+    WorldGetAllFn getter = nullptr;
     switch (kind) {
-        case 0:
-            return 0;  // worldGetAllPeds is a ScriptHookRDR2 export; see note.
-        case 1:
-            return 0;
-        case 2:
-            return 0;
+        case 0:  // PoolKind::Ped
+            getter = g_world_get_all_peds;
+            break;
+        case 1:  // PoolKind::Vehicle
+            getter = g_world_get_all_vehicles;
+            break;
+        case 2:  // PoolKind::Object
+            getter = g_world_get_all_objects;
+            break;
         default:
             return 0;
     }
+
+    if (!getter) {
+        // Exports missing (older ScriptHookRDR2): no global pools, the cores
+        // fall back to nearby queries only.
+        return 0;
+    }
+
+    const int32_t count = getter(output, limit);
+    return count > 0 ? static_cast<uint32_t>(count) : 0;
 }
 
 // ---- Core loading ----------------------------------------------------------
 
 static char g_game_dir[MAX_PATH] = {0};
 static bool g_reload_configs = true;
+
+// Comma-separated DLL names from RRDR.asi.ini `disable =`, upper-cased and
+// NUL-separated for OwnEqualsIgnoreCase comparisons.
+static const int MAX_DISABLED = 32;
+static char g_disabled[MAX_DISABLED][64];
+static int g_disabled_count = 0;
 
 // Reads RRDR.asi.ini next to the game exe, so keys stay optional.
 static void LoadAsiConfig() {
@@ -423,7 +493,12 @@ static void LoadAsiConfig() {
     DWORD length = GetPrivateProfileStringA(
         "RRDR", "mods_dir", "", value, sizeof(value), ini);
     if (length > 0) {
-        if (value[0] == '\\' || (value[1] == ':' && value[2] == '\\')) {
+        // Absolute when it starts with a drive letter (either separator) or a
+        // UNC/leading-slash form. Forward slashes work on Windows too, so
+        // `mods_dir = C:/Games/...` must not be glued onto the game dir.
+        const bool drive =
+            value[1] == ':' && (value[2] == '\\' || value[2] == '/');
+        if (drive || value[0] == '\\' || value[0] == '/') {
             OwnCopyText(g_mods_dir, sizeof(g_mods_dir), value);
         } else {
             OwnFormat(g_mods_dir, sizeof(g_mods_dir), "%s%s", g_game_dir, value);
@@ -432,9 +507,43 @@ static void LoadAsiConfig() {
         OwnFormat(g_mods_dir, sizeof(g_mods_dir), "%sscripts\\Rscripts", g_game_dir);
     }
 
-    length = GetPrivateProfileStringA(
+    // The result is only read as a flag; the length is not needed.
+    GetPrivateProfileStringA(
         "RRDR", "reload_config", "true", value, sizeof(value), ini);
     g_reload_configs = !OwnEqualsIgnoreCase(value, "false") && !OwnEqualsIgnoreCase(value, "0");
+
+    // disable = Foo.dll,Bar.dll: comma-separated DLL names to skip.
+    g_disabled_count = 0;
+    GetPrivateProfileStringA("RRDR", "disable", "", value, sizeof(value), ini);
+    char* cursor = value;
+    while (*cursor != '\0' && g_disabled_count < MAX_DISABLED) {
+        while (*cursor == ' ' || *cursor == ',') {
+            ++cursor;
+        }
+        if (*cursor == '\0') {
+            break;
+        }
+
+        char* entry = g_disabled[g_disabled_count];
+        size_t index = 0;
+        while (*cursor != '\0' && *cursor != ',' && index + 1 < sizeof(g_disabled[0])) {
+            entry[index++] = OwnLowerChar(*cursor++);
+        }
+        entry[index] = '\0';
+        if (index > 0) {
+            ++g_disabled_count;
+        }
+    }
+}
+
+// True when `name` (a DLL file name) is on the disable list.
+static bool IsDisabled(const char* name) {
+    for (int index = 0; index < g_disabled_count; ++index) {
+        if (OwnEqualsIgnoreCase(name, g_disabled[index])) {
+            return true;
+        }
+    }
+    return false;
 }
 
 static void BuildModsDir() {
@@ -449,10 +558,6 @@ static void BuildModsDir() {
     OwnFormat(g_mods_dir, sizeof(g_mods_dir), "%sscripts\\Rscripts", g_game_dir);
     LoadAsiConfig();
     CreateDirectoryA(g_mods_dir, nullptr);
-}
-
-static bool HasCoreAbi(HMODULE module) {
-    return GetProcAddress(module, "rd_abi_version") != nullptr;
 }
 
 static void RememberConfigTime(Core& core) {
@@ -477,11 +582,6 @@ static void LoadCore(const char* path) {
         return;
     }
 
-    if (!HasCoreAbi(module)) {
-        FreeLibrary(module);
-        return;
-    }
-
     RdAbiVersionFn abi_version = reinterpret_cast<RdAbiVersionFn>(
         GetProcAddress(module, "rd_abi_version"));
     RdTickFn tick = reinterpret_cast<RdTickFn>(
@@ -491,7 +591,15 @@ static void LoadCore(const char* path) {
     RdReloadFn reload = reinterpret_cast<RdReloadFn>(
         GetProcAddress(module, "rd_reload_config"));
 
-    if (!abi_version || !tick || !shutdown) {
+    // rd_abi_version doubles as the "is this an RRDR core" probe: a DLL
+    // without it is not ours and is released silently. A core that has the ABI
+    // but is missing tick/shutdown is a broken build worth a log line.
+    if (!abi_version) {
+        FreeLibrary(module);
+        return;
+    }
+
+    if (!tick || !shutdown) {
         LogMessage("core missing exports: ", path);
         FreeLibrary(module);
         return;
@@ -582,16 +690,41 @@ static void ScanMods() {
 
         char path[MAX_PATH];
         OwnFormat(path, sizeof(path), "%s\\%s", g_mods_dir, data.cFileName);
+
+        if (IsDisabled(data.cFileName)) {
+            LogMessage("disabled, skipping: ", data.cFileName);
+            continue;
+        }
+
         LoadCore(path);
     } while (FindNextFileA(find, &data));
 
     FindClose(find);
 }
 
+// Polls the per-core .ini files for changes.
+//
+// The check is throttled to once every 2 seconds, like CoreHost.CheckConfigReload
+// on the managed side: a per-frame GetFileAttributesExA on every core's ini is a
+// classic micro-stutter source on HDDs, network drives and Wine.
 static void ReloadConfigs() {
     if (!g_reload_configs) {
         return;
     }
+
+    static LARGE_INTEGER frequency = {};
+    static LONGLONG next_check = 0;
+    if (frequency.QuadPart == 0) {
+        QueryPerformanceFrequency(&frequency);
+        next_check = 0;
+    }
+
+    LARGE_INTEGER now;
+    QueryPerformanceCounter(&now);
+    if (next_check > now.QuadPart) {
+        return;
+    }
+    next_check = now.QuadPart + frequency.QuadPart * 2;
 
     for (int index = 0; index < g_core_count; ++index) {
         Core& core = g_cores[index];
@@ -653,16 +786,13 @@ static double SecondsSinceLastTick() {
 static void Main() {
     LogToFile("RRDR.asi main() entered");
 
-    // The scripts folder is not guaranteed to exist yet when the ASI loads,
-    // but by the time ScriptHookRDR2 runs script code it is.
-    BuildModsDir();
+    // BuildModsDir already ran in DLL_PROCESS_ATTACH; running it again here
+    // would repeat the ini reads and directory creation every session.
     ScanMods();
 
-    {
-        char summary[128];
-        OwnFormat(summary, sizeof(summary), "cores loaded: %d", g_core_count);
-        LogToFile(summary);
-    }
+    char count[16];
+    OwnFormat(count, sizeof(count), "%d", g_core_count);
+    LogMessage("cores loaded: ", count);
 
     for (;;) {
         const float dt = static_cast<float>(SecondsSinceLastTick());

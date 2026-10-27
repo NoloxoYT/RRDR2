@@ -32,11 +32,15 @@ pub fn vehicle(api: &mut dyn GameApi, raw: i32) -> Option<Vehicle> {
 }
 
 /// Peds near a source ped.
+///
+/// Deduplication uses a `HashSet` over raw handles: a linear `contains` per
+/// candidate was O(n²) on the 256..1024 entries a pool can return.
 pub fn nearby_peds(api: &mut dyn GameApi, source: Ped, options: PoolOptions) -> Vec<Ped> {
     let mut peds = Vec::new();
+    let mut seen = std::collections::HashSet::new();
 
     for raw in pool::nearby_ped_handles(api, source.raw(), options.capacity) {
-        if raw == 0 || raw == source.raw() {
+        if raw == 0 || raw == source.raw() || !seen.insert(raw) {
             continue;
         }
 
@@ -48,9 +52,7 @@ pub fn nearby_peds(api: &mut dyn GameApi, source: Ped, options: PoolOptions) -> 
             continue;
         }
 
-        if !peds.contains(&ped) {
-            peds.push(ped);
-        }
+        peds.push(ped);
     }
 
     peds
@@ -68,12 +70,14 @@ pub fn nearby_peds_from_player(api: &mut dyn GameApi, options: PoolOptions) -> V
     nearby_peds(api, ped, options)
 }
 
-/// Vehicles near a source ped.
+/// Vehicles near a source ped. Deduplicated with a `HashSet` (see
+/// [`nearby_peds`]).
 pub fn nearby_vehicles(api: &mut dyn GameApi, source: Ped, options: PoolOptions) -> Vec<Vehicle> {
     let mut vehicles = Vec::new();
+    let mut seen = std::collections::HashSet::new();
 
     for raw in pool::nearby_vehicle_handles(api, source.raw(), options.capacity) {
-        if raw == 0 {
+        if raw == 0 || !seen.insert(raw) {
             continue;
         }
 
@@ -85,9 +89,7 @@ pub fn nearby_vehicles(api: &mut dyn GameApi, source: Ped, options: PoolOptions)
             continue;
         }
 
-        if !vehicles.contains(&vehicle) {
-            vehicles.push(vehicle);
-        }
+        vehicles.push(vehicle);
     }
 
     vehicles
@@ -97,12 +99,16 @@ pub fn nearby_vehicles(api: &mut dyn GameApi, source: Ped, options: PoolOptions)
 ///
 /// Returns `None` when the host does not expose a pool provider (ABI v2 or the
 /// offline mock). Requires the managed host's `worldGetAllPeds` callback.
+///
+/// The per-handle validation costs 2-4 marshaled native calls each; do not
+/// call this every tick for a large capacity.
 pub fn all_peds(api: &mut dyn GameApi, options: PoolOptions) -> Option<Vec<Ped>> {
     let handles = api.pool_handles(PoolKind::Ped, options.capacity)?;
     let mut peds = Vec::new();
+    let mut seen = std::collections::HashSet::new();
 
     for raw in handles {
-        if raw == 0 {
+        if raw == 0 || !seen.insert(raw) {
             continue;
         }
 
@@ -114,21 +120,20 @@ pub fn all_peds(api: &mut dyn GameApi, options: PoolOptions) -> Option<Vec<Ped>>
             continue;
         }
 
-        if !peds.contains(&ped) {
-            peds.push(ped);
-        }
+        peds.push(ped);
     }
 
     Some(peds)
 }
 
-/// Global vehicle pool.
+/// Global vehicle pool. Deduplicated with a `HashSet` (see [`all_peds`]).
 pub fn all_vehicles(api: &mut dyn GameApi, options: PoolOptions) -> Option<Vec<Vehicle>> {
     let handles = api.pool_handles(PoolKind::Vehicle, options.capacity)?;
     let mut vehicles = Vec::new();
+    let mut seen = std::collections::HashSet::new();
 
     for raw in handles {
-        if raw == 0 {
+        if raw == 0 || !seen.insert(raw) {
             continue;
         }
 
@@ -140,28 +145,25 @@ pub fn all_vehicles(api: &mut dyn GameApi, options: PoolOptions) -> Option<Vec<V
             continue;
         }
 
-        if !vehicles.contains(&vehicle) {
-            vehicles.push(vehicle);
-        }
+        vehicles.push(vehicle);
     }
 
     Some(vehicles)
 }
 
-/// Global object/prop pool.
+/// Global object/prop pool. Deduplicated with a `HashSet` (see [`all_peds`]).
 pub fn all_objects(api: &mut dyn GameApi, options: PoolOptions) -> Option<Vec<Prop>> {
     let handles = api.pool_handles(PoolKind::Object, options.capacity)?;
     let mut props = Vec::new();
+    let mut seen = std::collections::HashSet::new();
 
     for raw in handles {
-        if raw == 0 {
+        if raw == 0 || !seen.insert(raw) {
             continue;
         }
 
         if let Some(prop) = Prop::try_from_raw(api, raw) {
-            if !props.contains(&prop) {
-                props.push(prop);
-            }
+            props.push(prop);
         }
     }
 
