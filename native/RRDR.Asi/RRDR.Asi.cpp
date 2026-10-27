@@ -158,6 +158,9 @@ struct Core {
     char config_path[MAX_PATH];
     FILETIME config_time;
     char name[MAX_PATH];
+    // Slow-tick watchdog state (see TickCores).
+    int slow_streak;
+    int64_t last_slow_micros;
 };
 
 static const int MAX_CORES = 32;
@@ -613,8 +616,7 @@ static void LoadCore(const char* path) {
     }
 
     Core& core = g_cores[g_core_count];
-    memset(&core, 0, sizeof(core));
-    core.module = module;
+    memset(&core, 0, sizeof(core));    core.module = module;
     core.tick = tick;
     core.reload = reload;
     core.shutdown = shutdown;
@@ -783,6 +785,74 @@ static double SecondsSinceLastTick() {
     return seconds > 0.25 ? 0.25 : seconds;
 }
 
+// ---- Core ticking ----------------------------------------------------------
+
+// A core tick that takes longer than this is what a player feels as a stutter.
+// SLOW_TICK_WARN_MICROS is deliberately generous: an occasional 5-8 ms tick is
+// normal (the game itself hitches), the pattern that matters is recurring
+// multi-ms ticks, which this logging makes visible in the log without a
+// debugger attached.
+static const int64_t SLOW_TICK_WARN_MICROS = 5000;
+
+static void TickCores(float dt) {
+    static LARGE_INTEGER frequency = {};
+    if (frequency.QuadPart == 0) {
+        QueryPerformanceFrequency(&frequency);
+    }
+
+    static uint32_t tick_number = 0;
+    ++tick_number;
+
+    for (int index = 0; index < g_core_count; ++index) {
+        Core& core = g_cores[index];
+        if (!core.tick) {
+            continue;
+        }
+
+        LARGE_INTEGER start;
+        QueryPerformanceCounter(&start);
+        core.tick(dt);
+        LARGE_INTEGER end;
+        QueryPerformanceCounter(&end);
+
+        const int64_t micros = frequency.QuadPart > 0
+            ? (end.QuadPart - start.QuadPart) * 1000000 / frequency.QuadPart
+            : 0;
+
+        if (micros <= SLOW_TICK_WARN_MICROS) {
+            // A fast tick ends a slow streak; summarize the streak once.
+            if (core.slow_streak > 3) {
+                char line[MAX_PATH + 80];
+                OwnFormat(line, sizeof(line),
+                          "slow tick: %s was slow on %u consecutive ticks (last %u.%03u ms)",
+                          core.name,
+                          (unsigned long)core.slow_streak,
+                          (unsigned long)(core.last_slow_micros / 1000),
+                          (unsigned long)(core.last_slow_micros % 1000));
+                LogToFile(line);
+            }
+            core.slow_streak = 0;
+            continue;
+        }
+
+        core.last_slow_micros = micros;
+        ++core.slow_streak;
+
+        // Log the first few of a streak; a long stutter (hundreds of ticks)
+        // would otherwise write hundreds of lines.
+        if (core.slow_streak <= 3) {
+            char line[MAX_PATH + 80];
+            OwnFormat(line, sizeof(line),
+                      "slow tick: %s took %u.%03u ms (tick %u)",
+                      core.name,
+                      (unsigned long)(micros / 1000),
+                      (unsigned long)(micros % 1000),
+                      (unsigned long)tick_number);
+            LogToFile(line);
+        }
+    }
+}
+
 static void Main() {
     LogToFile("RRDR.asi main() entered");
 
@@ -797,11 +867,7 @@ static void Main() {
     for (;;) {
         const float dt = static_cast<float>(SecondsSinceLastTick());
 
-        for (int index = 0; index < g_core_count; ++index) {
-            if (g_cores[index].tick) {
-                g_cores[index].tick(dt);
-            }
-        }
+        TickCores(dt);
 
         ReloadConfigs();
         if (g_script_wait) {
