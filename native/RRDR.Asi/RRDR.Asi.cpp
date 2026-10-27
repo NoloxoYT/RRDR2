@@ -794,6 +794,10 @@ static double SecondsSinceLastTick() {
 // debugger attached.
 static const int64_t SLOW_TICK_WARN_MICROS = 5000;
 
+// Worst tick since the last heartbeat (written by TickCores, read by
+// BeatHeartbeat).
+static int64_t g_max_tick_micros = 0;
+
 static void TickCores(float dt) {
     static LARGE_INTEGER frequency = {};
     if (frequency.QuadPart == 0) {
@@ -818,6 +822,10 @@ static void TickCores(float dt) {
         const int64_t micros = frequency.QuadPart > 0
             ? (end.QuadPart - start.QuadPart) * 1000000 / frequency.QuadPart
             : 0;
+
+        if (micros > g_max_tick_micros) {
+            g_max_tick_micros = micros;
+        }
 
         if (micros <= SLOW_TICK_WARN_MICROS) {
             // A fast tick ends a slow streak; summarize the streak once.
@@ -853,6 +861,78 @@ static void TickCores(float dt) {
     }
 }
 
+// ---- Frame telemetry -------------------------------------------------------
+
+// A ScriptHook script only learns about time through its own loop: if the game
+// stalls, the gap between two iterations is the only evidence left behind.
+// TickCores logs long ticks; this covers the other half - a stall that happens
+// while the script thread sits in scriptWait, which no tick-timer can see.
+static uint64_t g_frames = 0;
+static double g_max_gap_seconds = 0.0;
+static double g_gap_log_cooldown = 0.0;
+
+// Formats seconds as "<seconds>.<millis>" using only the supported specifiers.
+static void FormatSeconds(char* out, size_t capacity, double seconds) {
+    if (seconds < 0.0) {
+        seconds = 0.0;
+    }
+    const unsigned long whole = static_cast<unsigned long>(seconds);
+    double fraction = seconds - static_cast<double>(whole);
+    if (fraction < 0.0) {
+        fraction = 0.0;
+    }
+    OwnFormat(out, capacity, "%u.%03u", whole,
+              static_cast<unsigned long>(fraction * 1000.0));
+}
+
+static void NoteFrame(double dt) {
+    ++g_frames;
+
+    if (dt > g_max_gap_seconds) {
+        g_max_gap_seconds = dt;
+    }
+
+    // Log a stall the player would feel, but only once per few seconds: a
+    // loading screen produces a burst of long gaps and would flood the log.
+    if (dt > 0.5 && g_gap_log_cooldown <= 0.0) {
+        char duration[32];
+        char line[128];
+        FormatSeconds(duration, sizeof(duration), dt);
+        OwnFormat(line, sizeof(line), "frame gap: %s s (frame %u)", duration,
+                  static_cast<unsigned long>(g_frames));
+        LogToFile(line);
+        g_gap_log_cooldown = 5.0;
+    }
+
+    if (g_gap_log_cooldown > 0.0) {
+        g_gap_log_cooldown -= dt;
+    }
+}
+
+// One line per minute: proves the script thread is alive and reports the
+// worst tick and worst frame gap since the previous line. A freeze now leaves
+// a number in the log even when nothing else is worth logging.
+static void BeatHeartbeat(double dt) {
+    static double since_last = 0.0;
+    since_last += dt;
+    if (since_last < 60.0) {
+        return;
+    }
+    since_last = 0.0;
+
+    char tick[32];
+    char gap[32];
+    char line[192];
+    FormatSeconds(tick, sizeof(tick), static_cast<double>(g_max_tick_micros) / 1000000.0);
+    FormatSeconds(gap, sizeof(gap), g_max_gap_seconds);
+    OwnFormat(line, sizeof(line), "heartbeat: %u frames, max tick %s s, max frame gap %s s",
+              static_cast<unsigned long>(g_frames), tick, gap);
+    LogToFile(line);
+
+    g_max_tick_micros = 0;
+    g_max_gap_seconds = 0.0;
+}
+
 static void Main() {
     LogToFile("RRDR.asi main() entered");
 
@@ -865,11 +945,13 @@ static void Main() {
     LogMessage("cores loaded: ", count);
 
     for (;;) {
-        const float dt = static_cast<float>(SecondsSinceLastTick());
+        const double raw_dt = SecondsSinceLastTick();
 
-        TickCores(dt);
+        NoteFrame(raw_dt);
+        TickCores(static_cast<float>(raw_dt));
 
         ReloadConfigs();
+        BeatHeartbeat(raw_dt);
         if (g_script_wait) {
             g_script_wait(0);
         }
