@@ -1,7 +1,6 @@
 [workspace]
 resolver = "2"
 members = [
-    "crates/better_economy",
     "crates/realistic-damages",
     "crates/rrdr-bridge",
     "crates/rrdr-game",
@@ -9,7 +8,7 @@ members = [
 ]
 
 [workspace.package]
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT"
 repository = "https://example.invalid/RealisticDamages"

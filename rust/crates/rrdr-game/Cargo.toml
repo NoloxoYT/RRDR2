@@ -10,5 +10,5 @@ name = "rrdr_game"
 path = "src/lib.rs"
 
 [dependencies]
-rrdr-bridge = { path = "../rrdr-bridge" }
-rrdr-natives = { path = "../rrdr-natives" }
+rrdr-bridge = { version = "0.1.1", path = "../rrdr-bridge" }
+rrdr-natives = { version = "0.1.1", path = "../rrdr-natives" }

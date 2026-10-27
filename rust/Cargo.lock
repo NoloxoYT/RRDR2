@@ -3,17 +3,8 @@
 version = 4
 
 [[package]]
-name = "better_economy"
-version = "0.1.0"
-dependencies = [
- "rrdr-bridge",
- "rrdr-game",
- "rrdr-natives",
-]
-
-[[package]]
 name = "realistic-damages"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "rrdr-bridge",
  "rrdr-game",
@@ -22,11 +13,11 @@ dependencies = [
 
 [[package]]
 name = "rrdr-bridge"
-version = "0.1.0"
+version = "0.1.1"
 
 [[package]]
 name = "rrdr-game"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "rrdr-bridge",
  "rrdr-natives",
@@ -34,7 +25,7 @@ dependencies = [
 
 [[package]]
 name = "rrdr-natives"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "rrdr-bridge",
 ]
