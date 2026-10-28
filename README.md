@@ -62,7 +62,7 @@ Make the crate a `cdylib` under `rust/crates/`, run `rrdr`, and the loader picks
 
 - [Quick start](https://noloxoyt.github.io/RRDR2/start.html)
 - [Reference](https://noloxoyt.github.io/RRDR2/reference.html): loaders, configuration, ABI, troubleshooting
-- [Natives browser](https://noloxoyt.github.io/RRDR2/natives/index.html): all 7501 natives, searchable
+- [Natives browser](https://noloxoyt.github.io/RRDR2/natives/index.html): all 7501 natives, searchable, each with its description and parameter list
 - [`docs/ABI.md`](docs/ABI.md): the C ABI
 
 ## Repository

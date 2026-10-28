@@ -17,6 +17,16 @@ its own copy in the game folder.
 licensed under the zlib license. It is used by `tools/generate_natives.py` to
 produce `rust/crates/rrdr-natives`; the generated file is not hand-edited.
 
+## RDR3 native database
+
+`tools/rdr3_natives.json` is a vendored copy of
+[alloc8or/rdr3-nativedb-data](https://github.com/alloc8or/rdr3-nativedb-data),
+the community database of RDR3 native comments and parameter names, licensed
+under the zlib license (see `lib/LICENSE-rdr3-nativedb-data.txt`). It is
+refreshed with `tools/fetch_native_docs.py`; `tools/generate_native_docs.py`
+merges it with `lib/NativeDecl.cs` into `tools/native_docs.json`, which feeds
+the doc comments in `rrdr-natives` and the natives pages of the site.
+
 ## ScriptHookRDR2 / Red Dead Redemption 2
 
 ScriptHookRDR2 is by Alexander Blade. Red Dead Redemption 2 is a trademark of

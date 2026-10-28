@@ -36,6 +36,9 @@ jobs:
       - name: Regenerate the natives pages
         run: python3 tools/generate_natives_site.py
 
+      - name: Check the merged native documentation
+        run: python3 tools/generate_native_docs.py --check
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3

@@ -120,6 +120,12 @@ let ped = player::GET_PLAYER_PED(api, player_id);
 let health = entity::GET_ENTITY_HEALTH(api, ped);
 let pos = entity::GET_ENTITY_COORDS(api, ped, true, true);</code></pre>
 <p><code>Vector3</code> overloads use the <code>_VEC3</code> suffix; every function also has a <code>HASH_&lt;NAME&gt;</code> constant for raw <code>GameApi</code> calls. Two variadic natives are listed in <code>rrdr_natives::SKIPPED_VARIADIC</code> because the ABI cannot express them.</p>
+<p>Every generated function is documented in its own rustdoc comment: what the native does, one line per parameter (marked <code>in</code> or <code>out</code>) and the notes that came with it. Descriptions come from <code>lib/NativeDecl.cs</code>, then from the <a href="https://github.com/alloc8or/rdr3-nativedb-data">RDR3 native database</a>, then from a sentence built out of the native name, so none is left empty. Parameters are named the way the declaration file names them; a bare <code>p0</code>, <code>p1</code> takes the name the database gives it (<code>ped</code>, <code>durationMs</code>) or a name derived from its type (<code>handle</code>, <code>outVec</code>).</p>
+<p>The merge is built once and checked in as <code>tools/native_docs.json</code>:</p>
+<pre><code>python3 tools/fetch_native_docs.py      # refresh tools/rdr3_natives.json from the database
+python3 tools/generate_native_docs.py   # rebuild tools/native_docs.json (--check in CI)
+python3 tools/generate_natives.py       # rewrite rust/crates/rrdr-natives/src
+python3 tools/generate_natives_site.py  # rewrite site/natives</code></pre>
 
 <h2>Calling natives by hand</h2>
 <pre><code>let health = api.call_i32(GET_ENTITY_HEALTH, &amp;[Arg::I32(ped)]);
@@ -156,6 +162,7 @@ tools/                       binding and site generators</code></pre>
   <tr><td><code>dotnet run --project lib/managed/RRDR.Sim/RRDR.Sim.csproj</code></td><td>End-to-end simulator.</td></tr>
   <tr><td><code>dotnet build lib/managed/RRDR.Host/RRDR.Host.csproj -c Release -f net48 -p:UseRealApi=true</code></td><td>Managed loader.</td></tr>
   <tr><td><code>./tools/build_asi.sh dist/RRDR/RRDR.asi</code></td><td>Native loader.</td></tr>
+  <tr><td><code>python3 tools/generate_native_docs.py</code></td><td>Merge the native descriptions into <code>tools/native_docs.json</code>.</td></tr>
   <tr><td><code>python3 tools/generate_natives.py</code></td><td>Regenerate the native bindings.</td></tr>
   <tr><td><code>python3 tools/generate_natives_site.py</code></td><td>Regenerate the natives pages under <code>site/natives/</code>.</td></tr>
 </table>

@@ -5,6 +5,13 @@
 //! bindings are generated from ScriptHookRDR2DotNet V2's `NativeDecl.cs`;
 //! hashes and parameter order match that file exactly.
 //!
+//! Parameter names are the ones the declaration file uses, except for the
+//! bare `p0`, `p1` placeholders: those take the name the RDR3 native
+//! database gives them (`ped`, `durationMs`, ...) or a name derived from
+//! the type (`handle`, `outVec`, ...). The order and the types never change,
+//! so a call written against an older name still compiles by position only
+//! if it used the placeholder.
+//!
 //! `_VEC3` variants are convenience overloads that take `Vec3` instead of
 //! three floats. They call the same native hash.
 #![allow(non_snake_case)]

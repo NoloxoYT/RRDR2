@@ -4,7 +4,13 @@
 The source file is the generated declaration file shipped with
 ScriptHookRDR2DotNet V2 (zlib license, see lib/LICENSE-ScriptHookRDR2DotNet.txt).
 
+Every function gets a doc comment with the merged native description
+(lib/NativeDecl.cs, then the RDR3 native database, then a sentence built from
+the name) and one line per parameter, from tools/native_docs.json, which
+tools/generate_native_docs.py produces.
+
 Usage:
+    python3 tools/generate_native_docs.py
     python3 tools/generate_natives.py
     python3 tools/generate_natives.py --source lib/NativeDecl.cs \
         --out rust/crates/rrdr-natives/src
@@ -16,6 +22,7 @@ in game (managed host) and in the offline simulator (mock host).
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import sys
@@ -81,6 +88,13 @@ RUST_KEYWORDS = {
     "try", "union",
 }
 
+# Docs merged from lib/NativeDecl.cs and the RDR3 native database, resolved by
+# tools/generate_native_docs.py. Keys are lower-case native hashes.
+NATIVE_DOCS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "native_docs.json")
+
+# Shown in the rustdoc for a native with no published description.
+NO_DESCRIPTION = "No description is published for this native."
+
 
 def sanitize_param(name: str) -> str:
     if name in ("self", "Self", "crate", "super"):
@@ -99,11 +113,97 @@ def sanitize_module(name: str) -> str:
     return module
 
 
-def parse(source: str):
+def load_native_docs(path=NATIVE_DOCS_PATH):
+    with open(path, encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def doc_lines(hash_hex, native_docs):
+    """Doc text for one native: [(kind, text)], kind in desc/blank."""
+    entry = native_docs.get(hash_hex.lower()) or {}
+    out = []
+
+    description = (entry.get("desc") or "").strip()
+    if description:
+        for line in description.splitlines():
+            out.append(("desc", line.rstrip()))
+    else:
+        out.append(("desc", NO_DESCRIPTION))
+
+    # Rustdoc renders "# Parameters" as a heading; one bullet per argument.
+    # An entry read before the merge (the vendor file) has parameter names as
+    # plain strings and no description, so those are skipped.
+    params = [param for param in entry.get("params") or [] if isinstance(param, dict)]
+    documented = [param for param in params if (param.get("doc") or "").strip()]
+    if documented:
+        out.append(("blank", ""))
+        out.append(("desc", "# Parameters"))
+        out.append(("blank", ""))
+        for param in documented:
+            out.append(("desc", param_bullet(param)) if isinstance(param, dict) else ("desc", ""))
+
+    extra = [line.strip() for line in (entry.get("extra") or []) if line.strip()]
+    if extra:
+        out.append(("blank", ""))
+        out.append(("desc", "# Notes"))
+        out.append(("blank", ""))
+        for line in extra:
+            out.append(("desc", line))
+    return out
+
+
+def overload_doc_lines(decl, names, scalar_names):
+    """The Vector3 overload: same text, with its own argument names.
+
+    The documentation lists parameters under the names the Rust bindings use.
+    The scalar overload calls its three floats `x`, `y`, `z`; the Vector3
+    overload calls them `vec`, one argument, so the line is rewritten to match
+    and to say which floats it carries.
+    """
+    renamed = {}
+    for (param_type, scalar_name, _), name in zip(decl["params"], scalar_names):
+        if param_type == "Vector3" and name != scalar_name:
+            renamed[scalar_name] = name
+
+    lines = []
+    for kind, text in decl["docs"]:
+        if kind == "desc" and text.startswith("* `") and text.count("`") >= 3:
+            documented = text.split("`")[1]
+            if documented in renamed:
+                body = text.split("`: ", 1)[-1]
+                text = "* `%s`: the three floats `%s` of the scalar overload. %s" % (
+                    renamed[documented], documented, body)
+        lines.append((kind, text))
+    return lines
+
+
+def param_bullet(param):
+    """One rustdoc bullet: `name`, an `(out)` marker, then the documentation."""
+    name = param["name"]
+    doc = (param.get("doc") or "").strip()
+    if param.get("out"):
+        marker = "out"
+        doc = "the native writes through this pointer" + ("; " + doc.lower() if doc else "")
+    else:
+        marker = "in"
+    return "* `%s` (%s): %s" % (name, marker, doc)
+
+
+def render_doc(item):
+    kind, text = item
+    if kind == "blank":
+        return "///"
+    if text:
+        return "/// " + text
+    return "///"
+
+
+def parse(source: str, native_docs=None):
     declarations = []
     skipped_variadic = []
     current_class = None
     unparsed = []
+    native_docs = native_docs if native_docs is not None else load_native_docs()
 
     with open(source, encoding="utf-8-sig") as handle:
         lines = handle.read().splitlines()
@@ -159,14 +259,16 @@ def parse(source: str):
                 unparsed.append((line_number, "PARAM TYPE: " + param_type))
                 break
         else:
+            hash_hex = match.group("hash")
             declarations.append(
                 {
                     "class": current_class,
                     "name": match.group("name"),
                     "ret": ret,
                     "params": params,
-                    "hash": match.group("hash"),
+                    "hash": hash_hex,
                     "line": line_number,
+                    "docs": doc_lines(hash_hex, native_docs),
                 }
             )
 
@@ -243,13 +345,25 @@ def arg_expressions(decl):
     return expressions
 
 
-def generate_function(decl, rust_name):
+def rust_param_names(decl, native_docs):
+    """Names from tools/native_docs.json when the line count matches."""
+    entry = native_docs.get(decl["hash"].lower()) or {}
+    names = entry.get("lib_params") or []
+    if len(names) != len(decl["params"]):
+        return [param[1] for param in decl["params"]]
+    return names
+
+
+def generate_function(decl, rust_name, native_docs, scalar_decl=None, scalar_names=None):
+    names = rust_param_names(decl, native_docs)
     signature_params = ["api: &mut dyn GameApi"]
-    for param_type, param_name, _ in decl["params"]:
-        signature_params.append(f"{sanitize_param(param_name)}: {PARAM_TYPES[param_type]}")
+    for (param_type, _, _), name in zip(decl["params"], names):
+        signature_params.append(f"{sanitize_param(name)}: {PARAM_TYPES[param_type]}")
+    # Keep arg_expressions() on the same names.
+    decl_for_args = dict(decl, params=[(t, n, v) for (t, _, v), n in zip(decl["params"], names)])
 
     return_type, call_method = RETURN_TYPES[decl["ret"]]
-    args = arg_expressions(decl)
+    args = arg_expressions(decl_for_args)
     args_array = "&[" + ", ".join(args) + "]" if args else "&[]"
     const_name = "HASH_" + rust_name
     call = f"api.{call_method}({const_name}, {args_array})"
@@ -261,8 +375,15 @@ def generate_function(decl, rust_name):
         body = f"    {call}"
         return_clause = f" -> {return_type}"
 
-    variant = " (Vector3 overload)" if rust_name.endswith(("_VEC3", "_VEC3_2", "_VEC3_3")) else ""
-    doc = f"/// `{decl['class']}::{decl['name']}`{variant} - `{decl['hash']}`."
+    header = f"/// `{decl['class']}::{decl['name']}` - `{decl['hash']}`."
+    if rust_name.endswith(("_VEC3", "_VEC3_2", "_VEC3_3")):
+        header += " Vector3 overload: same native, the three floats become one `Vec3`."
+    items = decl["docs"]
+    # The overload shares the native's docblock but renames the coordinate
+    # triplet; scalar_names is the Vector3 overload's own (x, y, z, ...).
+    if scalar_decl is not None and scalar_names is not None:
+        items = overload_doc_lines(decl, names, scalar_names)
+    doc = "\n".join([header] + [render_doc(item) for item in items])
 
     return (
         f"{doc}\n"
@@ -277,9 +398,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", default="lib/NativeDecl.cs")
     parser.add_argument("--out", default="rust/crates/rrdr-natives/src")
+    parser.add_argument("--docs", default=NATIVE_DOCS_PATH,
+                        help="merged native documentation (tools/native_docs.json)")
     args = parser.parse_args()
 
-    declarations, skipped_variadic = parse(args.source)
+    native_docs = load_native_docs(args.docs)
+    declarations, skipped_variadic = parse(args.source, native_docs)
 
     grouped = defaultdict(list)
     for decl in declarations:
@@ -287,8 +411,12 @@ def main():
 
     modules = defaultdict(list)
     for (class_name, _), group in grouped.items():
-        for rust_name, decl in choose_names(group):
-            modules[sanitize_module(class_name)].append((rust_name, decl))
+        named = choose_names(group)
+        scalar = named[0][1] if len(named) > 1 else None
+        for rust_name, decl in named:
+            is_overload = rust_name != decl["name"]
+            modules[sanitize_module(class_name)].append(
+                (rust_name, decl, scalar if is_overload else None))
 
     os.makedirs(args.out, exist_ok=True)
     # Only delete files this generator produced (they carry the @generated
@@ -305,6 +433,7 @@ def main():
 
     function_count = 0
     vec3_count = 0
+    described = 0
 
     for module_name in sorted(modules):
         filename = os.path.join(args.out, module_name + ".rs")
@@ -312,6 +441,9 @@ def main():
 
         lines = [
             "// @generated by tools/generate_natives.py from lib/NativeDecl.cs. Do not edit.",
+            "//!",
+            "//! Descriptions come from `lib/NativeDecl.cs` and the RDR3 native",
+            "//! database, merged by `tools/generate_native_docs.py`.",
             "#![allow(non_snake_case)]",
             "#![allow(non_upper_case_globals)]",
             "#![allow(clippy::too_many_arguments)]",
@@ -320,11 +452,14 @@ def main():
             "",
         ]
 
-        for rust_name, decl in functions:
-            lines.append(generate_function(decl, rust_name))
+        for rust_name, decl, scalar in functions:
+            scalar_names = rust_param_names(scalar, native_docs) if scalar else None
+            lines.append(generate_function(decl, rust_name, native_docs, scalar, scalar_names))
             function_count += 1
             if rust_name.endswith(("_VEC3", "_VEC3_2", "_VEC3_3")):
                 vec3_count += 1
+            if decl["docs"] and decl["docs"][0][1] != NO_DESCRIPTION:
+                described += 1
 
         with open(filename, "w", encoding="utf-8", newline="\n") as handle:
             handle.write("\n".join(lines))
@@ -336,6 +471,13 @@ def main():
         "//! Every function takes `&mut dyn GameApi` as its first argument. The",
         "//! bindings are generated from ScriptHookRDR2DotNet V2's `NativeDecl.cs`;",
         "//! hashes and parameter order match that file exactly.",
+        "//!",
+        "//! Parameter names are the ones the declaration file uses, except for the",
+        "//! bare `p0`, `p1` placeholders: those take the name the RDR3 native",
+        "//! database gives them (`ped`, `durationMs`, ...) or a name derived from",
+        "//! the type (`handle`, `outVec`, ...). The order and the types never change,",
+        "//! so a call written against an older name still compiles by position only",
+        "//! if it used the placeholder.",
         "//!",
         "//! `_VEC3` variants are convenience overloads that take `Vec3` instead of",
         "//! three floats. They call the same native hash.",
@@ -365,6 +507,7 @@ def main():
 
     print(f"Generated {function_count} functions in {len(modules)} modules")
     print(f"  Vector3 overloads: {vec3_count}")
+    print(f"  Described natives: {described}")
     print(f"  Skipped variadic: {len(skipped_variadic)}")
     for name in skipped_variadic:
         print(f"    - {name}")

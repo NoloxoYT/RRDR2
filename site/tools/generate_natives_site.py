@@ -99,12 +99,73 @@ def clean_docs(raw_lines):
     return {"desc": desc, "short": short, "old": old_name}
 
 
-def parse_with_docs(source):
+# Docs merged from lib/NativeDecl.cs and the RDR3 native database, resolved by
+# tools/generate_native_docs.py. Keys are lower-case native hashes.
+NATIVE_DOCS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "native_docs.json")
+
+
+def load_native_docs(path=NATIVE_DOCS_PATH):
+    with open(path, encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def param_docs_for(hash_hex, params, native_docs):
+    """One line of text per parameter, aligned with the site signature.
+
+    The text comes from the merged docs. The site keeps the declaration file's
+    names in the signature, so a `Vector3` that the Rust bindings call `vec`
+    while the declaration file spells it `x, y, z` keeps that line, tagged
+    with both names.
+    """
+    entry = native_docs.get(hash_hex.lower()) or {}
+    documented = [item for item in entry.get("params") or [] if isinstance(item, dict)]
+    merged_names = entry.get("lib_params") or []
+    if len(documented) != len(params):
+        return [("", "")] * len(params)
+    if len(merged_names) != len(params):
+        merged_names = [param[1] for param in params]
+
+    lines = []
+    for (param_type, param_name, _), item, name in zip(params, documented, merged_names):
+        doc = (item.get("doc") or "").strip()
+        alias = name if name != param_name else ""
+        lines.append((doc, alias))
+    return lines
+
+
+def merged_docs(hash_hex, native_docs):
+    """The docblock shown for a native: description, short line, old name.
+
+    `desc` is every line of text (the database sentence followed by the
+    declaration file's notes). `short` is the first paragraph, used by search
+    results and the module pages.
+    """
+    entry = native_docs.get(hash_hex.lower()) or {}
+    lines = [line for line in (entry.get("desc") or "").splitlines() if line.strip()]
+    extra = [line for line in (entry.get("extra") or []) if line.strip()]
+    if extra:
+        # Notes the declaration file has and the database does not: they only
+        # make sense under the sentence, so they go last.
+        lines = lines + [""] + extra
+    desc = "\n".join(lines)
+    short = ""
+    for line in lines:
+        if line.strip():
+            short = line.strip()
+            break
+    if len(short) > 150:
+        short = short[:149] + " ..."
+    return {"desc": desc, "short": short, "old": entry.get("old") or None,
+            "source": entry.get("source") or ""}
+
+
+def parse_with_docs(source, native_docs=None):
     declarations = []
     skipped_variadic = []
     current_class = None
     unparsed = []
     pending_docs = []
+    native_docs = native_docs or {}
 
     with open(source, encoding="utf-8-sig") as handle:
         lines = handle.read().splitlines()
@@ -180,7 +241,8 @@ def parse_with_docs(source):
             "ret": ret,
             "params": params,
             "hash": match.group("hash"),
-            "docs": clean_docs(pending_docs),
+            "docs": merged_docs(match.group("hash"), native_docs),
+            "param_docs": param_docs_for(match.group("hash"), params, native_docs),
         })
         pending_docs = []
 
@@ -319,6 +381,57 @@ def render_sig(params, ret):
     return '<span class="paren">(</span>%s<span class="paren">)</span>%s' % (inner, ret_span)
 
 
+SOURCE_LABEL = {
+    "cs": "native documentation",
+    "cs+db": "native documentation + RDR3 native database",
+    "db": "RDR3 native database",
+    "generic": "generated from the native name, no published description",
+}
+
+
+def render_param_docs(params, param_docs):
+    """<dl> of the arguments, one line each, or "" when there is nothing to say."""
+    rows = []
+    for (param_type, param_name, _), item in zip(params, param_docs or []):
+        doc, alias = item if isinstance(item, tuple) else (item, "")
+        doc = (doc or "").strip()
+        if not doc and not alias:
+            continue
+        if alias and param_type == "Vector3":
+            doc = "The three floats `x`, `y`, `z`; the Rust bindings pass them as `%s`. %s" % (
+                alias, doc)
+        elif alias:
+            doc = "Rust bindings call it `%s`. %s" % (alias, doc)
+        if not doc.strip():
+            continue
+        rows.append('<div class="p-doc"><span class="p-doc-name">%s</span>'
+                    '<span class="p-doc-type">%s</span>'
+                    '<span class="p-doc-text">%s</span></div>'
+                    % (esc(param_name), esc(param_type), esc(doc.strip())))
+    if not rows:
+        return ""
+    return '<div class="param-docs">' + "".join(rows) + "</div>"
+
+
+def render_ret_doc(ret):
+    if ret == "void":
+        return ""
+    text = {
+        "bool": "BOOL",
+        "int": "int",
+        "uint": "u32",
+        "float": "float",
+        "ulong": "u64",
+        "string": "string",
+        "Vector3": "Vector3 (three floats)",
+        "IntPtr": "u64 handle",
+    }.get(ret, ret)
+    return ('<div class="param-docs ret-doc"><div class="p-doc">'
+            '<span class="p-doc-name">return</span><span class="p-doc-type">%s</span>'
+            '<span class="p-doc-text">Value returned by the native.</span></div></div>'
+            % esc(text))
+
+
 def render_module_page(module, bucket, rust_fns, bucket_of, module_counts):
     parts = [page_head("rrdr_natives::%s - RRDR natives" % module)]
     parts.append(topbar_html())
@@ -355,10 +468,16 @@ def render_module_page(module, bucket, rust_fns, bucket_of, module_counts):
             parts.append('<div class="docblock">%s</div>' % esc(desc))
         else:
             parts.append('<div class="docblock nodoc">No description available.</div>')
+        parts.append(render_param_docs(params, decl.get("param_docs")))
+        parts.append(render_ret_doc(ret))
         meta_bits = ["<code>%s</code>" % esc(hash_hex)]
         if old:
             meta_bits.append("old name <code>%s</code>" % esc(old))
         meta_bits.append("%d arg%s" % (len(params), "" if len(params) == 1 else "s"))
+        source = decl["docs"].get("source")
+        if source:
+            meta_bits.append("description: <span class=\"doc-source\">%s</span>"
+                             % esc(SOURCE_LABEL.get(source, source)))
         meta_bits.append("rust: <code>rrdr_natives::%s::%s</code>" % (module, esc(rust_name)))
         parts.append('<div class="fn-meta">' + " &middot; ".join(meta_bits) + "</div>")
         parts.append("</section>")
@@ -399,10 +518,16 @@ def render_native_page(module, rust_name, decl, prev_fn, next_fn, bucket, bucket
         parts.append('<div class="docblock">%s</div>' % esc(desc))
     else:
         parts.append('<div class="docblock nodoc">No description available.</div>')
+    parts.append(render_param_docs(params, decl.get("param_docs")))
+    parts.append(render_ret_doc(ret))
     meta_bits = ["<code>%s</code>" % esc(decl["hash"])]
     if old:
         meta_bits.append("old name <code>%s</code>" % esc(old))
     meta_bits.append("%d arg%s" % (len(params), "" if len(params) == 1 else "s"))
+    source = decl["docs"].get("source")
+    if source:
+        meta_bits.append("description: <span class=\"doc-source\">%s</span>"
+                         % esc(SOURCE_LABEL.get(source, source)))
     meta_bits.append("rust: <code>rrdr_natives::%s::%s</code>" % (module, esc(rust_name)))
     meta_bits.append('module page: <a href="%s">%s.html#%s</a>' % (
         esc(root_join(root, "%s.html#%s" % (module, rust_name))), esc(module), esc(rust_name)))
@@ -968,6 +1093,25 @@ kbd {
 .paren { color: var(--muted); }
 .docblock { max-width: 60em; font-size: .95rem; white-space: pre-line; }
 .docblock.nodoc { color: var(--muted); font-style: italic; }
+.doc-source { color: #3d6a00; }
+.param-docs {
+  margin: .7em 0 .2em;
+  border-left: 2px solid var(--border);
+  padding-left: .8em;
+  font-size: .87rem;
+  max-width: 60em;
+}
+.param-docs .p-doc { display: flex; gap: .6em; align-items: baseline; padding: .12em 0; }
+.p-doc-name {
+  font-family: "Fira Mono", Consolas, monospace;
+  color: #5b2d84; min-width: 8em;
+}
+.p-doc-type {
+  font-family: "Fira Mono", Consolas, monospace;
+  color: #3d6a00; font-size: .82em; min-width: 5.5em;
+}
+.p-doc-text { color: #333; flex: 1; white-space: pre-line; }
+.ret-doc .p-doc-name { color: var(--muted); font-style: italic; }
 .fn-meta {
   margin-top: .55em;
   font-family: "Fira Sans", Verdana, sans-serif;
@@ -1047,9 +1191,9 @@ def copy_static(static_dir, repo_root):
         handle.write(LOGO_SVG)
 
 
-def collect(source):
+def collect(source, native_docs=None):
     """Parses the declarations and groups them per module."""
-    declarations, skipped_variadic = parse_with_docs(source)
+    declarations, skipped_variadic = parse_with_docs(source, native_docs)
 
     grouped = {}
     for decl in declarations:
@@ -1070,9 +1214,11 @@ def main():
     parser = argparse.ArgumentParser(description="docs.rs-style natives site generator")
     parser.add_argument("--source", default="lib/NativeDecl.cs")
     parser.add_argument("--out", default=SITE_DIR + "/natives")
+    parser.add_argument("--docs", default=NATIVE_DOCS_PATH,
+                        help="merged native documentation (tools/native_docs.json)")
     args = parser.parse_args()
 
-    modules, skipped_variadic = collect(args.source)
+    modules, skipped_variadic = collect(args.source, load_native_docs(args.docs))
 
     module_counts = {m: len(fns) for m, fns in modules.items()}
     bucket_of = {}
